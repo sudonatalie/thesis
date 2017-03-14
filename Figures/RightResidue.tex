@@ -1,0 +1,38 @@
+\begin{figure}[ht]
+
+	\setbox0=\vbox {
+	\hspace{2.8cm} $P$ \\
+	\begin{bipartite}{2cm}{2cm}{2cm}{1.8cm}{2mm}
+		\leftnode{a} \leftnode{b}
+		\rightnode{a} \rightnode{b}
+		\match{a}{a}
+		\match{b}{a} 
+	\end{bipartite}
+	}
+
+	\setbox1=\vbox {
+	\hspace{2.6cm} $P \rressymbol Q$ \\
+	\begin{bipartite}{2cm}{2cm}{2cm}{1.8cm}{2mm}
+		\leftnode{a} \leftnode{b}
+		\rightnode{a} \rightnode{b}
+		\match{a}{b}
+		\match{b}{a}
+		\match{b}{b} 
+	\end{bipartite}
+	}
+
+	\setbox2=\vbox {
+	\hspace{2.8cm} $Q$ \\
+	\begin{bipartite}{2cm}{2cm}{2cm}{1.8cm}{2mm}
+		\leftnode{a} \leftnode{b}
+		\rightnode{a} \rightnode{b}
+		\match{a}{b}
+		\match{b}{b} 
+	\end{bipartite}
+	}
+
+	\setbox3=\hbox{\box0 \hspace{-9.5cm} $\RAcomp$ \box1 \hspace{-9.5cm} $=$ \box2}
+ 	\scalebox{.8}{\box3}
+	\caption{$\RAcompose{P}{\RArightresidual{P}{Q}}= Q$}
+	\label{fig:right_residue}
+\end{figure}

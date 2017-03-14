@@ -1,0 +1,21 @@
+\begin{corollary}
+\label{cor:test}
+	Let $P$ be the relation containing confidential information. Let $Q$ be a relation representing an information observed on the monitored communication channel. The confidential information contained in $P$ is being leaked as that represented by $Q$ if and only if $P = \RAcompose{Q}{(\RArightresidual{Q}{P})} \Ors Q = \RAcompose{P}{(\RArightresidual{P}{Q})}$. 
+	
+\begin{proof}~
+	
+	According to the problem formulation illustrated by Figure~\ref{fig:commutativity}, we need to find solutions to either Equation~\ref{eqn:commute1} or Equation~\ref{eqn:commute2}. \newline
+	
+	Therefore,
+	
+	\Beginproof 
+		\pred{$\RAcompose{X}{\RAconverse{Q}} = \RAconverse{P}$ or $\RAcompose{\RAconverse{X}}{\RAconverse{P}} = \RAconverse{Q}$ have solutions}
+		$\mIff$ \com{Proposition~\ref{prop:test}}
+		\pred{$\RAconverse{P} = \RAcompose{(\RAleftresidual{\RAconverse{P}}{\RAconverse{Q}})}{\RAconverse{Q}} \Ors \RAconverse{Q} = \RAcompose{(\RAleftresidual{\RAconverse{Q}}{\RAconverse{P}})}{\RAconverse{P}}$}
+		$\mIff$ \com{Converse both sides \!\!\!\!\!\hsep\!\!\!\!\! Proposition~\ref{prop:relationproperties}(ii) \!\!\!\!\!\hsep\!\!\!\!\! Proposition~\ref{prop:relationproperties}(vii) \!\!\!\!\!\hsep\!\!\!\!\! \\ Proposition~\ref{prop:residueproperties}(i)}
+		\pred{$P = \RAcompose{Q}{(\RArightresidual{Q}{P})} \Ors Q = \RAcompose{P}{(\RArightresidual{P}{Q})}$}
+	\Endproof
+	
+\end{proof}
+
+\end{corollary}

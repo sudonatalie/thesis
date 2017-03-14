@@ -1,0 +1,41 @@
+\begin{proposition}
+\label{prop:compute}
+	Let $P$ and $Q$ be relations. $\RAcompose{X}{P} = Q$ has a solution $X = R \STmeet (\RAleftresidual{Q}{P})$ if and only if $Q \STleq \RAcompose{\big(R \STmeet (\RAleftresidual{Q}{P})\big)}{P}$. \newpage
+	
+\begin{proof}~\
+	
+	$(\mImpl) \quad Q \STleq \RAcompose{\big(R \STmeet (\RAleftresidual{Q}{P})\big)}{P} \mImp \RAcompose{X}{P} = Q$ has $R \STmeet (\RAleftresidual{Q}{P})$ as a solution \\
+
+	\Beginproof 
+		\pred{$\RAcompose{X}{P} = Q$ has $R \STmeet (\RAleftresidual{Q}{P})$ as a solution}
+		$\mIff$ \com{$X = R \STmeet (\RAleftresidual{Q}{P})$ \hsep Substitution}
+		\pred{$\RAcompose{\big(R \STmeet (\RAleftresidual{Q}{P})\big)}{P} = Q$}
+		$\mIff$ \com{Antisymmetry}
+		\pred{$\RAcompose{\big(R \STmeet (\RAleftresidual{Q}{P})\big)}{P} \STleq Q \nAnd Q \STleq \RAcompose{\big(R \STmeet (\RAleftresidual{Q}{P})\big)}{P}$}
+		$\mIff$ \com{Hypothesis: $Q \STleq \RAcompose{\big(R \STmeet (\RAleftresidual{Q}{P})\big)}{P}$}
+		\pred{$\RAcompose{\big(R \STmeet (\RAleftresidual{Q}{P})\big)}{P} \STleq Q \nAnd \true$}
+		$\mIff$ \com{Definition~\ref{def:residue}(ii) \hsep Identity of $\AAnd$}
+		\pred{$\RAcompose{(R \STmeet \RAcomplement{\RAcompose{\RAcomplement{Q}}{\RAconverse{P}}})}{P} \STleq Q$}
+		$\mIff$ \com{Identity of $\AAnd$ \hsep Proposition~\ref{prop:schroder} \hsep Proposition~\ref{prop:relationproperties}(vi)}
+		\pred{$\RAcompose{\RAcomplement{Q}}{\RAconverse{P}} \STleq (\RAcomplement{R} \STjoin \RAcompose{\RAcomplement{Q}}{\RAconverse{P}})$}
+		$\mImpl$ \com{Weakening}
+		\pred{$\RAcompose{\RAcomplement{Q}}{\RAconverse{P}} \STleq \RAcompose{\RAcomplement{Q}}{\RAconverse{P}}$}
+		$\mImpl$ \com{Reflexivity of $\STleq$}
+		\pred{$\true$}
+	\Endproof
+	\newpage
+	\noindent $(\mImp) \quad \RAcompose{X}{P} = Q$ has $R \STmeet (\RAleftresidual{Q}{P})$ as a solution $ \mImp Q \STleq \RAcompose{\big(R \STmeet (\RAleftresidual{Q}{P})\big)}{P}$ \\
+
+	\Beginproof 
+		\pred{$\RAcompose{X}{P} = Q \nAnd X = R \STmeet (\RAleftresidual{Q}{P})$}
+		$\mImp$ \com{Substitution of $X$}
+		\pred{$\RAcompose{\big(R \STmeet (\RAleftresidual{Q}{P})\big)}{P} = Q$}
+		$\mIff$ \com{Antisymmetry}
+		\pred{$\RAcompose{\big(R \STmeet (\RAleftresidual{Q}{P})\big)}{P} \STleq Q \nAnd Q \STleq \RAcompose{\big(R \STmeet (\RAleftresidual{Q}{P})\big)}{P}$}
+		$\mImp$ \com{Weakening}
+		\pred{$Q \STleq \RAcompose{\big(R \STmeet (\RAleftresidual{Q}{P})\big)}{P}$}
+	\Endproof
+
+\end{proof}
+
+\end{proposition}

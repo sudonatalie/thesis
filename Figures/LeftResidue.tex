@@ -1,0 +1,35 @@
+\begin{figure}[ht]
+
+	\setbox4=\vbox {
+	\hspace{2.6cm} $P \lressymbol Q$ \\
+	\begin{bipartite}{2cm}{2cm}{2cm}{1.8cm}{2mm}
+  		\leftnode{a} \leftnode{b}
+  		\rightnode{a} \rightnode{b}
+	\end{bipartite}
+	}
+
+	\setbox5=\vbox {
+	\hspace{2.8cm} $P$ \\
+	\begin{bipartite}{2cm}{2cm}{2cm}{1.8cm}{2mm}
+	 	\leftnode{a} \leftnode{b}
+		\rightnode{a} \rightnode{b}
+	  	\match{a}{a}
+	  	\match{b}{a}
+	\end{bipartite}
+	}
+
+	\setbox6=\vbox {
+	\hspace{2.8cm}$Q$ \\
+	\begin{bipartite}{2cm}{2cm}{2cm}{1.8cm}{2mm}
+	  	\leftnode{a} \leftnode{b}
+	  	\rightnode{a} \rightnode{b}
+	  	\match{a}{b}
+	  	\match{b}{b} 
+	\end{bipartite}
+	}
+
+	\setbox7=\hbox{\box4 \hspace{-9.5cm} $\RAcomp$ \box5 \hspace{-9.5cm} $\STleq$ \box6}
+ 	\scalebox{0.8}{\box7}
+	\caption{$\RAcompose{P \lressymbol Q}{P} \STleq  Q$ with $\RAleftresidual{P}{Q} = \RAbot$}
+	\label{fig:left_residue}
+\end{figure}

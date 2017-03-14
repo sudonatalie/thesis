@@ -1,0 +1,12 @@
+\begin{program}
+\label{prog:test}~
+	\begin{lstlisting}
+		Test(p,q)
+		    DECL test1, test2, res
+		    BEG  test1 = eq(p,q*(q\p));
+		         test2 = eq(q,p*(p\q));
+		         res = test1 | test2
+		         RETURN res
+		    END.
+	\end{lstlisting}
+\end{program}

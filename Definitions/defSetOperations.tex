@@ -1,0 +1,16 @@
+\begin{definition}
+\label{def:setoperations}	
+	Let $S$ and $T$ be sets and let $\STtop$ be the universal set.
+	\begin{enumerate}[(i)]
+		\item Size (Cardinality)\index{set!size}\index{set!cardinality|see{size}}: \quad $\card{S} = \lnotation{\sum}{x}{x \in S}{1}$
+		\item Subset\index{set!subset}: \quad $S \STleq T \mIff \lnotation{\forall}{x}{x \in S}{x \in T}$
+		\item Proper Subset\index{set!proper subset}: \quad $S \STlt T \mIff S \STleq T \nAnd S \neq T$
+		\item Superset\index{set!superset}: \quad $T \STgeq S \mIff S \STleq T$
+		\item Proper Superset\index{set!proper superset}: \quad $T \STgt S \mIff S \STlt T$
+		\item Complement\index{set!complement}: \quad $x \in \STcomplement{S} \mIff x \in \STtop \nAnd x \notin S$
+		\item Union (Join)\index{set!union}: \quad $x \in S \STjoin T \mIff x \in S \Ors x \in T$
+		\item Intersection (Meet)\index{set!intersection}: \quad $x \in S \STmeet T \mIff x \in S \nAnd x \in T$
+		\item Difference\index{set!difference}: \quad $x \in S - T \mIff x \in S \nAnd x \notin T$
+		\item Power Set\index{set!power}: \quad $x \in \STpowerset{S} \mIff x \STleq S$
+	\end{enumerate}
+\end{definition}

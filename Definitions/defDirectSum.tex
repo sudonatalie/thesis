@@ -1,0 +1,11 @@
+\begin{definition}
+\label{def:direct_sum}	
+	We call a pair $i_i \STleq X_i \times SX$, $1 \le i \le 2$ a \emph{direct sum}\index{direct sum} if
+	\begin{enumerate}[(i)]
+		\item $\RAcompose{i_1}{\RAconverse{i_1}} = \RAid$
+		\item $\RAcompose{i_2}{\RAconverse{i_2}} = \RAid$
+		\item $\RAcompose{\RAconverse{i_1}}{i_1} \STjoin \RAcompose{\RAconverse{i_2}}{i_1} = \RAid$
+		\item $\RAcompose{i_1}{\RAconverse{i_2}} = \RAbot$
+	\end{enumerate}
+	Given sets $X_i$, $1 \le i \le 2$ it is easy to verify that the injections from these sets to the direct sum $X_1 + X_2$ (replacing the placeholder $SX$) are a model of $(i)$ through $(iv)$.
+\end{definition}

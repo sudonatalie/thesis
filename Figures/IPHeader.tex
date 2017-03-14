@@ -1,0 +1,15 @@
+\begin{figure}[ht]
+	\centering
+	\begin{bytefield}{32}
+		\bitheader{0,4,10,16,19,24,31} \\ 
+		\bitbox{4}{\tiny VERS} & \bitbox{4}{\tiny HLEN} & \bitbox{8}{\tiny SERVICE TYPE} & \bitbox{16}{\tiny TOTAL LENGTH} \\
+		\colorbitbox{grey}{16}{\tiny IDENTIFICATION} & \colorbitbox{grey}{3}{\tiny FLAGS} & \bitbox{13}{\tiny FRAGMENT OFFSET} \\
+		\bitbox{8}{\tiny TIME TO LIVE} & \bitbox{8}{\tiny PROTOCOL} & \bitbox{16}{\tiny HEADER CHECKSUM} \\
+		\wordbox{1}{\tiny SOURCE IP ADDRESS} \\
+		\wordbox{1}{\tiny DESTINATION IP ADDRESS} \\
+		\colorbitbox{grey}{24}{\tiny IP OPTIONS (IF ANY)} & \colorbitbox{grey}{8}{\tiny PADDING} \\
+		\wordbox{3}{\tiny DATA}
+	\end{bytefield}	
+\caption{Format of an IP datagram, the basic unit of transfer in a TCP/IP internet.}	
+\label{fig:IP_header}
+\end{figure}

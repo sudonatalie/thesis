@@ -1,0 +1,39 @@
+\begin{proposition}
+\label{prop:op_relationship}
+
+	Let $X$, $Y$, and $Z$ be variables in $\Rel$. Let $P$ and $R$ be total functions and $Q$ and $S$ be relations such that $\RAcompose{X}{P} = Q$ and $\RAcompose{Y}{R} = S$ have solutions, then for any monoid $\monoid{\Rel}{\opB}{\RAtop}$ and $\monoid{\Rel}{\opA}{\RAtop}$ where $\opA$ preserves totality and determinism, the operators $\opA$ and $\opB$ can be relation through the equation $\RAcompose{X}{P} \opA \RAcompose{Y}{R} = Q \opB S$.
+	
+\begin{proof}~
+	
+	\Beginproof 
+		\pred{$Z = \RAcomplement{\RAcompose{\RAcomplement{(Q \opB S)}}{\RAconverse{(P \opA R)}}}$}
+		$\mIff$ \com{$\RAcompose{X}{P} = Q$ \hsep $\RAcompose{Y}{R} = S$}
+		\pred{$Z = \RAcomplement{\RAcompose{\RAcomplement{(\RAcompose{X}{P} \opA \RAcompose{Y}{R})}}{\RAconverse{(P \opA R)}}}$}
+		$\mIff$ \com{Converse of both sides \!\!\!\hsep\!\!\! $\RAconverse{\RAconverse{P}} = P$ for any relation $P$}
+		\pred{$\RAconverse{Z} = \RAcomplement{\RAcompose{(P \opA R)}{\RAconverse{\RAcomplement{(\RAcompose{X}{P} \opA \RAcompose{Y}{R})}}}}$}
+		$\mIff$ \com{$Q$ is deterministic $\Imp \RAcompose{Q}{\RAcomplement{R}} = \RAcompose{Q}{\RAtop} \STmeet \RAcomplement{\RAcompose{Q}{R}}$}
+		\pred{$\RAconverse{Z} = \RAcomplement{\RAcompose{(P \opA R)}{\RAtop} \STmeet \RAcomplement{\RAcompose{(P \opA R)}{\RAconverse{(\RAcompose{X}{P} \opA \RAcompose{Y}{R})}}}}$}
+		$\mIff$ \com{$(P \opA R)$ is total \hsep $\RAcomplement{\RAcomplement{P}} = P$ for any relation $P$}
+		\pred{$\RAconverse{Z} = \RAcompose{(P \opA R)}{\RAconverse{(\RAcompose{X}{P} \opA \RAcompose{Y}{R})}}$}
+		$\mIff$ \com{Converse of both sides \!\!\!\hsep\!\!\! $\RAconverse{\RAconverse{P}} = P$ for any relation $P$}
+		\pred{$Z = \RAcompose{(\RAcompose{X}{P} \opA \RAcompose{Y}{R})}{\RAconverse{(P \opA R)}}$}
+ 		$\mIff$ \com{$Z = \RAcomplement{\RAcompose{\RAcomplement{(Q \opB S)}}{\RAconverse{(P \opA R)}}}$}
+		\pred{$Z = \RAcomplement{\RAcompose{\RAcomplement{(Q \opB S)}}{\RAconverse{(P \opA R)}}} = \RAcompose{(\RAcompose{X}{P} \opA \RAcompose{Y}{R})}{\RAconverse{(P \opA R)}}$}
+		$\mIff$ \com{Transitivity of $=$ \hsep Symmetry of $=$}
+		\pred{$\RAcompose{(\RAcompose{X}{P} \opA \RAcompose{Y}{R})}{\RAconverse{(P \opA R)}} = \RAcomplement{\RAcompose{\RAcomplement{(Q \opB S)}}{\RAconverse{(P \opA R)}}}$}
+		$\mIff$ \com{Left Residue}
+		\pred{$\RAcompose{X}{P} \opA \RAcompose{Y}{R} = \RAleftresidual{\RAcomplement{\RAcompose{\RAcomplement{(Q \opB S)}}{\RAconverse{(P \opA R)}}}}{\RAconverse{(P \opA R)}}$}
+		$\mIff$ \com{Definition of Left Residue}
+		\pred{$\RAcompose{X}{P} \opA \RAcompose{Y}{R} = \RAcomplement{\RAcompose{\RAcomplement{\RAcomplement{\RAcompose{\RAcomplement{(Q \opB S)}}{\RAconverse{(P \opA R)}}}}}{\RAconverse{\RAconverse{(P \opA R)}}}}$}	
+		$\mIff$ \com{$\RAconverse{\RAconverse{P}} = P$ \hsep $\RAcomplement{\RAcomplement{P}} = P$ for any relation $P$}
+		\pred{$\RAcompose{X}{P} \opA \RAcompose{Y}{R} = \RAcomplement{\RAcompose{\RAcompose{\RAcomplement{(Q \opB S)}}{\RAconverse{(P \opA R)}}}{(P \opA R)}}$}
+		\com{$(P \opA R)$ is deterministic, i.e., $\RAid \STleq \RAcompose{\RAconverse{(P \opA R)}}{(P \opA R)}$}
+		\pred{$\RAcompose{X}{P} \opA \RAcompose{Y}{R} = \RAcomplement{\RAcomplement{(Q \opB S)}}$}
+		$\mIff$ \com{$\RAcomplement{\RAcomplement{P}} = P$ for any relation $P$}
+		\pred{$\RAcompose{X}{P} \opA \RAcompose{Y}{R} = Q \opB S$}
+
+	\Endproof
+	
+\end{proof}
+
+\end{proposition}

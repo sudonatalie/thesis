@@ -1,0 +1,152 @@
+% Document Class
+%________________________________________________________________________
+\documentclass[12pt]{report}
+%________________________________________________________________________
+
+% Imported Packages
+%________________________________________________________________________
+\usepackage{alltt}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsthm}
+\usepackage{bytefield}
+\usepackage{color}
+\usepackage{Styles/eclbip}
+\usepackage{enumerate}
+\usepackage{epic}
+\usepackage{Styles/fancyheadings}
+\usepackage{graphicx}
+\usepackage[pdfpagelabels,hypertexnames=false,breaklinks=true,
+			bookmarksopen=true,bookmarksopenlevel=2]{hyperref}
+\usepackage{ifthen}
+\usepackage{listings}
+\usepackage{makeidx}
+\usepackage{Styles/natbib}
+\usepackage{Styles/setspace}
+\usepackage{subfigure}
+\usepackage{Styles/thesis}
+\usepackage{xspace}
+\usepackage[all]{xy}
+%________________________________________________________________________
+
+% Macros and Commands
+%________________________________________________________________________
+
+% Include the macro files
+\input{Macros/GeneralMathMacros} 
+\input{Macros/AbbreviationsMacros}
+\input{Macros/ReviewMacros}
+\input{Macros/EnvironmentMacros}
+\input{Macros/IndexMacros}
+
+% Import the General Thesis Information
+\input{Auxiliary/ThesisInformation}
+
+% Listings Settings
+\lstset{ basicstyle=\footnotesize, showspaces=false, 
+		 showstringspaces=false, tabsize=2, breaklines=true }
+
+% Make Index
+\makeindex
+%________________________________________________________________________
+
+% Document
+%________________________________________________________________________
+\begin{document}
+
+% Make Title Page & Authorship
+\beforepreface                      
+
+% Include the Dedication
+\newpage
+\input{Auxiliary/Dedication}
+
+% Abstract
+\prefacesection{Abstract}
+\input{Auxiliary/Abstract}
+
+% Acknowledgements
+\prefacesection{Acknowledgements}
+\input{Auxiliary/Acknowledgements}
+
+% Make Table of Contents, List of Tables & List of Figures
+\afterpreface
+
+% Introduction
+\input{Auxiliary/ResetCounters}
+\chapter{Introduction}
+\label{cha:introduction}
+% Begin Chapter
+\input{Chapters/Introduction}
+% End Chapter
+      
+% Mathematical Background
+\input{Auxiliary/ResetCounters}
+\chapter{Mathematical Background}
+\label{cha:mathematical_background}
+% Begin Chapter
+\input{Chapters/Background}
+% End Chapter
+
+% Survey of Covert Channels
+\input{Auxiliary/ResetCounters}
+\chapter{Survey}
+\label{cha:lit_survey}
+% Begin Chapter
+\input{Chapters/Survey}
+% End Chapter
+
+% Formulation of a Detection Technique
+\input{Auxiliary/ResetCounters}
+\chapter{Main Chapter}
+\label{cha:main_chapter}
+% Begin Chapter
+\input{Chapters/Main}
+% End Chapter
+
+% Application of the Detection Technique
+\input{Auxiliary/ResetCounters}
+\chapter{Application of Main}
+\label{cha:application_of_main}
+% Begin Chapter
+\input{Chapters/Application}
+% End Chapter
+
+% Discussion
+\input{Auxiliary/ResetCounters}
+\chapter{Discussion}
+\label{cha:discussion}
+% Begin Chapter
+\input{Chapters/Discussion}
+% End Chapter
+
+% Conclusion and Future Work
+\input{Auxiliary/ResetCounters}
+\chapter{Conclusion and Future Work}
+\label{cha:conclusion_and_future_work}
+% Begin Chapter
+\input{Chapters/Conclusion}
+% End Chapter
+
+% Appendices
+\input{Auxiliary/ResetCounters}
+\appendix
+\chapter{\relview}
+\label{app:relview}
+% Begin Appendix
+\input{Chapters/Relview}
+% End Appendix
+
+% Bibliography
+\bibliographystyle{alpha}
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliography{Bibliography/CovertChannels}
+
+% Index
+\newpage
+\addcontentsline{toc}{chapter}{Index}
+\printindex
+
+\end{document}
+%________________________________________________________________________

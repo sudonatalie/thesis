@@ -1,0 +1,14 @@
+\begin{proposition}
+\label{prop:residueproperties}
+	For relations $P$, $Q$, and $R$ we have
+	\begin{enumerate}[(i)]
+		\item $\RAconverse{(\RAleftresidual{P}{Q})} = \RArightresidual{\RAconverse{Q}}{\RAconverse{P}}$
+		\item $\RAconverse{(\RArightresidual{P}{Q})} = \RAleftresidual{\RAconverse{Q}}{\RAconverse{P}}$
+		\item $\RAleftresidual{(P \STmeet Q)}{R} = \RAleftresidual{P}{R} \STmeet \RAleftresidual{Q}{R}$
+		\item $\RArightresidual{R}{(P \STmeet Q)} = \RArightresidual{R}{P} \STmeet \RArightresidual{R}{Q}$
+		\item $P \STleq \RAleftresidual{(\RAcompose{P}{Q})}{Q}$
+		\item $P \STleq \RArightresidual{Q}{(\RAcompose{Q}{P})}$
+		\item $\RAcompose{(\RAleftresidual{P}{Q})}{Q} \STleq P$
+		\item $\RAcompose{Q}{(\RArightresidual{Q}{P})} \STleq P$
+	\end{enumerate}	
+\end{proposition}

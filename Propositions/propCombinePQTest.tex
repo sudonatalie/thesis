@@ -1,0 +1,38 @@
+\begin{proposition}
+\label{prop:combine_PQ_test}
+
+	Let $X$, $Y$, and $Z$ be variables in $\Rel$. Let $P$, $Q$, $R$ and $S$ be a relations that satisfy $\lnotation{\exists}{X}{}{\RAcompose{X}{P} = Q}$ and $\lnotation{\exists}{Y}{}{\RAcompose{Y}{R} = S}$, then $\RAcompose{Z}{(P \opA R)} = (Q \opB S)$ has a solution for any operations $\opA$ and $\opB$. \newline
+	
+\begin{proof}~
+	
+	\Beginproof 
+		\pred{$\RAcompose{Z}{(P \opA R)} = (Q \opB S)$ has a solution}
+		$\mIff$ \com{Formalization}
+		\pred{$\lnotation{\exists}{Z}{}{\RAcompose{Z}{(P \opA R)} = (Q \opB S)}$}
+		$\mIff$ \com{Antisymmetry}
+		\pred{$\lnotation{\exists}{Z}{}{\RAcompose{Z}{(P \opA R)} \STleq (Q \opB S) \nAnd (Q \opB S) \STleq \RAcompose{Z}{(P \opA R)}}$}
+		$\mIff$ \com{Proposition~\ref{prop:residue}(i)}
+		\pred{$\lnotation{\exists}{Z}{}{Z \STleq \RAleftresidual{(Q \opB S)}{(P \opA R)} \nAnd (Q \opB S) \STleq \RAcompose{Z}{(P \opA R)}}$}
+		$\mIff$ \com{Hypothesis: $\RAcompose{X}{P} = Q$ and $\RAcompose{Y}{R} = S$ has a solution \!\!\!\!\!\hsep\!\!\!\!\! \\ Proposition~\ref{prop:test} (\ie $Q = \RAcompose{(\RAleftresidual{Q}{P})}{P}$ and $S = \RAcompose{(\RAleftresidual{S}{R})}{R}$) \!\!\!\!\!\hsep\!\!\!\!\! \\ $P \STleq Q \nAnd P \STleq R \mIff P \STleq Q \STmeet R$ for relations $P$, $Q$, and $R$}
+		\pred{$\biglnotation{\exists}{Z}{}{Z \STleq \RAleftresidual{(Q \opB S)}{(P \opA R)} \nAnd (Q \opB S) \STleq \RAcompose{Z}{(P \opA R)} \STmeet \big(\RAcompose{(\RAleftresidual{Q}{P})}{P} \opB \RAcompose{(\RAleftresidual{S}{R})}{R}\big)}$}
+		$\mIff$ \com{Definition of $\STleq$}
+		\pred{$\biglnotation{\exists}{Z}{}{Z = \RAleftresidual{(Q \opB S)}{(P \opA R)} \Ors Z \STlt \RAleftresidual{(Q \opB S)}{(P \opA R)} \nAnd (Q \opB S) \STleq \RAcompose{Z}{(P \opA R)} \STmeet \big(\RAcompose{(\RAleftresidual{Q}{P})}{P} \opB \RAcompose{(\RAleftresidual{S}{R})}{R}\big)}$}
+		$\mIff$ \com{Distributivity of $\exists$ over $\Or$}
+		\pred{$\biglnotation{\exists}{Z}{}{Z = \RAleftresidual{(Q \opB S)}{(P \opA R)} \nAnd (Q \opB S) \STleq \RAcompose{Z}{(P \opA R)} \STmeet \big(\RAcompose{(\RAleftresidual{Q}{P})}{P} \opB \RAcompose{(\RAleftresidual{S}{R})}{R}\big)} \Ors \biglnotation{\exists}{Z}{}{Z \STlt \RAleftresidual{(Q \opB S)}{(P \opA R)} \nAnd (Q \opB S) \STleq \RAcompose{Z}{(P \opA R)} \STmeet \big(\RAcompose{(\RAleftresidual{Q}{P})}{P} \opB \RAcompose{(\RAleftresidual{S}{R})}{R}\big)}$}
+		$\mIff$ \com{Trading}
+		\pred{$\biglnotation{\exists}{Z}{Z = \RAleftresidual{(Q \opB S)}{(P \opA R)}}{(Q \opB S) \STleq \RAcompose{Z}{(P \opA R)} \STmeet \big(\RAcompose{(\RAleftresidual{Q}{P})}{P} \opB \RAcompose{(\RAleftresidual{S}{R})}{R}\big)} \Ors \biglnotation{\exists}{Z}{}{Z \STlt \RAleftresidual{(Q \opB S)}{(P \opA R)} \nAnd (Q \opB S) \STleq \RAcompose{Z}{(P \opA R)} \STmeet \big(\RAcompose{(\RAleftresidual{Q}{P})}{P} \opB \RAcompose{(\RAleftresidual{S}{R})}{R}\big)}$}
+		$\mIff$ \com{One-Point Axiom}
+		\pred{$(Q \opB S) \STleq \RAcompose{Z}{(P \opA R)} \STmeet \big(\RAcompose{(\RAleftresidual{Q}{P})}{P} \opB \RAcompose{(\RAleftresidual{S}{R})}{R}\big)\subst{Z}{\RAleftresidual{(Q \opB S)}{(P \opA R)}} \Ors \biglnotation{\exists}{Z}{}{Z \STlt \RAleftresidual{(Q \opB S)}{(P \opA R)} \nAnd (Q \opB S) \STleq \RAcompose{Z}{(P \opA R)} \STmeet \big(\RAcompose{(\RAleftresidual{Q}{P})}{P} \opB \RAcompose{(\RAleftresidual{S}{R})}{R}\big)}$}
+		$\mIff$ \com{Substitution}
+		\pred{$(Q \opB S) \STleq \RAcompose{\big(\RAleftresidual{(Q \opB S)}{(P \opA R)}\big)}{(P \opA R)} \STmeet \big(\RAcompose{(\RAleftresidual{Q}{P})}{P} \opB \RAcompose{(\RAleftresidual{S}{R})}{R}\big) \Ors \biglnotation{\exists}{Z}{}{Z \STlt \RAleftresidual{(Q \opB S)}{(P \opA R)} \nAnd (Q \opB S) \STleq \RAcompose{Z}{(P \opA R)} \STmeet \big(\RAcompose{(\RAleftresidual{Q}{P})}{P} \opB \RAcompose{(\RAleftresidual{S}{R})}{R}\big)}$}
+		$\mIff$ \com{Proposition~\ref{prop:residueproperties}(vii) \!\!\!\!\!\hsep\!\!\!\!\! Hypothesis: $\RAcompose{X}{P} = Q$ and $\RAcompose{Y}{R} = S$ has a solution \!\!\!\!\!\hsep\!\!\!\!\! Proposition~\ref{prop:test} (\ie $Q = \RAcompose{(\RAleftresidual{Q}{P})}{P}$ and $S = \RAcompose{(\RAleftresidual{S}{R})}{R}$)\hsep Transitivity of $\STleq$}
+		\pred{$(Q \opB S) \STleq \big((Q \opB S) \STmeet (Q \opB S)\big) \Ors \biglnotation{\exists}{Z}{}{Z \STlt \RAleftresidual{(Q \opB S)}{(P \opA R)} \nAnd (Q \opB S) \STleq \RAcompose{Z}{(P \opA R)} \STmeet \big(\RAcompose{(\RAleftresidual{Q}{P})}{P} \opB \RAcompose{(\RAleftresidual{S}{R})}{R}\big)}$}
+		$\mIff$ \com{Idempotency of $\STmeet$ \hsep Reflexivity of $\STleq$}
+		\pred{$\true \Ors \biglnotation{\exists}{Z}{}{Z \STlt \RAleftresidual{(Q \opB S)}{(P \opA R)} \nAnd (Q \opB S) \STleq \RAcompose{Z}{(P \opA R)} \STmeet \big(\RAcompose{(\RAleftresidual{Q}{P})}{P} \opB \RAcompose{(\RAleftresidual{S}{R})}{R}\big)}$}
+		$\mIff$ \com{Zero of $\Or$}
+		\pred{$\true$}
+	\Endproof
+	
+\end{proof}
+
+\end{proposition}

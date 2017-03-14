@@ -1,0 +1,78 @@
+\begin{figure}[ht]
+\centering
+\subfigcapskip=15pt
+\begin{tabular}{c c c}
+	\subfigure[Total Relation]{
+		\begin{bipartite}{1cm}{2cm}{1cm}{0.5cm}{2mm}
+	  		\leftnode[a]{} \leftnode[b]{} \leftnode[c]{} \leftnode[d]{}
+	  		\rightnode[1]{} \rightnode[2]{} \rightnode[3]{} \rightnode[4]{} \rightnode[5]{}
+	  		\match{a}{3}
+	  		\match{b}{3}
+			\match{c}{2} 
+			\match{c}{5} 
+			\match{d}{4} 
+		\end{bipartite}
+		\label{sfig:total}
+	} & 
+	\subfigure[Univalent Relation]{
+		\begin{bipartite}{1cm}{2cm}{1cm}{0.5cm}{2mm}
+	  		\leftnode[a]{} \leftnode[b]{} \leftnode[c]{} \leftnode[d]{}
+	  		\rightnode[1]{} \rightnode[2]{} \rightnode[3]{} \rightnode[4]{} \rightnode[5]{}
+	  		\match{a}{2}
+	  		\match{b}{5}
+			\match{d}{2} 
+		\end{bipartite}
+		\label{sfig:univalent}
+	}&
+	\subfigure[Surjective Relation]{
+		\begin{bipartite}{1cm}{2cm}{1cm}{0.5cm}{2mm}
+	  		\leftnode[a]{} \leftnode[b]{} \leftnode[c]{} \leftnode[d]{} \leftnode[e]{}
+	  		\rightnode[1]{} \rightnode[2]{} \rightnode[3]{} \rightnode[4]{}
+	  		\match{a}{2}
+	  		\match{b}{3}
+			\match{c}{1} 
+			\match{d}{4} 
+			\match{e}{3} 
+		\end{bipartite}
+		\label{sfig:surjective}
+	}\\
+	\subfigure[Injective Relation]{
+		\begin{bipartite}{1cm}{2cm}{1cm}{0.5cm}{2mm}
+	  		\leftnode[a]{} \leftnode[b]{} \leftnode[c]{} \leftnode[d]{}
+	  		\rightnode[1]{} \rightnode[2]{} \rightnode[3]{} \rightnode[4]{} \rightnode[5]{}
+	  		\match{a}{1}
+	  		\match{b}{3}
+			\match{c}{2} 
+			\match{d}{4} 
+		\end{bipartite}
+		\label{sfig:injective}
+	}&
+	\subfigure[Mapping Relation]{
+		\begin{bipartite}{1cm}{2cm}{1cm}{0.5cm}{2mm}
+	  		\leftnode[a]{} \leftnode[b]{} \leftnode[c]{} \leftnode[d]{} \leftnode[e]{}
+	  		\rightnode[1]{} \rightnode[2]{} \rightnode[3]{} \rightnode[4]{}
+	  		\match{a}{2}
+	  		\match{b}{3}
+			\match{c}{3} 
+			\match{d}{1} 
+			\match{e}{2} 
+		\end{bipartite}
+		\label{sfig:mapping}
+	}&
+	\subfigure[Bijective Relation]{
+		\begin{bipartite}{1cm}{2cm}{1cm}{0.5cm}{2mm}
+	  		\leftnode[a]{} \leftnode[b]{} \leftnode[c]{} \leftnode[d]{} \leftnode[e]{}
+	  		\rightnode[1]{} \rightnode[2]{} \rightnode[3]{} \rightnode[4]{} \rightnode[5]{}
+	  		\match{a}{1}
+	  		\match{b}{3}
+			\match{c}{2} 
+			\match{d}{5} 
+			\match{e}{4} 
+		\end{bipartite}
+		\label{sfig:bijective}
+	}
+\end{tabular}
+\hspace{2cm}
+\caption{Types of Relations.}
+\label{fig:relationtypes}
+\end{figure}

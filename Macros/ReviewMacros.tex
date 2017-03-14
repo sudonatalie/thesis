@@ -1,0 +1,88 @@
+%________________________________________________________________________
+%_________________          BEGIN REVIEW MACROS        __________________
+%________________________________________________________________________
+
+% These macros require the inclusion of the color and ulem package 
+% \usepackage{color}
+% \usepackage{ulem}
+
+% Color Definitions
+\definecolor{darkred}{rgb}{0.75,0.0,0.0}
+\definecolor{darkgreen}{rgb}{0.0,0.6,0.0}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{darkcyan}{rgb}{0.0,0.6,0.6}
+\definecolor{darkmagenta}{rgb}{0.6,0.0,0.6}
+\definecolor{darkyellow}{rgb}{0.6,0.6,0.0}
+\definecolor{lightred}{rgb}{1.0,0.9,0.9}
+\definecolor{lightgreen}{rgb}{0.9,1.0,0.9}
+\definecolor{lightblue}{rgb}{0.9,0.9,1.0}
+\definecolor{lightcyan}{rgb}{0.8,1.0,1.0}
+\definecolor{lightmagenta}{rgb}{1.0,0.8,1.0}
+\definecolor{lightyellow}{rgb}{1.0,1.0,0.8}
+\definecolor{paleyellow}{rgb}{1.0,1.0,0.8}
+\definecolor{amber}{rgb}{1.0,0.8,0.0}
+\definecolor{darkamber}{rgb}{1.0,0.5,0.0}
+\definecolor{webgreen}{rgb}{0,0.5,0}
+\definecolor{webbrown}{rgb}{0.6,0,0}
+\definecolor{grey}{rgb}{0.65,0.65,0.65}
+
+% Notes
+\newcommand{\mynote}[2]{
+	\ifthenelse{\equal{#1}{0}}{\textcolor{darkamber}{#2}}{}
+  	\ifthenelse{\equal{#1}{1}}{\textcolor{darkmagenta}{#2}}{}
+  	\ifthenelse{\equal{#1}{2}}{\textcolor{blue}{#2}}{}
+  	\ifthenelse{\equal{#1}{3}}{\textcolor{green}{#2}}{}
+}
+
+\newcommand{\newtxt}[2]{
+  	\ifthenelse{\equal{#1}{0}}{\textcolor{darkamber}{#2}}{}
+  	\ifthenelse{\equal{#1}{1}}{\textcolor{darkmagenta}{#2}}{}
+  	\ifthenelse{\equal{#1}{2}}{\textcolor{blue}{#2}}{}
+  	\ifthenelse{\equal{#1}{3}}{\textcolor{green}{#2}}{}
+}
+
+\newcommand{\newissue}[2]{
+  	\ifthenelse{\equal{#1}{0}}{\textcolor{darkcyan}{#2}}{}
+  	\ifthenelse{\equal{#1}{1}}{\textcolor{cyan}{#2}}{}
+  	\ifthenelse{\equal{#1}{2}}{\textcolor{blue}{#2}}{}
+  	\ifthenelse{\equal{#1}{3}}{\textcolor{green}{#2}}{}
+}
+
+\newcommand{\flag}[2]{
+  	\ifthenelse{\equal{#1}{0}}{~~~\newline$\circ$\uwave{\textcolor{darkamber}{#2}}}{}
+  	\ifthenelse{\equal{#1}{1}}{~~~\newline$\circ$\uwave{\textcolor{darkmagenta}{#2}}}{}
+  	\ifthenelse{\equal{#1}{2}}{~~~\newline$\circ$\uwave{\textcolor{blue}{#2}}}{}
+  	\ifthenelse{\equal{#1}{3}}{~~~\newline$\circ$\uwave{\textcolor{green}{#2}}}{}
+}
+
+\newcommand{\torevisit}[2]{
+  	\ifthenelse{\equal{#1}{0}}{\textcolor{darkamber}{\uwave{#2}}}{}
+  	\ifthenelse{\equal{#1}{1}}{\textcolor{darkmagenta}{\uwave{#2}}}{}
+  	\ifthenelse{\equal{#1}{2}}{\textcolor{blue}{\uwave{#2}}}{}
+  	\ifthenelse{\equal{#1}{3}}{\textcolor{green}{\uwave{#2}}}{}
+}
+
+\newcommand{\suggest}[2]{
+  	\ifthenelse{\equal{#1}{0}}{\textcolor{darkamber}{\uline{Suggestion:} #2}}{}
+  	\ifthenelse{\equal{#1}{1}}{\textcolor{darkmagenta}{\uline{Suggestion:} \uline{Suggestion:} #2}}{}
+  	\ifthenelse{\equal{#1}{2}}{\textcolor{blue}{\uline{Suggestion:} #2}}{}
+  	\ifthenelse{\equal{#1}{3}}{\textcolor{green}{\uline{Suggestion:} #2}}{}
+}
+
+\newcommand{\takeout}[2]{
+  	\ifthenelse{\equal{#1}{0}}{\textcolor{darkamber}{\sout{#2}}}{}
+  	\ifthenelse{\equal{#1}{1}}{\textcolor{darkmagenta}{\sout{#2}}}{}
+  	\ifthenelse{\equal{#1}{2}}{\textcolor{blue}{\sout{#2}}}{}
+  	\ifthenelse{\equal{#1}{3}}{\textcolor{green}{\sout{#2}}}{}
+}
+
+\newcommand{\replace}[3]{
+  	\ifthenelse{\equal{#1}{0}}{\textcolor{darkamber}{\sout{#2}} \textcolor{darkamber}{#3}}{}
+  	\ifthenelse{\equal{#1}{1}}{\textcolor{darkmagenta}{\sout{#2}} \textcolor{darkmagenta}{#3}}{}
+  	\ifthenelse{\equal{#1}{2}}{\textcolor{blue}{\sout{#2}} \textcolor{blue}{#2}}{}
+  	\ifthenelse{\equal{#1}{3}}{\textcolor{green}{\sout{#2}} \textcolor{green}{#2}}{}
+}
+
+%________________________________________________________________________
+%_________________           END REVIEW MACROS         __________________
+%________________________________________________________________________

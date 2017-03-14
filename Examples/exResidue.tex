@@ -1,0 +1,34 @@
+\begin{example}
+\label{ex:residue}
+	Let $A = \set{a,b}$, $P \STleq A \times A$ such that $P = \set{(a,a),(b,a)}$, and $Q \STleq A \times A$ such that $Q = \set{(a,b),(b,b)}$. In this case the universe of values is $A \times A$. \newline
+	
+	We first compute $\RArightresidual{P}{Q}$.
+	
+	\Beginproof
+		\pred{$\RArightresidual{P}{Q}$}
+		$=$ \com{Definition~\ref{def:residue}(i)}
+		\pred{$\RAcomplement{\RAcompose{\RAconverse{P}}{\RAcomplement{Q}}}$}
+		$=$ \com{Substitution: $\RAconverse{P} = \set{(a,a),(a,b)}$ and $\RAcomplement{Q} = \set{(a,a),(b,a)}$}
+		\pred{$\RAcomplement{\RAcompose{\set{(a,a),(a,b)}}{\set{(a,a),(b,a)}}}$}
+		$=$ \com{Definition~\ref{def:composition}}
+		\pred{$\RAcomplement{\set{(a,a)}}$}
+		$=$ \com{Definition~\ref{def:complement}}
+		\pred{$\set{(a,b),(b,a),(b,b)}$}
+	\Endproof
+	
+	\vspace{-0.35in}
+	Next, we compute $\RAleftresidual{Q}{P}$.
+	
+	\Beginproof
+		\pred{$\RAleftresidual{Q}{P}$}
+		$=$ \com{Definition~\ref{def:residue}(ii)}
+		\pred{$\RAcomplement{\RAcompose{\RAcomplement{Q}}{\RAconverse{P}}}$}
+		$=$ \com{Substitution: $\RAconverse{P} = \set{(a,a),(a,b)}$ and $\RAcomplement{Q} = \set{(a,a),(b,a)}$}
+		\pred{$\RAcomplement{\RAcompose{\set{(a,a),(b,a)}}{\set{(a,a),(a,b)}}}$}
+		$=$ \com{Definition~\ref{def:composition}}
+		\pred{$\RAcomplement{\set{(a,a),(a,b),(b,a),(b,b)}}$}
+		$=$ \com{Definition~\ref{def:complement}}
+		\pred{$\STbot$}
+	\Endproof
+	
+\end{example}

@@ -1,0 +1,15 @@
+\begin{figure}[ht]
+	\centering
+	\begin{bytefield}{32}
+		\bitheader{0,16,31} \\ 
+		\colorbitbox{grey}{16}{\tiny IDENTIFICATION} & \bitbox{16}{\tiny PARAMETER} \\
+		\colorbitbox{grey}{16}{\tiny NUMBER OF QUESTIONS} & \colorbitbox{grey}{16}{\tiny NUMBER OF ANSWERS} \\
+		\colorbitbox{grey}{16}{\tiny NUMBER OF AUTHORITY} & \colorbitbox{grey}{16}{\tiny NUMBER OF ADDITIONAL} \\
+		\wordbox{2}{\tiny QUESTION SECTION} \\
+		\wordbox{2}{\tiny ANSWER SECTION} \\
+		\wordbox{2}{\tiny AUTHORITY SECTION} \\
+		\wordbox{2}{\tiny ADDITIONAL INFORMATION SECTION}		
+	\end{bytefield}	
+\caption{DNS message format.}	
+\label{fig:DNS_message}
+\end{figure}

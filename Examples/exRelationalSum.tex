@@ -1,0 +1,22 @@
+\begin{example}
+\label{ex:relational_sum}
+	Let $A = \set{a,b}$, $B = \set{c, d}$ and $C = \set{1,2}$. Let $P \STleq A \times C$ such that $P = \set{(a,1),(b,1)}$, and let $Q \STleq B \times C$ such that $Q = \set{(c,2),(d,1)}$. 
+	
+	We obtain the direct sum $(i_1, i_2)$ where
+	\begin{eqnarray*}
+		i_1 &=& \set{(a,a),(b,b)} \\
+		i_2 &=& \set{(c,c),(d,d)}
+	\end{eqnarray*}
+	Then, the relational sum is computed by 
+	\Beginproof
+		\pred{$P + Q$}
+		$=$ \com{Definition~\ref{def:relational_sum}}
+		\pred{$\RAcompose{\RAconverse{i_1}}{P} \STjoin \RAcompose{\RAconverse{i_2}}{Q}$}
+		$=$ \com{Substitution: $\RAconverse{i_1} = \set{(a,a),(b,b)}$, $\RAconverse{i_2} = \set{(c,c),(d,d)}$,\\ $P = \set{(a,1),(b,1)}$, and $Q = \set{(c,2),(d,1)}$}
+		\pred{$\RAcompose{\set{(a,a),(b,b)}}{\set{(a,1),(b,1)}} \STjoin \RAcompose{\set{(c,c),(d,d)}}{\set{(c,2),(d,1)}}$}
+		$=$ \com{Definition~\ref{def:composition}}
+		\pred{$\set{(a,1),(b,1)} \STjoin \set{(c,2),(d,1)}$}
+		$=$ \com{Definition~\ref{def:setoperations}(vii)}
+		\pred{$\set{(a,1),(b,1),(c,2),(d,1)}$}
+	\Endproof
+\end{example}

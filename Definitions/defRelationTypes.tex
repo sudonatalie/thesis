@@ -1,0 +1,35 @@
+\begin{definition}
+\label{def:relationtypes}	
+	If $R$ is a relation, then we say
+	\begin{enumerate}[(i)]
+		\item $R\ \text{is total}$\index{relation!total} \\ 
+			  $\mIff \RAtop = \RAcompose{R}{\RAtop} 
+			   \mIff \RAid \STleq \RAcompose{R}{\RAconverse{R}} 
+			   \mIff \RAcomplement{R} \STleq \RAcompose{R}{\RAdi}$ \\
+			  $\mIff \lnotation{\forall}{S}{\RAcompose{S}{R} = \RAbot}{S = \RAbot}$ \\
+			  $\mIff \lnotation{\forall}{S}{}{\RAcompose{R}{\RAcomplement{S}} \STgeq \RAcomplement{\RAcompose{R}{S}}}$
+		\item $R\ \text{is univalent (deterministic or functional)}$\index{relation!univalent}\index{relation!deterministic|see{univalent}}\index{relation!functional|see{univalent}} \\ 
+			  $\mIff \RAcompose{\RAconverse{R}}{R} \STleq \RAid 
+			   \mIff \RAcompose{R}{\RAdi} \STleq \RAcomplement{R}$\\
+			  $\mIff \lnotation{\forall}{S}{}{\RAcompose{R}{\RAcomplement{S}} \STleq \RAcomplement{\RAcompose{R}{S}}}$ \\
+			  $\mIff \lnotation{\forall}{S}{}{\RAcomplement{\RAcompose{R}{S}} = \RAcompose{R}{\RAcomplement{S}} \STjoin \RAcomplement{\RAcompose{R}{\RAtop}}}$
+		\item $R\ \text{is surjective}$\index{relation!surjective} \\ 
+			  $\mIff \RAconverse{R}\ \text{total}$ \\  
+			  $\mIff \RAtop = \RAcompose{\RAtop}{R}
+			   \mIff \RAid \STleq \RAcompose{\RAconverse{R}} {R}
+			   \mIff \RAcompose{R}{\RAdi} \STleq \RAcomplement{R}$ \\
+			  $\mIff \lnotation{\forall}{S}{\RAcompose{R}{S} = \RAbot}{S = \RAbot}$ 
+		\item $R\ \text{is injective}$\index{relation!injective} \\ 
+			  $\mIff \RAconverse{R}\ \text{univalent}$ \\   
+			  $\mIff \RAcompose{R}{\RAconverse{R}} \STleq \RAid 
+			   \mIff \RAcompose{\RAdi}{R} \STleq \RAcomplement{R}$
+		\item $R\ \text{is a mapping}$\index{relation!mapping} \\ 
+			  $\mIff R\ \text{total and univalent} 
+			   \mIff \RAcompose{R}{\RAdi} = \RAcomplement{R}$ \\
+			  $\mIff \lnotation{\forall}{S}{}{\RAcompose{R}{\RAcomplement{S}} = \RAcomplement{\RAcompose{R}{S}}}$
+	\end{enumerate}
+	If $R$ is univalent, it is also called right-univalent\index{relation!right-univalent|see{univalent}} or a partially defined function\index{relation!partially defined function|see{univalent}}.\\
+	If $R$ is injective, it is also called left-univalent\index{relation!left-univalent|see{injective}}.\\
+	If $R$ is surjective and injective, it is also called bijective\index{relation!bijective}.\\
+	If $R$ is mapping, it is also called a totally defined function\index{relation!totally defined function|see{mapping}}.
+\end{definition}

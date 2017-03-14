@@ -1,0 +1,37 @@
+\begin{proposition}
+\label{prop:intervals}	
+	Consider an interval $\II$ on the observed data stream. Suppose that the interval $\II$ is divided into $n$ disjoint subintervals such that $\lnotation{\STjoin}{i}{1 \le i \le n}{I_i} = \II$.  Let $P_i$ and $Q_i$ be relations defined on the on each disjoint subinterval $I_i \in \II$ such that $\lnotation{\forall}{i}{1 \le i \le n}{\RAcompose{X_i}{P_i} = Q_i}$ have solutions, then for any monoid $\monoid{\Rel}{\opB}{\RAtop}$ and $\monoid{\Rel}{\opA}{\RAtop}$ where $\opA$ preserves totality and determinism, $\RAcompose{Z}{\big(\lnotation{\opA}{i}{1 \le i \le n}{P_i}\big)} = \lnotation{\opB}{i}{1 \le i \le n}{Q_i}$ has a solution.
+
+\begin{proof}~
+
+	Let $p(n) \deq \RAcompose{Z}{\big(\lnotation{\opA}{i}{1 \le i \le n}{P_i}\big)} = \lnotation{\opB}{i}{1 \le i \le n}{Q_i}$ has a solution.\\
+
+	\underline{Base Step}: 
+	\Beginproof 
+		\pred{$p(1)$}
+		$\mIff$ \com{Definition of $p(n)$}	
+		\pred{$\RAcompose{Z}{\big(\lnotation{\opA}{i}{1 \le i \le 1}{P_i}\big)} = \lnotation{\opB}{i}{1 \le i \le 1}{Q_i}$ has a solution}
+		$\mIff$ \com{One-point Rule}
+		\pred{$\RAcompose{Z}{P_1} = Q_1$ has a solution}
+		$\mImpl$ \com{Proposition~\ref{prop:test}}
+		\pred{$\true$}
+	\Endproof
+
+	\underline{Inductive Step}:
+	\Beginproof 
+		\pred{$p(n+1)$}
+		$\mIff$ \com{Definition of $p(n)$}
+		\pred{$\RAcompose{Z}{\big(\lnotation{\opA}{i}{1 \le i \le n+1}{P_i}\big)} = \lnotation{\opB}{i}{1 \le i \le n+1}{Q_i}$ has a solution}
+		$\mIff$ \com{Range Split}
+		\pred{$\RAcompose{Z}{\big(\lnotation{\opA}{i}{1 \le i \le n}{P_i} \opA \lnotation{\opA}{i}{n+1 \le i \le n+1}{P_i}\big)} = \lnotation{\opB}{i}{1 \le i \le n}{Q_i} \opB \lnotation{\opB}{i}{n+1 \le i \le n+1}{Q_i}$ has a solution}
+		$\mIff$ \com{One-point Rule}
+		\pred{$\RAcompose{Z}{\big(\lnotation{\opA}{i}{1 \le i \le n}{P_i} \opA P_{n+1}\big)} = \lnotation{\opB}{i}{1 \le i \le n}{Q_i} \opB Q_{n+1}$ has a solution}
+		$\mIff$ \com{$P' = \lnotation{\opA}{i}{1 \le i \le n}{P_i}$ \hsep $Q' = \lnotation{\opB}{i}{1 \le i \le n}{Q_i}$}
+		\pred{$\RAcompose{Z}{(P' \opA P_{n+1})} = (Q' \opB Q_{n+1})$ has a solution}
+		$\mImpl$ \com{$P'$ and $P_{n+1}$ are disjoint and total on $\II$ \hsep $\opA$ preserves totality and determinism \hsep Proposition~\ref{prop:combine_P_test} where $P = P' \opA P_{n+1}$ and $Q = Q' \opB Q_{n+1}$}
+		\pred{$\true$}
+	\Endproof
+
+\end{proof}
+
+\end{proposition}

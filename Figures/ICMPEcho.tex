@@ -1,0 +1,11 @@
+\begin{figure}[ht]
+	\centering
+	\begin{bytefield}{32}
+		\bitheader{0,8,16,31} \\ 
+		\bitbox{8}{\tiny TYPE (0 or 8)} & \bitbox{8}{\tiny CODE (0)} & \bitbox{16}{\tiny CHECKSUM} \\
+		\bitbox{16}{\tiny IDENTIFIER} & \bitbox{16}{\tiny SEQUENCE NUMBER} \\
+		\colorwordbox{grey}{3}{\tiny OPTIONAL DATA}
+	\end{bytefield}	
+\caption{ICMP echo request or reply message format.}	
+\label{fig:ICMP_echo}
+\end{figure}

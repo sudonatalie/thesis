@@ -1,0 +1,544 @@
+%________________________________________________________________________
+%_________________     BEGIN LINEAR NOTATION MACROS    __________________
+%________________________________________________________________________
+
+% Linear Notation: Standard
+\newcommand{\lnotation}[4]{
+	\def\third:{#3} 
+	\def\possiblyone:{} 
+	\def\possiblytwo:{~}
+	\def\possiblythree:{ }
+	\def\divide{\;#1\hspace*{-0pt}( #2\; \mid: \; #4 \, )}
+	\def\nodivide{\;#1\hspace*{-0pt}( #2\;\mid\; #3\;:\;#4 \, )}
+	\ifx\third\possiblyone\divide
+		\else\ifx\third\possiblytwo\divide
+		\else \ifx\third\possiblythree\divide
+		\else \nodivide\fi\fi\fi}
+
+% Linear Notation: Standard (Big Parentheses)
+\newcommand{\biglnotation}[4]{
+	\def\third:{#3} 
+	\def\possiblyone:{} 
+	\def\possiblytwo:{~}
+	\def\possiblythree:{ }
+	\def\divide{\;#1\hspace*{-0pt}\big( #2\; \mid: \; #4 \, \big)}
+	\def\nodivide{\;#1\hspace*{-0pt}\big( #2\;\mid\; #3\;:\;#4 \, \big)}
+	\ifx\third\possiblyone\divide
+		\else\ifx\third\possiblytwo\divide
+		\else \ifx\third\possiblythree\divide
+		\else \nodivide\fi\fi\fi}
+
+% Linear Notation: Standard (Extra Big Parentheses)
+\newcommand{\bigglnotation}[4]{
+	\def\third:{#3} 
+	\def\possiblyone:{} 
+	\def\possiblytwo:{~}
+	\def\possiblythree:{ }
+	\def\divide{\;#1\hspace*{-0pt}\bigg( #2\; \mid: \; #4 \, \bigg)}
+	\def\nodivide{\;#1\hspace*{-0pt}\bigg( #2\;\mid\; #3\;:\;#4 \, \bigg)}
+	\ifx\third\possiblyone\divide
+		\else\ifx\third\possiblytwo\divide
+		\else \ifx\third\possiblythree\divide
+		\else \nodivide\fi\fi\fi}
+ 
+% Linear Notation: Standard (No Ending Parentheses)
+\newcommand{\wplnotation}[4]{
+	\def\third:{#3} 
+	\def\possiblyone:{} 
+	\def\possiblytwo:{~}
+	\def\possiblythree:{ }
+	\def\divide{\;#1\hspace*{-0pt}\bigg( #2\; \mid: \; #4 \, }
+	\def\nodivide{\;#1\hspace*{-0pt}\bigg( #2\;\mid\; #3\;:\;#4 \, }
+	\ifx\third\possiblyone\divide
+		\else\ifx\third\possiblytwo\divide
+		\else \ifx\third\possiblythree\divide
+		\else \nodivide\fi\fi\fi}
+
+% Linear Notation: David Gries
+\newcommand{\grieslnotation}[4]{
+	\def\third:{#3} 
+	\def\possiblyone:{} 
+	\def\possiblytwo:{~}
+	\def\possiblythree:{ }
+	\def\divide{(#1 #2\; \mid : \; #4 \, )}
+	\def\nodivide{(#1 #2\;\mid\; #3\;:\;#4 \, )}
+	\ifx\third\possiblyone\divide
+		\else\ifx\third\possiblytwo\divide
+		\else \ifx\third\possiblythree\divide
+		\else \nodivide\fi\fi\fi}
+
+%________________________________________________________________________
+%_________________      END LINEAR NOTATION MACROS     __________________
+%________________________________________________________________________
+
+%________________________________________________________________________
+%_________________       BEGIN SET NOTATION MACROS     __________________
+%________________________________________________________________________
+
+% Set Notation: David Gries
+\newcommand{\griesset}[3]{
+	\def\second:{#2} 
+	\def\possiblyone:{} 
+	\def\possiblytwo:{~}
+	\def\possiblythree:{ }
+	\def\divide{\{#1\; \mid : \; #3 \, \}}
+	\def\nodivide{\{#1\;\mid\; #2\;:\;#3 \, \}}
+	\ifx\second\possiblyone\domvide
+		\else \ifx\second\possiblytwo\divide
+		\else \ifx\second\possiblythree\divide
+		\else \nodivide\fi\fi\fi}
+
+% Set Notation: Standard Enumeration
+\newcommand{\set}[1]{\{#1\}}
+
+% Set Notation: Standard Comprehension
+\newcommand{\sets}[2]{\{#1\; \mid \; #2\}}
+
+% Set Notation: Standard (Big Parentheses)
+\newcommand{\bigset}[2]{\big\{#1\; \mid \; #2\big\}}
+
+% Set Notation: Standard (Extra Big Parentheses)
+\newcommand{\biggset}[2]{\bigg\{#1\; \mid \; #2\bigg\}}
+
+%________________________________________________________________________
+%_________________        END SET NOTATION MACROS      __________________
+%________________________________________________________________________
+
+%________________________________________________________________________
+%_________________        BEGIN STRUCTURE MACROS       __________________
+%________________________________________________________________________
+
+% Common Calligraphic Names
+\newcommand{\C}{{\cal{C}}}
+\newcommand{\F}{{\cal{F}}}
+\newcommand{\II}{{\cal{I}}}
+\newcommand{\M}{{\cal{M}}}
+\newcommand{\N}{{\cal{N}}}
+\newcommand{\R}{{\cal{R}}}
+\newcommand{\Rel}{{\cal{R}}el}
+\newcommand{\T}{{\cal{T}}}
+\newcommand{\Z}{{\cal{Z}}}
+\newcommand{\one}[1]{1_{#1}}
+
+% Semi-Group
+\newcommand{\semigroup}[2]{\big(#1, #2 \big)}
+
+% Monoid
+\newcommand{\monoid}[3]{\big(#1, #2, #3 \big)}
+
+% Semi-Rings
+\newcommand{\nsemiring}[3]{\big(#1, #2, #3\big)}
+\newcommand{\semirng}[4]{\big(#1, #2, #3, #4\big)}
+\newcommand{\semiring}[5]{\big(#1, #2, #3, #4, #5\big)}
+
+% Group
+\newcommand{\group}[4]{\big(#1, #2, #3, #4\big)}
+
+% Semi-Module
+\newcommand{\semimodule}[3]{\big(_{#1}#2, #3\big)}
+
+% Relational Lattice
+\newcommand{\latticeRel}[2]{\big(#1, #2 \big)}
+
+% Algebraic Lattice
+\newcommand{\latticeAlg}[3]{\big(#1, #2,  #3\big)}
+
+%________________________________________________________________________
+%_________________         END STRUCTURE MACROS        __________________
+%________________________________________________________________________
+
+%________________________________________________________________________
+%_________________    BEGIN PROOF ENVIRONMENT MACROS   __________________
+%________________________________________________________________________
+
+% Spacing
+\newlength{\interligne}
+
+% Begin and End Basic Proof Enviroment
+\newcommand{\Beginproof}{\dimen123=\linewidth \dimen124=\linewidth
+	\advance\dimen123 by -25mm \advance\dimen124 by -5mm
+	\advance\dimen123 by -\parindent \advance\dimen124 by -\parindent
+	\setlength{\interligne}{\baselineskip}
+	\setlength{\baselineskip}{1.2\baselineskip}
+    	\begin{tabbing}
+    		\hspace*{\parindent}\= \hspace*{5mm}\= \kill \+ \kill}
+			\newcommand {\Endproof}
+		{\end{tabbing}
+    \setlength{\baselineskip}{\interligne}}
+
+% Comment
+\newcommand{\com}[1]{\> \hspace*{15mm}
+	$\langle$~\parbox[t]{\dimen123}{ #1 $\rangle$}\\}
+
+% Coloured Comment
+\newcommand{\comc}[1]{\> \hspace*{15mm}
+	$\langle$~\parbox[t]{\dimen123}{ \textcolor{red}{#1} $\rangle$}\\}
+
+% Predicate
+\newcommand{\pred}[1]{\>\parbox[t]{\dimen124}{#1}\\}
+
+% Comment Separator
+\newcommand{\hsep}{\quad\&\quad}
+
+
+% Begin and End Itemized/Enumerated Proof Enviroment
+% Use \Beginproofitem when a proof begins the text of an \item 
+% and when we want the proof to be indented.
+\newcommand{\Beginproofitem}{\dimen123=\linewidth \dimen124=\linewidth
+	\advance\dimen123 by -20mm \advance\dimen124 by -5mm
+	\advance\dimen124 by -\parindent
+    	\begin{tabbing}
+    		\hspace*{5mm}\= \kill}
+			\newcommand {\Endproofitem}
+	{\end{tabbing}}
+
+% Tabbing
+% Gives the same indentation as \Beginproof and \dspec, 
+% but there is no predefined tabs
+\newcommand {\Begingtabin}{
+	\begin{tabbing}
+    	\hspace*{\parindent}\= \kill \+ \kill}
+		\newcommand {\Endtabin}
+	{\end{tabbing}}
+
+% Begin and End Basic Program Specification Enviroment
+\newcommand{\Begingspec}{
+	\begin{tabbing}
+    	\hspace*{\parindent}\= \hspace*{5mm}\=\hspace*{5mm}\=\hspace*{5mm}\=
+			\hspace*{5mm}\=\hspace*{5mm} \kill \+ \kill}
+		\newcommand {\Endspec}
+	{\end{tabbing}}
+
+% Begin and End Itemized/Enumerated Program Specification Enviroment
+% Use \Beginproofitem when a proof begins the text of an \item 
+% and when we do not want that the specification be indented
+\newcommand {\Beginspecitem}{
+	\begin{tabbing}
+    	\hspace*{5mm}\=\hspace*{5mm}\=\hspace*{5mm}\=
+    	\hspace*{5mm}\=\hspace*{5mm} \kill}
+		\newcommand {\Endspecitem}
+	{\end{tabbing}}
+
+% Multiline Proof Formulas
+\newcommand{\nln}{@{}l@{}}
+\newenvironment{displaymany}{\[ \begin{array}{\nln}}{\end{array} \]}
+
+%________________________________________________________________________
+%_________________     END PROOF ENVIRONMENT MACROS    __________________
+%________________________________________________________________________
+
+%________________________________________________________________________
+%_________________         BEGIN EQUATION MACROS       __________________
+%________________________________________________________________________
+
+% When ShowEqSourceStructure is at 1, it shows the argument of \eqfrom
+\newcommand{\ShowEqSourceStructure}{1}
+
+\newcommand{\eqname}[1]{\textcolor{black}{\mbox{#1}}}
+
+\newcommand{\eqfrom}[1]{
+	\ifthenelse{\ShowEqSourceStructure=1}
+	{ \quad {\textcolor{red}{\mbox{#1}}}} {\quad} }
+
+%________________________________________________________________________
+%_________________          END EQUATION MACROS        __________________
+%________________________________________________________________________
+
+%________________________________________________________________________
+%_________________          BEGIN LOGIC MACROS         __________________
+%________________________________________________________________________
+
+% Logical Connectives: Constants
+\newcommand{\true}{\textsf{true}}
+\newcommand{\false}{\textsf{false}}
+
+% Logical Connectives: Unary
+\newcommand{\Not}{\neg}
+
+% Logical Connectives: Binary	 
+\newcommand{\Or}{\mathrel{\vee}}
+\newcommand{\Ors}{\;\Or\;}
+\newcommand{\AAnd}{\mathrel{\wedge}}
+\newcommand{\nAnd}{\;\AAnd\;}
+\newcommand{\Imp}{\mathrel{\rightarrow}}
+\newcommand{\Impl}{\mathrel{\leftarrow}}
+\newcommand{\Iff}{\mathrel{\leftrightarrow}}
+\newcommand{\mOr}{\textrm{\ or\ }}  
+\newcommand{\mAnd}{\textrm{\ and\ }} 
+\newcommand{\mImp}{\;\Longrightarrow\;}  
+\newcommand{\mImpl}{\;\Longleftarrow\;}  
+\newcommand{\mIff}{\;\Longleftrightarrow\;} 
+\newcommand{\dIff}{\mathrel{\stackrel{\scriptscriptstyle
+	\mbox{\tiny{\texsf{def}}}}{\Iff}}}
+
+%________________________________________________________________________
+%_________________           END LOGIC MACROS          __________________
+%________________________________________________________________________
+
+%________________________________________________________________________
+%_________________           BEGIN SET MACROS          __________________
+%________________________________________________________________________
+
+% Common Sets
+\newcommand{\ONE}{1\!\!1}
+\newcommand{\Prime}{\mathbb{P}}
+\newcommand{\Bool}{\mathbb{B}}
+\newcommand{\Nat}{\mathbb{N}}
+\newcommand{\Real}{\mathbb{R}}
+\newcommand{\Integer}{\mathbb{Z}}
+\newcommand{\STtop}{\textsf{U}}
+\newcommand{\STbot}{\emptyset}
+\newcommand{\STpowerset}[1]{{\cal{P}}(#1)}
+
+% Operators: Unary
+\newcommand{\STcomplement}[1]{\overline{#1}}
+\newcommand{\STcplOP}{\overline{\phantom{Y}\,}}
+
+% Operators: Binary
+\newcommand{\STleq}{\subseteq}
+\newcommand{\STlt}{\subset}
+\newcommand{\STgeq}{\supseteq}
+\newcommand{\STgt}{\supset}
+\newcommand{\STjoin}{\; \cup \;}
+\newcommand{\STmeet}{\; \cap \;}
+
+% Closures
+\newcommand{\rtclosure}[1]{#1^*{}}	
+\newcommand{\rtc}{\rtclosure}
+\newcommand{\tclosure}[1]{#1^+{}}	
+\newcommand{\tcl}{\tclosure}
+
+%________________________________________________________________________
+%_________________            END SET MACROS           __________________
+%________________________________________________________________________
+
+%________________________________________________________________________
+%_________________    BEGIN REALTION ALGEBRA MACROS    __________________
+%________________________________________________________________________
+
+% Common Relations
+\newcommand{\RAtop}{\mathbb{L}}
+\newcommand{\RAid}{\mathbb{I}}
+\newcommand{\RAdi}{\RAcomplement{\RAid}}
+\newcommand{\RAbot}{\emptyset}
+
+% Operators: Unary
+\newcommand{\RAcomplement}[1]{\overline{#1}}
+\newcommand{\RAcplOP}{\overline{\phantom{Y}\,}}
+\newcommand{\internalconverse}[1]{#1^{\mkern-1mu{}{\raise0.1ex\hbox{\tiny$\smallsmile\,$}}}\kern-0.1em{}}
+\newcommand{\RAconverse}[1]{\internalconverse{#1}}
+\newcommand{\RAconverseOP}{\RAconverse{}\,}
+
+% Operators: Binary
+\newcommand{\RAcomp}{\mathop{\kern-.5pt\raise.3ex\hbox{\footnotesize\rm;}}}
+\newcommand{\RAleq}{\sqsubseteq}
+\newcommand{\RAgeq}{\sqsupseteq}
+\newcommand{\RAjoin}{\; \sqcup \;}
+\newcommand{\RAmeet}{\; \sqcap \;}
+\newcommand{\RAcompose}[2]{#1\,\mbox{$\RAcomp$}\, #2}
+\newcommand{\RAcomposet}[3]{\RAcompose{\RAcompose{#1}{#2}} {#3}}
+\newcommand{\RAcomposeq}[4]{\RAcompose{\RAcompose{#1}{#2}} {\RAcompose {#3}{#4}}}
+\newcommand{\RAcomposec}[5]{\RAcompose{\RAcomposeq{#1}{#2}{#3}{#4}} {#5}}
+\newcommand{\RAcomposes}[6]{\RAcompose{\RAcomposet{#1}{#2}{#3}} {\RAcomposet {#4}{#5} {#6}}}
+\newcommand{\rressymbol}{\backslash}
+\newcommand{\RArightresidual}[2]{{#1}\rressymbol{#2}}
+\newcommand{\lressymbol}{/}
+\newcommand{\RAleftresidual}[2]{{#1}\lressymbol{#2}}
+\newcommand{\RAsyq}[2]{\textsf{syq}(#1,#2)}
+
+% Others
+\newcommand{\RAsubset}{\sqsubset}
+\newcommand{\elmtspecial}{\sharp}
+
+% Types
+\newcommand{\typerel}[2]{#1 \leftrightarrow #2}
+\newenvironment{arra}[2][]{\begin{array}[#1]{@{}#2@{}}}{\end{array}} 
+\newenvironment{tabul}[2][]{\begin{tabular}[#1]{@{}#2@{}}}{\end{tabular}} 
+
+%________________________________________________________________________
+%_________________     END REALTION ALGEBRA MACROS     __________________
+%________________________________________________________________________
+
+%________________________________________________________________________
+%_________________       BEGIN HOARE LOGIC MACROS      __________________
+%________________________________________________________________________
+
+% Guards
+\newcommand{\guardsymb}{\lceil\!\:\!\!\rfloor}
+\newcommand{\guardif}[2]{\ifs \quad #1 \longrightarrow #2}
+\newcommand{\guardb}[2]{\guardsymb\; \quad #1 \longrightarrow #2}
+\newcommand{\guarde}{\fis}
+
+% Keywords
+\newcommand{\gives}{\longrightarrow}
+\newcommand{\derive}[2]{\overset{#2}{\underset{#1}{\longrightarrow}}}
+\newcommand{\gderive}[1]{\overset{#1}{\underset{G}{\longrightarrow}}}
+\newcommand{\nocc}[2]{\neg\occurs('#1',\; '#2')}
+\newcommand{\odd}[1]{\oddd(#1)}
+\newcommand{\even}[1]{\evenn(#1)}
+\newcommand{\hoare}[3]{\{#1\}\;#2\;\{#3\}}
+\newcommand{\lpthoare}[4]{
+	\begin{tabbing}
+ 		$\{#1\}\;\mbox{\bp{$#2$}}\;$\=$\{#3$\\
+        \> $\;\;#4\;\}$
+	\end{tabbing}
+}
+\newcommand{\choare}[3]{\mbox{\bp{$\{#1\}$}}\;#2\;\mbox{\mpoint{$\{#3\}$}}}
+\newcommand{\massign}[2]{\mbox{$#1\;:=\;#2$} }
+\newcommand{\subst}[2]{\left[\mbox{$#1\;:=\;#2$}\right] }
+
+%________________________________________________________________________
+%_________________        END HOARE LOGIC MACROS       __________________
+%________________________________________________________________________
+
+%________________________________________________________________________
+%_________________      BEGIN COMMON SYMBOL MACROS     __________________
+%________________________________________________________________________
+
+% Functions / Relations
+\newcommand{\dom}[1]{\textsf{dom\ }\!(#1)}	
+\newcommand{\ran}[1]{\textsf{ran\ }\!(#1)}	
+\newcommand{\tuple}[1]{(#1)}		
+
+% Sets
+\newcommand{\abs}[1]{|#1|}
+\newcommand{\length}[1]{|#1|}
+\newcommand{\card}[1]{\# \! #1}
+\newcommand{\sizeset}[1]{\mid  \! #1 \! \mid}
+\newcommand{\cardp}[1]{\# \!\left(#1\right)}
+
+% Vectors
+\newcommand{\zero}{\hat{0}}
+\newcommand{\un}{\hat{1}}
+\newcommand{\lator}{\;\mbox{\scalebox{0.5}{$\nabla$}}\;}
+\newcommand{\latand}{\; \mbox{\scalebox{0.5}{$\triangle$}}\;}
+
+% Prime
+\newcommand{\p}[1]{\mbox{$#1'$}}
+
+% Definitions
+\newcommand{\deq}{\spaces{\stackrel{\textrm{def}}{=}}}
+\newcommand{\defiff}{\spaces{\stackrel{\textrm{def}}{\mIff}}}
+
+% Equivalences
+\newcommand{\sequiv}[2]{#1\approx #2}
+\newcommand{\equivwrt}[3]{#1\approx_{#2} #3}
+\newcommand{\class}[1]{\left[#1\right]}
+
+%________________________________________________________________________
+%_________________       END COMMON SYMBOL MACROS      __________________
+%________________________________________________________________________
+
+%________________________________________________________________________
+%_________________         BEGIN KEYWORD MACROS        __________________
+%________________________________________________________________________
+
+% Fonts and Colours
+\newcommand{\keyw}[1]{{\textsf{#1}}}
+\newcommand{\ckeyw}[1]{\mbox{\textcolor{blue}{\textsf{#1}}}}
+
+% Spacing
+\newcommand{\rspace}[1]{#1\ }
+\newcommand{\lspace}[1]{\ #1}
+\newcommand{\spaces}[1]{\,#1\,}
+
+% Keywords
+\newcommand{\oddd}{\keyw{odd}}
+\newcommand{\evenn}{\keyw{even}}
+\newcommand{\occurs}{\keyw{occurs}}
+\newcommand{\aborts}{\keyw{abort}}
+\newcommand{\begins}{\rspace{\keyw{begin}}}
+%\newcommand{\ends}{\lspace{\keyw{end}}}
+\newcommand{\divs}{\spaces{\keyw{div}}}
+\newcommand{\dos}{\spaces{\keyw{do}}}
+\newcommand{\elses}{\spaces{\keyw{else}}}
+\newcommand{\skips}{\spaces{\keyw{skip}}}
+\newcommand{\error}{\keyw{error}}
+\newcommand{\fis}{\lspace{\keyw{fi}}}
+\newcommand{\fors}{\spaces{\keyw{for}}}
+\newcommand{\ifs}{\rspace{\keyw{if}}}
+\newcommand{\mods}{\spaces{\keyw{mod}}}
+\newcommand{\notts}{\rspace{\keyw{not}}}
+\newcommand{\ods}{\lspace{\keyw{od}}}
+\newcommand{\procs}{\rspace{\keyw{proc}}}
+\newcommand{\thens}{\spaces{\keyw{then}}}
+\newcommand{\vars}{\rspace{\keyw{var}}}
+\newcommand{\whiles}{\rspace{\keyw{while}}}
+\newcommand{\wrts}{\spaces{\keyw{wrt}}}
+\newcommand{\revs}{\spaces{\keyw{rev}}}
+
+% Coloured Keywords
+\newcommand{\coddd}{\ckeyw{odd}}
+\newcommand{\cevenn}{\ckeyw{even}}
+\newcommand{\coccurs}{\ckeyw{occurs}}
+\newcommand{\caborts}{\ckeyw{abort}}
+\newcommand{\cbegins}{\rspace{\ckeyw{begin}}}
+\newcommand{\cends}{\lspace{\ckeyw{end}}}
+\newcommand{\cdivs}{\spaces{\ckeyw{div}}}
+\newcommand{\cdos}{\spaces{\ckeyw{do}}}
+\newcommand{\celses}{\spaces{\ckeyw{else}}}
+\newcommand{\cskips}{\spaces{\ckeyw{skip}}}
+\newcommand{\cerror}{\ckeyw{error}}
+\newcommand{\cfis}{\lspace{\ckeyw{fi}}}
+\newcommand{\cfors}{\spaces{\ckeyw{for}}}
+\newcommand{\cifs}{\rspace{\ckeyw{if}}}
+\newcommand{\cmods}{\spaces{\ckeyw{mod}}}
+\newcommand{\cnotts}{\rspace{\ckeyw{not}}}
+\newcommand{\cods}{\lspace{\ckeyw{od}}}
+\newcommand{\cprocs}{\rspace{\ckeyw{proc}}}
+\newcommand{\cthens}{\spaces{\ckeyw{then}}}
+\newcommand{\cvars}{\rspace{\ckeyw{var}}}
+\newcommand{\cwhiles}{\rspace{\ckeyw{while}}}
+\newcommand{\cwrts}{\spaces{\ckeyw{wrt}}}
+\newcommand{\crevs}{\spaces{\ckeyw{rev}}}
+
+%________________________________________________________________________
+%_________________          END KEYWORD MACROS         __________________
+%________________________________________________________________________
+
+%________________________________________________________________________
+%_________________     BEGIN COVERT CHANNEL MACROS     __________________
+%________________________________________________________________________
+
+% Sets
+\newcommand\Data{\mathbb{D}}
+
+% Agents
+\newcommand{\AgentOne}{\textrm{agent $A$}\@\xspace}
+\newcommand{\AgentTwo}{\textrm{agent $B$}\@\xspace}
+\newcommand{\Monitor}{\textrm{$M$}\@\xspace}
+
+% Information
+\newcommand{\CInfo}{\Phi_C}
+\newcommand{\OInfo}{\Phi_O}
+
+% Operations: Combining Information
+\newcommand{\opA}{\odot}
+\newcommand{\opB}{\otimes}
+\newcommand{\opC}{\oplus}
+
+% Relview Type Text
+\newcommand{\relview}{\texttt{RELVIEW}}
+
+%________________________________________________________________________
+%_________________      END COVERT CHANNEL MACROS      __________________
+%________________________________________________________________________
+
+%________________________________________________________________________
+%_________________       BEGIN HIGLIGHTING MACROS      __________________
+%________________________________________________________________________
+
+% Highlight Text
+\newcommand{\hl}[1]{\colorbox{grey}{#1}}
+
+% Coloured Boxes For ByteField
+\newcommand{\colorbitbox}[3]
+	{\rlap{\bitbox{#2}{\color{#1}\rule{\width}{\height}}}\bitbox{#2}{#3}}
+\newcommand{\colorwordbox}[3]
+	{\rlap{\wordbox{#2}{\color{#1}\rule{\width}{\height}}}\wordbox{#2}{#3}}
+
+%________________________________________________________________________
+%_________________        END HIGLIGHTING MACROS       __________________
+%________________________________________________________________________
+
+
