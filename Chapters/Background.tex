@@ -1,3 +1,28 @@
+%The Agda package: https://hackage.haskell.org/package/Agda
+
+%# Compiler
+
+%The Agda GHC backend translates Agda programs into GHC Haskell programs.\cite{http://agda.readthedocs.io/en/latest/tools/compilers.html}
+
+%The stage of this translation that is of primary interest for our optimization is the conversion of compiled clauses to a "treeless" syntax.
+
+%## Compiled clauses
+
+%Compiled clauses are, simply put, case trees. As discussed in \ref{?}, Agda functions are implemented by giving both a type and a definition. Functions on datatypes can be defined by pattern matching on the constructors of that datatype, describing structurally recursive functions.\cite{http://wiki.portal.chalmers.se/agda/agda.php?n=Docs.DatatypeAndFunctionDefinitions} Because function definitions in Agda are written as a series of one or more pattern matching clauses on possible variable inputs, we can construct an equivalent definition via case tree.\cite{http://wiki.portal.chalmers.se/agda/agda.php?n=Docs.PatternMatching}
+
+%Because Agda does not permit partial functions, functions defined by pattern matching must not exclude any possible cases from the pattern matching clauses.\cite{http://wiki.portal.chalmers.se/agda/pmwiki.php?n=ReferenceManual.Totality#Coveragechecking} Once coverage checking is completed, pattern matching can be translated into case trees by successively splitting on each variable.\cite{https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-TypeChecking-CompiledClause.html} Take for example the following case tree equivalence for a foo function, defined by pattern matching, in Agda: ??? \cite{https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-TypeChecking-CompiledClause.html}
+
+%Compiled clauses are case trees with their bodies.
+%Document compiled clauses: https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-TypeChecking-CompiledClause.html
+
+%## Treeless  
+
+%The treeless syntax is the input to the compiler backend of Agda. After all type-checking is complete, the higher-level internal syntax is translated to a "treeless" syntax, the name for which is derived from its use of case expressions instead of case trees. The other notable difference between compiled clauses and treeless syntax is the absence of datatypes and constructors (WHY?).\cite{https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-Syntax-Treeless.html}
+
+%# Inline expansion
+
+%Inline expansion replaces a function call site with the body of the called function
+
 In this chapter, we introduce the necessary mathematical concepts required for the understanding of the material presented in the thesis. In Section~\ref{sec:section_one}, we give an introduction to ABC. In Section~\ref{sec:section_two}, we give definitions and examples of EFG. Finally, in Section~\ref{sec:background_conclusion}, we conclude with a summary of the core concepts and describe where they are used throughout the remainder of the thesis.
 
 \section{Section One}
