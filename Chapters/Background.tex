@@ -36,6 +36,61 @@ Once coverage checking is completed, pattern matching can be translated into cas
 
 The treeless syntax is the input to the compiler backend of Agda. After all type-checking is complete, the higher-level internal syntax of compiled clauses is translated to a ``treeless'' syntax, the name for which is derived from its use of case expressions instead of case trees. The other notable difference between compiled clauses and treeless syntax is the absence of datatypes and constructors.\cite{agdahackage} %TODO WHY? % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-Syntax-Treeless.html
 
+\subsection{Lambda Calculus}
+
+The core syntax of Agda is a dependently typed lambda calculus, with a simple grammar as shown in Figure~\ref{fig:grammar}.
+
+\begin{figure}
+\begin{align*}
+a ::=~& x               & \text{variable}\\
+    |~& \lambda x \to a & \text{abstraction}\\
+    |~& a~a             & \text{application}\\
+    |~& (x : a) \to a   & \text{function space}\\
+    |~& Set[n]          & \text{universe}\\
+    |~& (a)             & \text{grouping}
+\end{align*}
+\caption{Agda core syntax grammar.\cite{agdawiki}}
+\label{fig:grammar}
+\end{figure}
+
+% TODO connection between core syntax and TTerms
+
+The treeless syntax is constructed from \lstinline{TTerm}s %TODO What does the T stand for?
+where all local variable use de Bruijn indices. A listing of \lstinline{TTerm} constructors is shown in Figure~\ref{code:TTerm}.
+
+\begin{figure}
+\begin{lstlisting}[style=blockhaskell]
+data TTerm = TVar Int
+           | TPrim TPrim
+           | TDef QName
+           | TApp TTerm Args
+           | TLam TTerm
+           | TLit Literal
+           | TCon QName
+           | TLet TTerm TTerm
+           -- ^ introduces a new local binding. The bound term
+           -- MUST only be evaluated if it is used inside the body.
+           -- Sharing may happen, but is optional.
+           -- It is also perfectly valid to just inline the bound term in the body.
+           | TCase Int CaseType TTerm [TAlt]
+           -- ^ Case scrutinee (always variable), case type, default value, alternatives
+           -- First, all TACon alternatives are tried; then all TAGuard alternatives
+           -- in top to bottom order.
+           -- TACon alternatives must not overlap.
+           | TUnit -- used for levels right now
+           | TSort
+           | TErased
+           | TError TError
+           -- ^ A runtime error, something bad has happened.
+  deriving (Typeable, Show, Eq, Ord)
+\end{lstlisting}
+\caption{\lstinline{TTerm} datatype definition.}
+\label{code:TTerm}
+\end{figure}
+
+TODO Stuff from \cite{abadi1991}
+% Here has a good introduction that may be a good reference: http://fi.ort.edu.uy/innovaportal/file/5328/3/formalisationconstructivetypetheorystoughtonsubstitution.pdf
+
 % End Section
 
 \section{Section Two}
