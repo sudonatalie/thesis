@@ -29,6 +29,8 @@
 \usepackage{xspace}
 \usepackage[all]{xy}
 \usepackage{textgreek}
+\usepackage{lmodern}
+
 %________________________________________________________________________
 
 % Macros and Commands
@@ -45,8 +47,18 @@
 \input{Auxiliary/ThesisInformation}
 
 % Listings Settings
-\lstset{ basicstyle=\ttfamily, showspaces=false, 
-		 showstringspaces=false, tabsize=2, breaklines=true }
+\lstdefinestyle{blockhaskell}{
+  language=Haskell,
+  basicstyle=\linespread{1}\normalsize\ttfamily,
+  showspaces=false,
+  showstringspaces=false,
+  tabsize=2,
+  breaklines=true
+}
+\lstdefinestyle{inline}{
+  basicstyle=\ttfamily\normalsize
+}
+\lstset{style=inline}
 
 % Make Index
 \makeindex
