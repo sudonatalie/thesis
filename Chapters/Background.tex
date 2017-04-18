@@ -2,7 +2,9 @@
 
 %Inline expansion replaces a function call site with the body of the called function
 
-In this chapter, we introduce the necessary compiler theory and logical background concepts required for the understanding of the material presented in the thesis. In Section~\ref{sec:section_one}, we give an introduction to the Agda compiler and the GHC backend. In Section~\ref{sec:section_two}, we give definitions and examples of EFG. Finally, in Section~\ref{sec:background_conclusion}, we conclude with a summary of the core concepts and describe where they are used throughout the remainder of the thesis.
+In this chapter, we introduce the necessary compiler theory and logical background concepts required for the understanding of the material presented in the thesis. In Section~\ref{sec:section_one}, we give an introduction to the Agda compiler and the GHC backend. Finally, in Section~\ref{sec:background_conclusion}, we conclude with a summary of the core concepts and describe where they are used throughout the remainder of the thesis.
+
+% TODO Rename Section One or rearrange subsections to be top-level sections
 
 \section{Section One}
 \label{sec:section_one}
@@ -59,43 +61,72 @@ The treeless syntax is the input to the compiler backend of Agda. After all type
 \subsection{Lambda Calculus}
 
 The treeless syntax is constructed from \lstinline{TTerm}s %TODO What does the T stand for?
-where all local variable use de Bruijn indices. A listing of \lstinline{TTerm} constructors is shown in Figure~\ref{code:TTerm}.
-% glorified lambda calculus with db indicies
+and is a representation of the abstract syntax tree for the compiler backend. It can be reasoned about as a lambda calculus with all local variable using de Bruijn indices. A listing of \lstinline{TTerm} constructors is shown in Figure~\ref{code:TTerm}.
 
-% TTerm is the AST type for compiler backend, not internal syntax
-% internal syntax is before and during type checking (in agdai)
+In this section we examine the constructors of \lstinline{TTerm}s one-by-one\cite{agdahackage}, then discuss how substitutions can be safely performed on \lstinline{TTerm}s as a preface for discussing our optimizations.
 
 % TODO Read about how sharing is lost with substitution in the agda mailing list: https://lists.chalmers.se/pipermail/agda/2017/009379.html
 
 \begin{figure}
 \begin{lstlisting}[style=blockhaskell]
-data TTerm = TVar Nat -- Type synonym for Int
+type Args = [TTerm]
+
+data TTerm = TVar Nat
            | TPrim TPrim
            | TDef QName
-           | TApp TTerm Args -- [TTerm]
+           | TApp TTerm Args
            | TLam TTerm
            | TLit Literal
            | TCon QName
            | TLet TTerm TTerm
-           -- ^ introduces a new local binding. The bound term
-           -- MUST only be evaluated if it is used inside the body.
-           -- Sharing may happen, but is optional.
-           -- It is also perfectly valid to just inline the bound term in the body.
-           | TCase Int CaseType TTerm [TAlt]
-           -- ^ Case scrutinee (always variable), case type, default value, alternatives
-           -- First, all TACon alternatives are tried; then all TAGuard alternatives
-           -- in top to bottom order.
-           -- TACon alternatives must not overlap.
-           | TUnit -- used for levels right now
+           | TCase Nat CaseType TTerm [TAlt]
+           | TUnit
            | TSort
            | TErased
            | TError TError
-           -- ^ A runtime error, something bad has happened.
-  deriving (Typeable, Show, Eq, Ord)
+
+data TAlt = TACon QName Nat TTerm
+          | TAGuard TTerm TTerm
+          | TALit Literal TTerm
 \end{lstlisting}
-\caption{\lstinline{TTerm} datatype definition.}
+\caption{\lstinline{TTerm} and \lstinline{TAlt} datatype definitions.}
 \label{code:TTerm}
 \end{figure}
+
+% TODO present de bruijn indices
+
+A \textbf{\lstinline{TVar}} is a de Bruijn indexed variable term.
+
+A \textbf{\lstinline{TPrim}} is a compiler-related primitive, such as addition, subtraction and equality on some primitive types.
+
+A \textbf{\lstinline{TDef}} is a qualified name identifying a function or datatype definition % TODO confirm
+
+A \textbf{\lstinline{TApp}} is a \lstinline{TTerm} applied to a list of arguments, where each argument is itself a \lstinline{TTerm}.
+
+A \textbf{\lstinline{TLam}} % TTerm
+
+A \textbf{\lstinline{TLit}} % Literal
+
+A \textbf{\lstinline{TCon}} % QName
+
+A \textbf{\lstinline{TLet}} introduces a new local term binding in a term body.           
+
+A \textbf{\lstinline{TCase}} is a case expression on a case scrutinee (always a de Bruijn indexed variable), a case type, a default value and a list of alternatives.
+
+The case alternatives, \textbf{\lstinline{TAlt}}s, may be constructed from:
+\begin{itemize}
+\item a \lstinline{TACon}, which matches on a constructor of a given qualified name, biding the appropriate number of pattern variables to the body term if a match is made. Note that a \lstinline{TCase}'s list of \lstinline{Args} must have unique qualified names for each \lstinline{TACon}.
+\item a \lstinline{TAGuard}, which matches on a boolean guard and binds no variables if matched against.
+\item a \lstinline{TALit}, which matches on a literal term.
+\end{itemize}
+          
+A \textbf{\lstinline{TUnit}} is used for levels. % TODO what does that mean
+
+A \textbf{\lstinline{TSort}}
+
+A \textbf{\lstinline{TErased}}
+
+A \textbf{\lstinline{TError}} is used to indicate a runtime error.
 
 % substitutions aren't part of the lambda calculus syntax, that's why this isn't a lambda-sigma-calculus
 
@@ -105,21 +136,10 @@ data TTerm = TVar Nat -- Type synonym for Int
 
 % paper for understanding substitution in context of db indices
 
-% add talt
-
 TODO Stuff from \cite{abadi1991}
 % Here has a good introduction that may be a good reference: http://fi.ort.edu.uy/innovaportal/file/5328/3/formalisationconstructivetypetheorystoughtonsubstitution.pdf
 
 % End Section
-
-\section{Section Two}
-\label{sec:section_two}
-% Begin Section
-
-Donec scelerisque risus et sollicitudin consectetur. In ac mattis lorem. Quisque commodo odio dui, a iaculis metus tristique et. Suspendisse sit amet interdum nunc, pretium gravida metus. Suspendisse a erat egestas, egestas mi a, tincidunt mi. Vivamus justo orci, porttitor ac tincidunt sit amet, fringilla eget neque. Integer at cursus quam. Ut malesuada ullamcorper erat finibus vestibulum. Nulla ullamcorper, enim ac accumsan placerat, lorem magna consequat nulla, nec pulvinar lacus neque vel quam. Donec posuere velit in leo vestibulum bibendum. Sed scelerisque magna vel orci tempor, vel bibendum nulla consequat. Maecenas varius nec leo eget volutpat. Vivamus vulputate mollis blandit. Nulla ligula risus, tincidunt nec dolor ac, ornare ultricies risus~\cite{Schmidt1993aa}.
-
-Mauris fermentum, nibh mollis cursus congue, orci velit imperdiet libero, ac mollis nunc nunc ut ex. Etiam tellus nibh, pellentesque et turpis ac, aliquet maximus turpis. Etiam ornare justo ac sodales rutrum. Morbi sed tellus enim. Donec malesuada ante tortor, sit amet tempus turpis molestie venenatis. Sed vitae eros vitae elit ultricies tincidunt. Nullam quis velit semper nisi ullamcorper ullamcorper eu id elit. Cras malesuada vehicula purus, et mattis turpis volutpat eu.
-\input{Definitions/defCartesianProduct}
 
 % End Section
 
