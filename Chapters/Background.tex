@@ -17,6 +17,21 @@ Agda is a dependently typed functional programming language.
 % Include an Agda tutorial as per: http://dspace.library.uu.nl:8080/handle/1874/256628
 % or is it necessary to understand thesis?
 
+The core syntax of Agda is a dependently typed lambda calculus, with a simple grammar as shown in Figure~\ref{fig:grammar}.
+
+\begin{figure}
+\begin{align*}
+a ::=~& x               & \text{variable}\\
+    |~& \lambda x \to a & \text{abstraction}\\
+    |~& a~a             & \text{application}\\
+    |~& (x : a) \to a   & \text{function space}\\
+    |~& Set[n]          & \text{universe}\\
+    |~& (a)             & \text{grouping}
+\end{align*}
+\caption{Agda core syntax grammar.\cite{agdawiki}}
+\label{fig:grammar}
+\end{figure}
+
 \subsection{Compiler}
 
 The Agda programming language's first and most-used backend is MAlonzo, or more generically, the GHC (Glasgow Haskell Compiler) backend.\cite{benke2007} Given an Adga module containig a \lstinline{main} function, the Agda \texttt{--compile} option will compile the program using the GHC backend, which translates an Agda program into Haskell source. The generated Haskell source can then be automatically or manually (with \texttt{--ghc-dont-call-ghc}) compiled to an executable program via GHC.\cite{agdadocs} \newline % http://agda.readthedocs.io/en/latest/tools/compilers.html
@@ -36,34 +51,28 @@ Once coverage checking is completed, pattern matching can be translated into cas
 
 The treeless syntax is the input to the compiler backend of Agda. After all type-checking is complete, the higher-level internal syntax of compiled clauses is translated to a ``treeless'' syntax, the name for which is derived from its use of case expressions instead of case trees. The other notable difference between compiled clauses and treeless syntax is the absence of datatypes and constructors.\cite{agdahackage} %TODO WHY? % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-Syntax-Treeless.html
 
+\subsection{Agda Module System}
+% Either before or after compiler section
+% Discuss Agda module system and its translation
+% Arguments inheited from all enclosing modules
+
 \subsection{Lambda Calculus}
-
-The core syntax of Agda is a dependently typed lambda calculus, with a simple grammar as shown in Figure~\ref{fig:grammar}.
-
-\begin{figure}
-\begin{align*}
-a ::=~& x               & \text{variable}\\
-    |~& \lambda x \to a & \text{abstraction}\\
-    |~& a~a             & \text{application}\\
-    |~& (x : a) \to a   & \text{function space}\\
-    |~& Set[n]          & \text{universe}\\
-    |~& (a)             & \text{grouping}
-\end{align*}
-\caption{Agda core syntax grammar.\cite{agdawiki}}
-\label{fig:grammar}
-\end{figure}
-
-% TODO connection between core syntax and TTerms
 
 The treeless syntax is constructed from \lstinline{TTerm}s %TODO What does the T stand for?
 where all local variable use de Bruijn indices. A listing of \lstinline{TTerm} constructors is shown in Figure~\ref{code:TTerm}.
+% glorified lambda calculus with db indicies
+
+% TTerm is the AST type for compiler backend, not internal syntax
+% internal syntax is before and during type checking (in agdai)
+
+% TODO Read about how sharing is lost with substitution in the agda mailing list: https://lists.chalmers.se/pipermail/agda/2017/009379.html
 
 \begin{figure}
 \begin{lstlisting}[style=blockhaskell]
-data TTerm = TVar Int
+data TTerm = TVar Nat -- Type synonym for Int
            | TPrim TPrim
            | TDef QName
-           | TApp TTerm Args
+           | TApp TTerm Args -- [TTerm]
            | TLam TTerm
            | TLit Literal
            | TCon QName
@@ -87,6 +96,16 @@ data TTerm = TVar Int
 \caption{\lstinline{TTerm} datatype definition.}
 \label{code:TTerm}
 \end{figure}
+
+% substitutions aren't part of the lambda calculus syntax, that's why this isn't a lambda-sigma-calculus
+
+% here we do substitution as a function on terms
+
+%explicit subst is when applysubst is a term constructor (which obviously it isn't here)
+
+% paper for understanding substitution in context of db indices
+
+% add talt
 
 TODO Stuff from \cite{abadi1991}
 % Here has a good introduction that may be a good reference: http://fi.ort.edu.uy/innovaportal/file/5328/3/formalisationconstructivetypetheorystoughtonsubstitution.pdf
