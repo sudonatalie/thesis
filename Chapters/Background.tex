@@ -58,7 +58,7 @@ The treeless syntax is the input to the compiler backend of Agda. After all type
 % Discuss Agda module system and its translation
 % Arguments inheited from all enclosing modules
 
-\subsection{Lambda Calculus}
+\subsection{Treeless Syntax}
 
 The treeless syntax is constructed from \lstinline{TTerm}s %TODO What does the T stand for?
 and is a representation of the abstract syntax tree for the compiler backend. It can be reasoned about as a lambda calculus with all local variable using de Bruijn indices. A listing of \lstinline{TTerm} constructors is shown in Figure~\ref{code:TTerm}.
@@ -128,15 +128,52 @@ A \textbf{\lstinline{TErased}}
 
 A \textbf{\lstinline{TError}} is used to indicate a runtime error.
 
-% substitutions aren't part of the lambda calculus syntax, that's why this isn't a lambda-sigma-calculus
+\subsection{Lambda Calculus}
 
-% here we do substitution as a function on terms
+In order to perform the desired optimisations on the abstract syntax tree, we must be able to perform substitutions on terms. Treating the \lstinline{TTerm} structure as a specialized $\lambda$-calculus, we can implement substitution as a function on terms.
 
-%explicit subst is when applysubst is a term constructor (which obviously it isn't here)
+Because our terms are built on de Bruijn indexed variables, we use the explicit substitution of a $\lambda\sigma$-calculus as a reference for understanding correct substitution on terms in the context of local variables bound by incrementing indices. The $\lambda\sigma$-calculus is a refinement of the $\lambda$-calculus where substitutions are manipulated explicitly, and substitution application is a term constructor rather than a meta-level notation.\cite{abadi1991}
 
-% paper for understanding substitution in context of db indices
+\subsubsection{De Bruijn indices}
 
-TODO Stuff from \cite{abadi1991}
+In order to eliminate the need for named variables in $\lambda$-calculus notation, de Bruijn notation is used to represent bound terms (variables) with natural numbers. In any term, the positive integer $n$ refers to the $n$th surrounding $\lambda$ binder.\cite{debruijn1972}
+
+% TODO Graphical example like this: https://en.wikipedia.org/wiki/De_Bruijn_index#/media/File:De_Bruijn_index_illustration_1.svg
+
+Take then, for instance, a simple case of the classical application of the $\beta$-rule (See Figure~\ref{eq:beta_rule}). Beta reduction is the process of simplifying an application of a function to the resulting substituted term. However, in order to $\beta$-reduce $(\lambda a)b$, we must not only substitute $b$ into the appropriate occurrences in $a$. As the $\lambda$ binding disappears, we must also decrement all remaining free indices in $a$. This adapted form of the $\beta$-rule can be represented by the infinite substitution showin in Figure~\ref{eq:beta_rule2}).\cite{abadi1991}
+
+% TODO Combine beta rule figures into subfigures a and b in a single figure
+
+\begin{figure}
+\begin{equation*}
+(\lambda x.t)s \to_{\beta} t[x := s]
+\end{equation*}
+\caption{The classical $\beta$-reduction rule.}
+\label{eq:beta_rule}
+\end{figure}
+
+\begin{figure}
+\begin{equation*}
+(\lambda t)s \to_{\beta} t[1 := s, 2 := 1, 3 := 2, ...]
+\end{equation*}
+\caption{The modified $\beta$-reduction rule for de Bruijn notation.}
+\label{eq:beta_rule2}
+\end{figure}
+
+However, the substitution in this adapted rule must be evaluated carefully to produce a correct result. Consider if the term $t$ contains another $\lambda$ binding. As the substitution is applied to that nested $\lambda$ term, occurences of $1$ should not be replaced with $s$, because occurrences of $1$ refer to the nested $\lambda$ term's bound variable. Instead, occurrences of $2$ should be replaced with $s$; likewise, occurrences of $3$ should be replaced by $2$, and so on. We thus ``shift'' the substitution.\cite{abadi1991}
+
+It is also important when applying substitutions to $\lambda$ terms that we avoid the unintended capture of free variables in our terms being substituted in. Imagine again the nested $\lambda$ term, with occurences of $2$ being replaced with $s$. Occurences of $1$ in $s$ must be replaced with $2$, else the nested $\lambda$ binder will capture the index. We this ``lift'' the indices of $s$. These two caveats result in the substitution rule in Figure~\ref{eq:debruijn_sub}.\cite{abadi1991}
+
+\begin{figure}
+\begin{equation*}
+(\lambda t)[1 := s, 2 := 1, ...] = \lambda t[2 := s[1 := 2, 2 := 3, ...], 3 := 2, ...]
+\end{equation*}
+\caption{The substitution rule for de Bruijn indexed lambda terms.}
+\label{eq:debruijn_sub}
+\end{figure}
+
+Recognizing the required index ``shifting'' and ``lifting'' in the Figure~\ref{eq:debruijn_sub} substitution rule should suffice as background for understanding the variable manipulation performed in our optimisation.
+
 % Here has a good introduction that may be a good reference: http://fi.ort.edu.uy/innovaportal/file/5328/3/formalisationconstructivetypetheorystoughtonsubstitution.pdf
 
 % End Section
