@@ -1,3 +1,7 @@
+# Agda
+*.agdai
+
+# Latex
 MScThesis.pdf
 
 ## Core latex/pdflatex auxiliary files:
@@ -12,6 +16,7 @@ MScThesis.pdf
 *.fot
 *.cb
 *.cb2
+*.ptb
 
 ## Intermediate documents:
 *.dvi

@@ -7,7 +7,9 @@ In this chapter, we introduce the necessary compiler theory and logical backgrou
 \section{Agda}
 \label{sec:agda}
 
-Agda is a dependently typed functional programming language.
+Agda is a dependently typed functional programming language. We assume the reader has seen a functional language before, such as Haskell. In traditional functional languages, types may depend on other types. For example, the type signature \lstinline{xs :: Vector a} in Haskell denotes a vector containing elements of type \lstinline{a}, where \lstinline{a} is a type variable. In a dependently typed language like Agda, types can depend not only on other types, but also on values. Consider the \AgdaFunction{replicate} in Figure~\ref{code:replicate}, which produces a \AgdaDatatype{Vec}tor of elements of type \AgdaBound{A} with length \AgdaBound{n}.\cite{norell2009}
+
+\input{Figures/Agda/latex/Replicate}
 
 %The Agda package: https://hackage.haskell.org/package/Agda
 
@@ -36,7 +38,7 @@ a ::=~& x               & \text{variable}\\
 
 \subsection{Compiler}
 
-The Agda programming language's first and most-used backend is MAlonzo, or more generically, the GHC (Glasgow Haskell Compiler) backend.\cite{benke2007} Given an Adga module containig a \lstinline{main} function, the Agda \texttt{--compile} option will compile the program using the GHC backend, which translates an Agda program into Haskell source. The generated Haskell source can then be automatically or manually (with \texttt{--ghc-dont-call-ghc}) compiled to an executable program via GHC.\cite{agdadocs} % http://agda.readthedocs.io/en/latest/tools/compilers.html
+The Agda programming language's first and most-used backend is MAlonzo, or more generically, the GHC (Glasgow Haskell Compiler) backend.\cite{benke2007} Given an Adga module containig a \AgdaFunction{main} function, the Agda \texttt{--compile} option will compile the program using the GHC backend, which translates an Agda program into Haskell source. The generated Haskell source can then be automatically or manually (with \texttt{--ghc-dont-call-ghc}) compiled to an executable program via GHC.\cite{agdadocs} % http://agda.readthedocs.io/en/latest/tools/compilers.html
 
 Though there are several stages of translation and compilation in this process, the transition of primiary interest for our optimization is the conversion of compiled clauses to a ``treeless'' syntax, after Agda type-checking, but before Haskell source is generated.
 
