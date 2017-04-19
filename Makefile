@@ -1,13 +1,13 @@
 filename=MScThesis
 lagda_dir=Figures/Agda
 
-quick:
-	pdflatex ${filename}
-
 all:	figs
 	pdflatex ${filename}
 	bibtex ${filename}||true
 	pdflatex ${filename}
+	pdflatex ${filename}
+
+quick:
 	pdflatex ${filename}
 
 figs:
