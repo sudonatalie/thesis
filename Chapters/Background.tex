@@ -11,7 +11,7 @@ Agda is a dependently typed functional programming language. In traditional func
 
 \input{Figures/Agda/latex/Replicate}
 
-The ability for types to contain arbitrary values is significant because it allows us to encode any propositions or formulae as types. By the Curry–Howard isomorphism (or the proofs-as-programs interpretation), we can then prove these propositions true by providing an element (program) of its corresponding type.\cite{poernomo2005} In order to ensure this logic holds true for all Agda programs, the Agda type-checker requires that all programs be both total and terminating.\cite{norell2009}
+The ability for types to contain arbitrary values is significant because it allows us to encode (almost) any proposition or formula as a type. By the Curry–Howard isomorphism (or the proofs-as-programs interpretation), we can then prove these propositions true by providing an element (program) of its corresponding type.\cite{poernomo2005} In order to ensure this logic holds true for all Agda programs, the Agda type-checker requires that all programs be both total and terminating.\cite{norell2009}
 
 Agda also supports a flexible mixfix syntax, as seen in Figure~\ref{code:if_function}, and Unicode characters, such as the \AgdaDatatype{ℕ} to represent natural numbers in Figure~\ref{code:replicate}. These features along with Agda's constructive functional style make Agda both an interesting programming language, but also a powerful proof assistant for generating elegant, expressive proofs.
 
@@ -45,7 +45,7 @@ a ::=~& x               & \text{variable}\\
 
 \subsection{Compiler}
 
-The Agda programming language's first and most-used backend is MAlonzo, or more generically, the GHC (Glasgow Haskell Compiler) backend.\cite{benke2007} Given an Adga module containig a \AgdaFunction{main} function, the Agda \texttt{--compile} option will compile the program using the GHC backend, which translates an Agda program into Haskell source. The generated Haskell source can then be automatically or manually (with \texttt{--ghc-dont-call-ghc}) compiled to an executable program via GHC.\cite{agdadocs} % http://agda.readthedocs.io/en/latest/tools/compilers.html
+The Agda programming language's first and most-used backend is MAlonzo, or more generically, the GHC (Glasgow Haskell Compiler) backend.\cite{benke2007} Given an Adga module containig a \AgdaFunction{main} function, the Agda \texttt{-{}-compile} option will compile the program using the GHC backend, which translates an Agda program into Haskell source. The generated Haskell source can then be automatically or manually (with \texttt{-{}-ghc-dont-call-ghc}) compiled to an executable program via GHC.\cite{agdadocs} % http://agda.readthedocs.io/en/latest/tools/compilers.html
 
 Though there are several stages of translation and compilation in this process, the transition of primiary interest for our optimization is the conversion of compiled clauses to a ``treeless'' syntax, after Agda type-checking, but before Haskell source is generated.
 
