@@ -2,15 +2,10 @@
 
 %Inline expansion replaces a function call site with the body of the called function
 
-In this chapter, we introduce the necessary compiler theory and logical background concepts required for the understanding of the material presented in the thesis. In Section~\ref{sec:section_one}, we give an introduction to the Agda compiler and the GHC backend. Finally, in Section~\ref{sec:background_conclusion}, we conclude with a summary of the core concepts and describe where they are used throughout the remainder of the thesis.
+In this chapter, we introduce the necessary compiler theory and logical background concepts required for the understanding of the material presented in the thesis. In Section~\ref{sec:agda}, we give an introduction to Agda and its compiler. In Section~\ref{sec:lambda_calc}, we review some of the mathematical background useful for understanding our optimisations. Finally, in Section~\ref{sec:background_conclusion}, we conclude with a summary of the core concepts and describe where they are used throughout the remainder of the thesis.
 
-% TODO Rename Section One or rearrange subsections to be top-level sections
-
-\section{Section One}
-\label{sec:section_one}
-% Begin Section
-
-\subsection{Agda}
+\section{Agda}
+\label{sec:agda}
 
 Agda is a dependently typed functional programming language.
 
@@ -34,6 +29,11 @@ a ::=~& x               & \text{variable}\\
 \label{fig:grammar}
 \end{figure}
 
+\subsection{Module System}
+% Either before or after compiler section
+% Discuss Agda module system and its translation
+% Arguments inheited from all enclosing modules
+
 \subsection{Compiler}
 
 The Agda programming language's first and most-used backend is MAlonzo, or more generically, the GHC (Glasgow Haskell Compiler) backend.\cite{benke2007} Given an Adga module containig a \lstinline{main} function, the Agda \texttt{--compile} option will compile the program using the GHC backend, which translates an Agda program into Haskell source. The generated Haskell source can then be automatically or manually (with \texttt{--ghc-dont-call-ghc}) compiled to an executable program via GHC.\cite{agdadocs} % http://agda.readthedocs.io/en/latest/tools/compilers.html
@@ -53,12 +53,7 @@ Once coverage checking is completed, pattern matching can be translated into cas
 
 The treeless syntax is the input to the compiler backend of Agda. After all type-checking is complete, the higher-level internal syntax of compiled clauses is translated to a ``treeless'' syntax, the name for which is derived from its use of case expressions instead of case trees. The other notable difference between compiled clauses and treeless syntax is the absence of datatypes and constructors.\cite{agdahackage} %TODO WHY? % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-Syntax-Treeless.html
 
-\subsection{Agda Module System}
-% Either before or after compiler section
-% Discuss Agda module system and its translation
-% Arguments inheited from all enclosing modules
-
-\subsection{Treeless Syntax}
+\subsubsection{Treeless Syntax}
 
 The treeless syntax is constructed from \lstinline{TTerm}s %TODO What does the T stand for?
 and is a representation of the abstract syntax tree for the compiler backend. It can be reasoned about as a lambda calculus with all local variable using de Bruijn indices. A listing of \lstinline{TTerm} constructors is shown in Figure~\ref{code:TTerm}.
@@ -128,13 +123,14 @@ A \textbf{\lstinline{TErased}}
 
 A \textbf{\lstinline{TError}} is used to indicate a runtime error.
 
-\subsection{Lambda Calculus}
+\section{Lambda Calculus}
+\label{sec:lambda_calc}
 
 In order to perform the desired optimisations on the abstract syntax tree, we must be able to perform substitutions on terms. Treating the \lstinline{TTerm} structure as a specialized $\lambda$-calculus, we can implement substitution as a function on terms.
 
 Because our terms are built on de Bruijn indexed variables, we use the explicit substitution of a $\lambda\sigma$-calculus as a reference for understanding correct substitution on terms in the context of local variables bound by incrementing indices. The $\lambda\sigma$-calculus is a refinement of the $\lambda$-calculus where substitutions are manipulated explicitly, and substitution application is a term constructor rather than a meta-level notation.\cite{abadi1991}
 
-\subsubsection{De Bruijn indices}
+\subsection{De Bruijn indices}
 
 In order to eliminate the need for named variables in $\lambda$-calculus notation, de Bruijn notation is used to represent bound terms (variables) with natural numbers. In any term, the positive integer $n$ refers to the $n$th surrounding $\lambda$ binder.\cite{debruijn1972}
 
@@ -175,10 +171,6 @@ It is also important when applying substitutions to $\lambda$ terms that we avoi
 Recognizing the required index ``shifting'' and ``lifting'' in the Figure~\ref{eq:debruijn_sub} substitution rule should suffice as background for understanding the variable manipulation performed in our optimisation.
 
 % Here has a good introduction that may be a good reference: http://fi.ort.edu.uy/innovaportal/file/5328/3/formalisationconstructivetypetheorystoughtonsubstitution.pdf
-
-% End Section
-
-% End Section
 
 \section{Conclusion}
 \label{sec:background_conclusion}
