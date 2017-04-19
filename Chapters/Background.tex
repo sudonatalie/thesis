@@ -126,6 +126,8 @@ A \textbf{\lstinline{TError}} is used to indicate a runtime error.
 \section{Lambda Calculus}
 \label{sec:lambda_calc}
 
+% TODO actually introduce what lambda calculus is. Musa suggests this: https://pdfs.semanticscholar.org/2d0a/07723f93b26c3d673f386ac903cdcb6cc521.pdf
+
 In order to perform the desired optimisations on the abstract syntax tree, we must be able to perform substitutions on terms. Treating the \lstinline{TTerm} structure as a specialized $\lambda$-calculus, we can implement substitution as a function on terms.
 
 Because our terms are built on de Bruijn indexed variables, we use the explicit substitution of a $\lambda\sigma$-calculus as a reference for understanding correct substitution on terms in the context of local variables bound by incrementing indices. The $\lambda\sigma$-calculus is a refinement of the $\lambda$-calculus where substitutions are manipulated explicitly, and substitution application is a term constructor rather than a meta-level notation.\cite{abadi1991}
@@ -134,7 +136,7 @@ Because our terms are built on de Bruijn indexed variables, we use the explicit 
 
 In order to eliminate the need for named variables in $\lambda$-calculus notation, de Bruijn notation is used to represent bound terms (variables) with natural numbers. In any term, the positive integer $n$ refers to the $n$th surrounding $\lambda$ binder.\cite{debruijn1972}
 
-% TODO Graphical example like this: https://en.wikipedia.org/wiki/De_Bruijn_index#/media/File:De_Bruijn_index_illustration_1.svg
+% TODO Graphical example like this: https://en.wikipedia.org/wiki/De_Bruijn_index#/media/File:De_Bruijn_index_illustration_1.svg, but emphasize that in different scope locations, different numbers point to the same bound variable.
 
 Take then, for instance, a simple case of the classical application of the $\beta$-rule (See Figure~\ref{eq:beta_rule}). Beta reduction is the process of simplifying an application of a function to the resulting substituted term. However, in order to $\beta$-reduce $(\lambda a)b$, we must not only substitute $b$ into the appropriate occurrences in $a$. As the $\lambda$ binding disappears, we must also decrement all remaining free indices in $a$. This adapted form of the $\beta$-rule can be represented by the infinite substitution showin in Figure~\ref{eq:beta_rule2}).\cite{abadi1991}
 
