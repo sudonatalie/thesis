@@ -12,7 +12,7 @@ all:	figs
 
 figs:
 	cd ${lagda_dir}; \
-	agda --latex *.lagda
+	find . -name '*.lagda' -exec agda --latex {} \;
 
 read:
 	evince ${filename}.pdf &
