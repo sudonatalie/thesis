@@ -44,6 +44,7 @@ a ::=~& x               & \text{variable}\\
 % Arguments inheited from all enclosing modules
 
 \subsection{Compiler}
+\label{sec:agda_compiler}
 
 The Agda programming language's first and most-used backend is MAlonzo, or more generically, the GHC (Glasgow Haskell Compiler) backend.\cite{benke2007} Given an Adga module containig a \AgdaFunction{main} function, the Agda \texttt{-{}-compile} option will compile the program using the GHC backend, which translates an Agda program into Haskell source. The generated Haskell source can then be automatically or manually (with \texttt{-{}-ghc-dont-call-ghc}) compiled to an executable program via GHC.\cite{agdadocs} % http://agda.readthedocs.io/en/latest/tools/compilers.html
 
