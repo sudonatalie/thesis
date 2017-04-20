@@ -119,7 +119,7 @@ A \textbf{\lstinline{TCase}} is a case expression on a case scrutinee (always a 
 
 The case alternatives, \textbf{\lstinline{TAlt}}s, may be constructed from:
 \begin{itemize}
-\item a \lstinline{TACon}, which matches on a constructor of a given qualified name, biding the appropriate number of pattern variables to the body term if a match is made. Note that a \lstinline{TCase}'s list of \lstinline{Args} must have unique qualified names for each \lstinline{TACon}.
+\item a \lstinline{TACon}, which matches on a constructor of a given qualified name, binding the appropriate number of pattern variables to the body term if a match is made. Note that a \lstinline{TCase}'s list of \lstinline{Args} must have unique qualified names for each \lstinline{TACon}.
 \item a \lstinline{TAGuard}, which matches on a boolean guard and binds no variables if matched against.
 \item a \lstinline{TALit}, which matches on a literal term.
 \end{itemize}
