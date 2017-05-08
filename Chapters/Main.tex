@@ -52,3 +52,69 @@ Pellentesque aliquet tempor condimentum. Nulla vulputate ultricies felis, ut feu
 Pellentesque aliquet tempor condimentum. Nulla vulputate ultricies felis, ut feugiat nisl auctor a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dapibus turpis ac tortor ullamcorper, in eleifend mi fringilla. Nam luctus tortor pulvinar neque molestie, quis scelerisque nisi volutpat. Integer et risus facilisis, vehicula libero nec, feugiat ante. Donec ultricies libero et mauris mollis, eu pretium neque iaculis. Sed in elit quis dui molestie dapibus vitae vel sapien. Etiam fermentum maximus accumsan
 
 % End Section
+
+
+\section{Generating Pattern Lets}
+
+We can avoid generating certain trivial case expressions in our Haskell expressions by identifying structures like the following in our Agda terms:
+
+\begin{lstlisting}
+let v0 = e
+in case v0 of
+  C0 v1 v2 v3 -> t
+\end{lstlisting}
+
+and transforming them into ``pattern lets'':
+
+\begin{lstlisting}
+let v0@(C0 v1 v2 v3) = e
+in t
+\end{lstlisting}
+
+Our first optimisation centres around generating these ``pattern lets''. The function \lstinline{term :: T.TTerm -> CC HS.Exp} in the Agda compiler backend transforms Agda terms into Haskell expressions. In this function, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets, namely let expressions where the let body is a case expression, with a single constructor alternative, scrutinizing the variable bound by the parent let. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinizing the 0 (most recently bound) variable.
+
+\begin{lstlisting}
+  TLet _ (TCase 0 _ _ [TACon _ _ _])
+    | genPLet
+    , Just (PLet {pletNumBinders = numBinders, eTerm = TLet t1 tp}, tb) <- splitPLet tm0
+    -> do
+        t1' <- term t1
+        intros 1 $ \[x] -> do
+          intros numBinders $ \xs -> do
+            tb' <- term tb
+            p <- addAsPats (x:xs) 1 tp (HS.PVar x)
+            return $ hsPLet p (hsCast t1') tb'
+\end{lstlisting}
+
+\begin{lstlisting}
+-- | In @addAsPats xs numBound tp pat@, recurse through @tp@ to find all
+--   single constructor @TCase@s and replace @PVar@s of the same scrutinee
+--   with appropriate @PAsPat@s, until @TErased@ is reached.
+--   @xs@ contains all necessary variables introduce by the initial call
+--   in @term@, with @numBound@ indicating the number of introduced
+--   of variables introduced by the caller used in @PApp@s and the top let.
+addAsPats :: [HS.Name] -> Nat -> TTerm -> HS.Pat -> CC HS.Pat
+addAsPats xs numBound
+  tp@(TCase sc _ _ [TACon c cArity tp'])
+  pat = case xs !!! (numBound - 1 - sc) of
+    Just scName -> do
+      erased <- lift $ getErasedConArgs c
+      hConNm <- lift $ conhqn c
+      let oldPat = HS.PVar scName
+      let vars = take cArity $ drop numBound xs
+      let newPat = HS.PAsPat scName $ HS.PApp hConNm $ map HS.PVar [ x | (x, False) <- zip vars erased ]
+      let pat' = replacePats oldPat newPat pat
+      addAsPats xs (numBound + cArity) tp' pat'
+    Nothing -> __IMPOSSIBLE__
+addAsPats _ _ TErased pat = return pat
+addAsPats _ _ _ _ = __IMPOSSIBLE__ -- Guaranteed by splitPLet
+
+-- | In @replacePats old new p@, replace all instances of @old@ in @p@
+--   with @new@
+replacePats :: HS.Pat -> HS.Pat -> HS.Pat -> HS.Pat
+replacePats old new p@(HS.PVar _) = if old == p then new else p
+replacePats old new (HS.PAsPat sc p) = HS.PAsPat sc $ replacePats old new p
+replacePats old new p@(HS.PApp q pats) =
+  HS.PApp q $ map (replacePats old new) pats
+replacePats _ _ p = __IMPOSSIBLE__ -- Guaranteed by addAsPats
+\end{lstlisting}
