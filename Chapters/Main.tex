@@ -1,4 +1,4 @@
-In this chapter, we formulate a new XYZ. In Section~\ref{sec:assumptions}, we list our assumptions. In Section~\ref{sec:mathematical_representation}, we give a clear mathematical representation of the problem of XYZ. In Section~\ref{sec:the_proposed_technique}, we present our technique. 
+In this chapter, we discuss the design and implementation of our optimisations to the Agda compiler. In Section~\ref{sec:assumptions}, we list our assumptions. In Section~\ref{sec:mathematical_representation}, we give a clear mathematical representation of the problem of XYZ. In Section~\ref{sec:the_proposed_technique}, we present our technique. 
 
 \section{Assumptions}
 \label{sec:assumptions}
@@ -13,9 +13,47 @@ In formulating the problem of XYZ, we make the following assumptions:
 
 % End Section
 
-\section{Mathematical Representation}
-\label{sec:mathematical_representation}
+\section{Inlining Projections}
+\label{sec:inlining_projections}
 % Begin Section
+
+We added the option:
+
+\begin{verbatim}
+--inline-proj                               inline proper projections
+\end{verbatim}
+
+to Agda which, when enabled, will replace every call to a function that is a proper projection with its function body. (Note that proper projections do not include projection-like functions, or record field values, i.e. projections applied to an argument.)
+
+\input{Figures/Agda/latex/Inline1}
+
+Take for example the simple usage of record projections in Figure~\ref{code:inline1}. When we compile this module once without \texttt{--inline-proj} on, and once again with \texttt{--inline-proj} enabled, a unified \texttt{diff} of two of the generated Haskell files gives us what is shown in Figure~\ref{fig:inline1_diff}.
+
+\begin{figure}
+\begin{verbatim}
+--- Inline1-compile/MAlonzo/Code/Inline1.hs
++++ Inline1-compile-inline/MAlonzo/Code/Inline1.hs
+@@ -31,4 +31,9 @@
+       MAlonzo.Code.IO.du42 ()
+       (coe
+          MAlonzo.Code.IO.d150
+-         (coe MAlonzo.Code.Data.Nat.Show.d22 (coe d18 d22)))
++         (coe MAlonzo.Code.Data.Nat.Show.d22
++            (let v0 = coe d22 in
++             case coe v0 of
++               C20 v1 v2 -> coe v2
++               _ -> MAlonzo.RTE.mazUnreachableError)))
+\end{verbatim}
+
+\caption{Unified difference of the \AgdaModule{Inline1} module compiled without and then with \texttt{--inline-proj}.}
+\label{fig:inline1_diff}
+\end{figure}
+
+The compiled projection function \AgdaField{Pair.snd}, that is \lstinline{d18} in the Haskell code, is replaced with a Haskell expression that cases on the pair (\AgdaFunction{p} in Agda, \lstinline{d22} in Haskell) and returns the second field.
+
+Although this inline expansion alone does not yield great benfits, the resulting inlined code gives us greater opportunities for further optimization, as we discuss in Sections TODO and TODO.
+
+\subsection{Performance}
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et nibh vel mauris pharetra viverra. Integer nisl nibh, ullamcorper eget imperdiet sed, accumsan ultrices purus. Quisque malesuada vel elit in cursus. Vestibulum rutrum turpis sed lectus vehicula, et venenatis ligula varius.  In Section~\ref{sec:survey_discussion}, we discussed vivamus auctor fermentum libero, in ullamcorper diam pulvinar non. Donec condimentum cursus iaculis. Nulla odio dolor, faucibus eget mauris a, eleifend congue erat. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam aliquet finibus ligula eu feugiat. Aenean feugiat nunc et arcu elementum vestibulum. \newline
 
