@@ -1,0 +1,39 @@
+        Time and Allocation Profiling Report  (Final)
+
+           Main +RTS -S -H7G -M7G -A128M -p -RTS
+
+        total time  =        6.75 secs   (6755 ticks @ 1000 us, 1 processor)
+        total alloc = 1,300,428,688 bytes  (excludes profiling overheads)
+
+COST CENTRE                                                 %time %alloc
+
+Data.Product.Σ.proj₂                                         10.4    0.0
+Data.Product.Σ.proj₁                                          7.2    0.0
+Categoric.KleeneCategory.DirectSum.SumStar.Square.E⋆′         4.9    7.0
+Data.SUList.ListSetMap.RawLSM.RawLSM3.RawLSM3-comp.comp       4.1   10.4
+Data.SUList.ListSetMap.RawLSM.RawLSM3.RawLSM3-comp.comp₀      3.9    3.7
+Categoric.KleeneCategory.DirectSum.SumStar.Square.h′          3.0    1.1
+Data.SUList.ListSetMap.RawLSM.RawLSM1.Id₀                     2.8    2.5
+Data.SUList.ListSetMap.Semigroupoid.LSMJoinOp.\               2.5    8.5
+Categoric.CompOp.retractCompOp.\                              2.4    6.6
+Categoric.KleeneCategory.DirectSum.SumStar.Square.k′.v10      2.3    2.2
+Data.SUList.ListSetMap.RawLSM.RawLSM3.MapImage.mapMImage      2.2    3.2
+Data.SUList.ListSetMap.FinRel.Utils.FinId                     2.0    2.9
+Data.SUList.ListSetMap.RawLSM.RawLSM3.MapImage.mapImage₀      2.0    5.5
+Data.SUList.FinKey.Utils.FinKey-sucs-preds.sucKeys₀           2.0    4.9
+Categoric.CompOp.CompOp._⨾_                                   2.0    0.0
+Data.SUList.ListSetMap.FinRel.NatSum.Cofork._⨮₀_              2.0    3.6
+Categoric.USLCC.USLCC.occ                                     1.9    0.0
+Data.SUList.FinSubset.Utils.fins₀                             1.8    3.2
+RATH.Data.Product.map₂                                        1.7    2.2
+Data.SUList.ListSetMap.FinRel.NatSum.Fork._⨭_                 1.7    1.9
+Categoric.KleeneCategory.DirectSum.SumStar.Square.k′          1.4    1.8
+Categoric.OrderedSemigroupoid.OrderedSemigroupoid.compOp      1.4    0.0
+Categoric.KleeneCategory.DirectSum.SumStar.Square.g′          1.3    0.5
+Data.SUList.ListSetMap.FinRel.NatSum.Fork._⨭₀_.\              1.3    1.9
+Data.SUList.STOUtils.minMM                                    1.2    1.2
+Data.SUList.ListSetMap.FinRel.NatSum.Cofork.split-⨮           1.2    0.9
+Data.SUList.ListSetMap.FinRel.NatSum.Fork._⨭₀_                1.1    0.3
+Categoric.KleeneCategory.DirectSum.SumStar.UnitSumStarOp.\    1.1    2.1
+Data.SUList.ListSetMap.FinRel.NatSum.FinLSMNatSum.\           1.0    3.3
+Categoric.OSGC.Base.OSGC-Base.orderedSemigroupoid             1.0    0.0
