@@ -1,0 +1,21 @@
+\begin{figure}
+\begin{verbatim}
+        Time and Allocation Profiling Report  (Final)
+
+           Main +RTS -S -H7G -M7G -A128M -p -RTS
+
+        total time  =        6.75 secs   (6755 ticks @ 1000 us, 1 processor)
+        total alloc = 1,300,428,688 bytes  (excludes profiling overheads)
+
+COST CENTRE                                                 %time %alloc
+
+Data.Product.Σ.proj₂                                         10.4    0.0
+Data.Product.Σ.proj₁                                          7.2    0.0
+Categoric.KleeneCategory.DirectSum.SumStar.Square.E⋆′         4.9    7.0
+Data.SUList.ListSetMap.RawLSM.RawLSM3.RawLSM3-comp.comp       4.1   10.4
+Data.SUList.ListSetMap.RawLSM.RawLSM3.RawLSM3-comp.comp₀      3.9    3.7
+...
+\end{verbatim}
+\caption{Profiling report for RATH-Agda's \AgdaModule{Main} module, compiled without projection inlining.}
+\label{fig:main_prof}
+\end{figure}

@@ -1,31 +1,26 @@
-In this chapter, we look at how the XYZ technique formulated in Chapter~\ref{cha:main_chapter} can be applied to different scenarios involving ABC. Through a series of examples, we will see the versatility of the MNP technique and how it can be used to ABC. \newline
+In this chapter, we at the effect of the optimisation techniques formulated in Chapter~\ref{cha:main_chapter} on different Agda code samples. Through a series of examples, we will see the degree to which these optimisations can yield increases in efficiency for both memory allocation space and execution time.
 
-In this chapter, we automate the given examples using the XYZ tool. For more information regarding the use of the XYZ tool, refer to Appendix~\ref{app:relview}.
-
-
-\section{Application One}
+\section{Inlining RATH-Agda Main}
 \label{sec:app_one}
 % Begin Section
 
-We continue with the illustrative example introduced in Section~\ref{sec:the_proposed_technique}. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et nibh vel mauris pharetra viverra. Integer nisl nibh, ullamcorper eget imperdiet sed, accumsan ultrices purus. Quisque malesuada vel elit in cursus. Vestibulum rutrum turpis sed lectus vehicula, et venenatis ligula varius. Vivamus auctor fermentum libero, in ullamcorper diam pulvinar non. Donec condimentum cursus iaculis. Nulla odio dolor, faucibus eget mauris a, eleifend congue erat. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam aliquet finibus ligula eu feugiat. Aenean feugiat nunc et arcu elementum vestibulum. \newline  
+RATH-Agda is a basic category and allegory theory library developed by Kahl, et al.\cite{kahl2017} It includes theories relating to semigroupoids, division allegories, typed Kleene algebras and monoidal categories, among other topics.\cite{kahl2017} The RATH-Agda repository also provides a set of test cases in a \AgdaModule{Main} module, which can be used to test a variety of typical uses of the library's functions.
 
-Through Example~\ref{ex:single_channel} we will show that nulla vulputate ultricies felis, ut feugiat nisl auctor a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. \newline
+\subsection{Before}
 
-\input{Examples/exSingleChannel}
+\input{Figures/Output/MainProf}
 
-% End Section
+In profiling the runtime of this \AgdaModule{Main} module, we found that an inordinate amount of time was spent on evaluating simple record projections. The first few lines of the profiling report in Figure~\ref{fig:main_prof} indicate that the greatest cost centres in terms of time are the two simple record projections for the $\Sigma$ data type, with a combined 17.6\% of execution time spent evaluating them.
 
-\section{App Two}
-\label{sec:app_two}
-% Begin Section
+Because enabling profiling does have an affect on execution, we also re-compiled the module without profiling and ran it six times, measuring execution time with the Unix \texttt{time} command, to determing its average runtime as 1.60 seconds.
 
-Pellentesque vitae imperdiet mi, vel semper arcu. Sed venenatis molestie elit, at malesuada sem suscipit non. In et tristique elit, sit amet aliquet arcu. Maecenas enim ex, aliquam nec diam vel, gravida tristique risus. Integer massa augue, porta sed dui quis, efficitur venenatis arcu. Sed massa dolor, auctor vitae felis eu, mollis mollis neque. Nunc luctus, sapien et auctor faucibus, justo metus ultricies nulla, nec consequat augue magna quis quam. Curabitur tristique bibendum vehicula. Sed quis dictum odio. Donec eget vestibulum sem. Nullam facilisis libero vel justo mattis luctus. Suspendisse auctor fringilla mi non varius. Proin vitae quam massa. Nam sit amet tristique urna, quis pharetra diam. Cras efficitur enim sed accumsan imperdiet. Vivamus euismod non odio nec semper. \newline
+\subsection{After}
 
-Sed quis tellus maximus, condimentum mauris at, dictum diam. Curabitur faucibus, velit id vulputate facilisis, turpis quam molestie mi, ac imperdiet diam nisi ut tellus. Etiam ultrices orci at ante convallis, in rhoncus lacus posuere. Nam vel ullamcorper leo, eu aliquet ante. Cras venenatis sagittis mauris efficitur fringilla. Maecenas at pretium arcu. Duis rhoncus lorem metus, quis laoreet eros porttitor vitae. \newline
+\input{Figures/Output/MainInlineProf}
 
-This idea is best illustrated through Example~\ref{ex:single_modulated}. \newline
+By compiling \AgdaModule{Main} with our new option, \texttt{--inline-proj}, enabled, we reduced total runtime and memory allocation, as can be seen by comparing Figure~\ref{fig:main_inline_prof} and Figure~\ref{fig:main_prof}.
 
-\input{Examples/exSingleModulated}
+We again re-compiled the module without profiling and ran it six times, measuring execution time with the Unix \texttt{time} command, to determing its average runtime with projections inlined as 1.44 seconds. We therefore produced a speedup of 1.11$\times$.
 
 % End Section
 
