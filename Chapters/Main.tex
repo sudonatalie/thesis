@@ -1,4 +1,4 @@
-In this chapter, we discuss the design and implementation of our optimisations to the Agda compiler. In Section~\ref{sec:assumptions}, we list our assumptions. In Section~\ref{sec:mathematical_representation}, we give a clear mathematical representation of the problem of XYZ. In Section~\ref{sec:the_proposed_technique}, we present our technique. 
+In this chapter, we discuss the design and implementation of our optimisations to the Agda compiler. In Section~\ref{sec:assumptions}, we list our assumptions. In Section~\ref{sec:logical_representation}, we give a logical representation of the optimisations. In Section~\ref{sec:implementation}, we present our implementation, with references to source code in the Appendix.
 
 \section{Assumptions}
 \label{sec:assumptions}
@@ -13,9 +13,91 @@ In formulating the problem of XYZ, we make the following assumptions:
 
 % End Section
 
-\section{Inlining Projections}
-\label{sec:inlining_projections}
-% Begin Section
+\section{Logical Representation}
+\label{sec:logical_representation}
+
+We present in Figure~\ref{fig:treeless_grammar} a simplified logical representation of the Agda treeless syntax as a grammar. We use this simplification to discuss the optimisations at a logical level of abstraction.
+
+TODO This doesn't clearly represent a function definition applied to $arity$ many arguments.
+
+\begin{figure}
+\begin{align*}
+t :=~& v_i & \text{variable}\\
+|~& d & \text{definition}\\
+|~& t~t & \text{application}\\
+|~& \lambda~v_0 \to t & \text{lambda abstraction}\\
+|~& l & \text{literal}\\
+|~& \mathtt{let}~v_0 = t~\mathtt{in}~t & \text{let}\\
+|~& \mathtt{case}~v_i~\mathtt{of}~\{a\}~\mathtt{otherwise} \to t& \text{case}\\
+\\
+a :=~& d~v_{ar-1}..v_0 \to t\\
+|~& l \to t\\
+\\
+i \in~& \mathbb{N} & \text{de Bruijn index}\\
+d \in~& \{\text{function or datatype name}\}\\
+l \in~& \{\text{literal}\}\\
+\end{align*}
+\caption{Simplified representation of the Agda treeless syntax grammar.}
+\label{fig:treeless_grammar}
+\end{figure}
+
+\subsection{Inlining Projections}
+
+The logical representation of inlining is fairly straightforward. While recursing through the treeless representation of an Agda module, for every application of a defintion to a term (that is, $d~t$, where $d$ is the name of a function or datatype, identifying a definition, and $t$ is a treeless term)... TODO
+
+\subsection{Case Squashing}
+
+The goal of case squashing is to eliminate case expressions where the scrutinee has already been matched on by an enclosing ancestor case expression. For example, given the following simplified treeless expression:
+
+TODO use colours to indicate which vi's refer to the same vars
+
+\begin{lstlisting}[style=math]
+$\lambda~v_0 \to$
+$\lambda~v_0 \to$
+$\lambda~v_0 \to$
+case $v_2$ of {
+  $da~v_2~v_1~v_0 \to$
+    case $v_0$ of {
+      $db~v_1~v_0 \to$
+        case $v_7$ of {
+          $da~v_2~v_1~v_0 \to r$
+          ...
+        }
+      ...
+    }
+  ...
+}
+\end{lstlisting}
+
+we can follow the de Bruijn indices to their matching variable bindings, to see that the first and third case expressions are scrutinizing the same variable, the one bound by the outermost $\lambda$ function. Therefore, with only static analysis of the expression tree, we know that the third case expression must follow the $da~v_2~v_1~v_0$ branch, and we can thus safely transform our expression into the following:
+
+\begin{lstlisting}[style=math]
+$\lambda~v_0 \to$
+$\lambda~v_0 \to$
+$\lambda~v_0 \to$
+case $v_2$ of {
+  $da~v_2~v_1~v_0 \to$
+    case $v_0$ of {
+      $db~v_1~v_0 \to$
+        $r[v0 := v2, v1 := v3, v2 := v4]$
+      ...
+    }
+  ...
+}
+\end{lstlisting}
+
+We perform this ``case squashing'' by accumulating an environment of all previously scrutinized variables as we traverse the tree structure (appropriately shifting de Bruijn indices in the environment as new variables are bound), and replacing case expressions matching on the same variable as an ancestor case expressions wherever possible.
+
+\subsection{Generating Pattern Lets}
+
+\section{Implementation}
+\label{sec:implementation}
+
+Given the Haskell data type of Agda's treeless representation, as shown in Figure~\ref{code:TTerm}...
+
+\subsection{Inlining Projections}
+
+TODO This isn't really implementation so much as output
 
 We added the option:
 
@@ -51,48 +133,13 @@ Take for example the simple usage of record projections in Figure~\ref{code:inli
 
 The compiled projection function \AgdaField{Pair.snd}, that is \lstinline{d18} in the Haskell code, is replaced with a Haskell expression that cases on the pair (\AgdaFunction{p} in Agda, \lstinline{d22} in Haskell) and returns the second field.
 
-Although this inline expansion alone does not yield great benfits, the resulting inlined code gives us greater opportunities for further optimization, as we discuss in Sections TODO and TODO.
+This inline expansion can yield benfits on its own in certain codebases (see Section~TODO) by creating opportunities for GHC to optimise. The resulting inlined code also gives us better opportunities for further optimization within the Agda backend, as we discuss in Sections TODO and TODO.
 
-\subsection{Performance}
+\subsection{Case Squashing}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et nibh vel mauris pharetra viverra. Integer nisl nibh, ullamcorper eget imperdiet sed, accumsan ultrices purus. Quisque malesuada vel elit in cursus. Vestibulum rutrum turpis sed lectus vehicula, et venenatis ligula varius.  In Section~\ref{sec:survey_discussion}, we discussed vivamus auctor fermentum libero, in ullamcorper diam pulvinar non. Donec condimentum cursus iaculis. Nulla odio dolor, faucibus eget mauris a, eleifend congue erat. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam aliquet finibus ligula eu feugiat. Aenean feugiat nunc et arcu elementum vestibulum. \newline
+TODO
 
-Pellentesque aliquet tempor condimentum. Nulla vulputate ultricies felis, ut feugiat nisl auctor a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dapibus turpis ac tortor ullamcorper, in eleifend mi fringilla. Nam luctus tortor pulvinar neque molestie, quis scelerisque nisi volutpat. Integer et risus facilisis, vehicula libero nec, feugiat ante. In Figure~\ref{fig:commutative_diagram}, donec ultricies libero et mauris mollis, eu pretium neque iaculis. Sed in elit quis dui molestie dapibus vitae vel sapien. Etiam fermentum maximus accumsan. \newline
-
-\input{Figures/CommutativeDiagram}
-
-In imperdiet purus nec eleifend finibus. Aliquam non tempor massa. Etiam ac felis et ante varius vehicula nec eget tortor. Proin posuere quis felis non rutrum. Aenean quis felis ut ex sagittis pellentesque sit amet tempus nisl. Nam nec tellus ut lorem posuere semper non ac arcu. Nulla faucibus purus libero, in pellentesque sapien commodo tristique. Etiam consectetur lectus elit, id porttitor justo dignissim interdum. Donec ut nisl metus. Nulla sed dui lacus. Donec tristique dignissim massa sed ultricies. Maecenas iaculis arcu diam, ut dictum nisi euismod vitae. Praesent id imperdiet augue. 
-
-% End Section
-
-\section{The Proposed Technique}
-\label{sec:the_proposed_technique}
-% Begin Section
-
-The proposed technique for the detection of the leak of confidential information via covert channels has two components: monitoring the information sent on the communication channels and finding an abstraction relation relating the confidential information to the information observed to be sent on the communication channel(s).
-
-\subsection{Monitoring the Communication Channels}
-\label{sub:monitoring_the_communication_channels}
-% Begin SubSection
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et nibh vel mauris pharetra viverra. Integer nisl nibh, ullamcorper eget imperdiet sed, accumsan ultrices purus. Quisque malesuada vel elit in cursus. Vestibulum rutrum turpis sed lectus vehicula, et venenatis ligula varius.  In Section~\ref{sec:communication}, we discussed vivamus auctor fermentum libero, in ullamcorper diam pulvinar non. Donec condimentum cursus iaculis. Nulla odio dolor, faucibus eget mauris a, eleifend congue erat. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nullam aliquet finibus ligula eu feugiat. Aenean feugiat nunc et arcu elementum vestibulum. \newline
-
-\input{Figures/Communication}
-
-Pellentesque aliquet tempor condimentum. Nulla vulputate ultricies felis, ut feugiat nisl auctor a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dapibus turpis ac tortor ullamcorper, in eleifend mi fringilla. Nam luctus tortor pulvinar neque molestie, quis scelerisque nisi volutpat. Integer et risus facilisis, vehicula libero nec, feugiat ante. Donec ultricies libero et mauris mollis, eu pretium neque iaculis. Sed in elit quis dui molestie dapibus vitae vel sapien. Etiam fermentum maximus accumsan.
-
-% End Section
-
-\section{Conclusion}
-\label{sec:problem_formulation_conclusion}
-% Begin Section
-
-Pellentesque aliquet tempor condimentum. Nulla vulputate ultricies felis, ut feugiat nisl auctor a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dapibus turpis ac tortor ullamcorper, in eleifend mi fringilla. Nam luctus tortor pulvinar neque molestie, quis scelerisque nisi volutpat. Integer et risus facilisis, vehicula libero nec, feugiat ante. Donec ultricies libero et mauris mollis, eu pretium neque iaculis. Sed in elit quis dui molestie dapibus vitae vel sapien. Etiam fermentum maximus accumsan
-
-% End Section
-
-
-\section{Generating Pattern Lets}
+\subsection{Generating Pattern Lets}
 
 We can avoid generating certain trivial case expressions in our Haskell expressions by identifying structures like the following in our Agda terms:
 
@@ -109,50 +156,14 @@ let v0@(C0 v1 v2 v3) = e
 in t
 \end{lstlisting}
 
-Our first optimisation centres around generating these ``pattern lets''. The function \lstinline{term :: T.TTerm -> CC HS.Exp} in the Agda compiler backend transforms Agda terms into Haskell expressions. In this function, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets, namely let expressions where the let body is a case expression, with a single constructor alternative, scrutinizing the variable bound by the parent let. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinizing the 0 (most recently bound) variable.
+Our last optimisation centres around generating these ``pattern lets''. The function \lstinline{term :: T.TTerm -> CC HS.Exp} in the Agda compiler backend transforms Agda terms into Haskell expressions. In this function, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets, namely let expressions where the let body is a case expression, with a single constructor alternative, scrutinizing the variable bound by the parent let. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinizing the 0 (most recently bound) variable.
 
-\begin{lstlisting}
-  TLet _ (TCase 0 _ _ [TACon _ _ _])
-    | genPLet
-    , Just (PLet {pletNumBinders = numBinders, eTerm = TLet t1 tp}, tb) <- splitPLet tm0
-    -> do
-        t1' <- term t1
-        intros 1 $ \[x] -> do
-          intros numBinders $ \xs -> do
-            tb' <- term tb
-            p <- addAsPats (x:xs) 1 tp (HS.PVar x)
-            return $ hsPLet p (hsCast t1') tb'
-\end{lstlisting}
+...
 
-\begin{lstlisting}
--- | In @addAsPats xs numBound tp pat@, recurse through @tp@ to find all
---   single constructor @TCase@s and replace @PVar@s of the same scrutinee
---   with appropriate @PAsPat@s, until @TErased@ is reached.
---   @xs@ contains all necessary variables introduce by the initial call
---   in @term@, with @numBound@ indicating the number of introduced
---   of variables introduced by the caller used in @PApp@s and the top let.
-addAsPats :: [HS.Name] -> Nat -> TTerm -> HS.Pat -> CC HS.Pat
-addAsPats xs numBound
-  tp@(TCase sc _ _ [TACon c cArity tp'])
-  pat = case xs !!! (numBound - 1 - sc) of
-    Just scName -> do
-      erased <- lift $ getErasedConArgs c
-      hConNm <- lift $ conhqn c
-      let oldPat = HS.PVar scName
-      let vars = take cArity $ drop numBound xs
-      let newPat = HS.PAsPat scName $ HS.PApp hConNm $ map HS.PVar [ x | (x, False) <- zip vars erased ]
-      let pat' = replacePats oldPat newPat pat
-      addAsPats xs (numBound + cArity) tp' pat'
-    Nothing -> __IMPOSSIBLE__
-addAsPats _ _ TErased pat = return pat
-addAsPats _ _ _ _ = __IMPOSSIBLE__ -- Guaranteed by splitPLet
+\section{Conclusion}
+\label{sec:main_conclusion}
+% Begin Section
 
--- | In @replacePats old new p@, replace all instances of @old@ in @p@
---   with @new@
-replacePats :: HS.Pat -> HS.Pat -> HS.Pat -> HS.Pat
-replacePats old new p@(HS.PVar _) = if old == p then new else p
-replacePats old new (HS.PAsPat sc p) = HS.PAsPat sc $ replacePats old new p
-replacePats old new p@(HS.PApp q pats) =
-  HS.PApp q $ map (replacePats old new) pats
-replacePats _ _ p = __IMPOSSIBLE__ -- Guaranteed by addAsPats
-\end{lstlisting}
+Pellentesque aliquet tempor condimentum. Nulla vulputate ultricies felis, ut feugiat nisl auctor a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dapibus turpis ac tortor ullamcorper, in eleifend mi fringilla. Nam luctus tortor pulvinar neque molestie, quis scelerisque nisi volutpat. Integer et risus facilisis, vehicula libero nec, feugiat ante. Donec ultricies libero et mauris mollis, eu pretium neque iaculis. Sed in elit quis dui molestie dapibus vitae vel sapien. Etiam fermentum maximus accumsan
+
+% End Section
