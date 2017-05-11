@@ -22,7 +22,7 @@ TODO This doesn't clearly represent a function definition applied to $arity$ man
 
 \begin{figure}
 \begin{align*}
-t :=~& v_i & \text{variable}\\
+t ::=~& v_i & \text{variable}\\
 |~& d & \text{definition}\\
 |~& t~t & \text{application}\\
 |~& \lambda~v_0 \to t & \text{lambda abstraction}\\
@@ -30,7 +30,7 @@ t :=~& v_i & \text{variable}\\
 |~& \mathtt{let}~v_0 = t~\mathtt{in}~t & \text{let}\\
 |~& \mathtt{case}~v_i~\mathtt{of}~\{a\}~\mathtt{otherwise} \to t& \text{case}\\
 \\
-a :=~& d~v_{ar-1}..v_0 \to t\\
+a ::=~& d~v_{ar-1}..v_0 \to t\\
 |~& l \to t\\
 \\
 i \in~& \mathbb{N} & \text{de Bruijn index}\\
