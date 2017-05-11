@@ -16,19 +16,19 @@ In formulating the problem of XYZ, we make the following assumptions:
 \section{Logical Representation}
 \label{sec:logical_representation}
 
-We present in Figure~\ref{fig:treeless_grammar} a simplified logical representation of the Agda treeless syntax as a grammar. We use this simplification to discuss the optimisations at a logical level of abstraction.
+We present in Figure~\ref{fig:treeless_grammar} a simplified logical representation of the Agda treeless syntax as a grammar. We use this simplification to discuss the optimisations at a logical level of abstraction. Note that variables are represented only by their de Bruijn index.
 
 \begin{figure}
 \begin{align*}
-t ::=~& v_i & \text{variable}\\
+t ::=~& i & \text{variable}\\
 |~& d & \text{definition}\\
 |~& t~t^* & \text{application}\\
-|~& \lambda~v_0 \to t & \text{lambda abstraction}\\
+|~& \lambda~0 \to t & \text{lambda abstraction}\\
 |~& l & \text{literal}\\
-|~& \mathtt{let}~v_0 = t~\mathtt{in}~t & \text{let}\\
-|~& \mathtt{case}~v_i : \tau~\mathtt{of}~a^*~\mathtt{otherwise} \to t& \text{case}\\
+|~& \mathtt{let}~0 = t~\mathtt{in}~t & \text{let}\\
+|~& \mathtt{case}~i : \tau~\mathtt{of}~a^*~\mathtt{otherwise} \to t& \text{case}\\
 \\
-a ::=~& d~v_{ar-1}..v_0 \to t\\
+a ::=~& d~(ar-1)..0 \to t\\
 |~& l \to t\\
 \\
 i \in~& \mathbb{N} & \text{de Bruijn index}\\
@@ -47,18 +47,18 @@ The logical representation of inlining is fairly straightforward. While recursin
 
 The goal of case squashing is to eliminate case expressions where the scrutinee has already been matched on by an enclosing ancestor case expression. For example, given the following simplified treeless expression:
 
-TODO use colours to indicate which vi's refer to the same vars
+TODO use colours to indicate which i's refer to the same variable bindings
 
 \begin{lstlisting}[style=math]
-$\lambda~v_0 \to$
-$\lambda~v_0 \to$
-$\lambda~v_0 \to$
-case $v_2$ of {
-  $da~v_2~v_1~v_0 \to$
-    case $v_0$ of {
-      $db~v_1~v_0 \to$
-        case $v_7$ of {
-          $da~v_2~v_1~v_0 \to r$
+$\lambda~0 \to$
+$\lambda~0 \to$
+$\lambda~0 \to$
+case $2$ of {
+  $da~2~1~0 \to$
+    case $0$ of {
+      $db~1~0 \to$
+        case $7$ of {
+          $da~2~1~0 \to r$
           ...
         }
       ...
@@ -67,17 +67,17 @@ case $v_2$ of {
 }
 \end{lstlisting}
 
-we can follow the de Bruijn indices to their matching variable bindings, to see that the first and third case expressions are scrutinizing the same variable, the one bound by the outermost $\lambda$ function. Therefore, with only static analysis of the expression tree, we know that the third case expression must follow the $da~v_2~v_1~v_0$ branch, and we can thus safely transform our expression into the following:
+we can follow the de Bruijn indices to their matching variable bindings, to see that the first and third case expressions are scrutinizing the same variable, the one bound by the outermost $\lambda$ function. Therefore, with only static analysis of the expression tree, we know that the third case expression must follow the $da~2~1~0$ branch, and we can thus safely transform our expression into the following:
 
 \begin{lstlisting}[style=math]
-$\lambda~v_0 \to$
-$\lambda~v_0 \to$
-$\lambda~v_0 \to$
-case $v_2$ of {
-  $da~v_2~v_1~v_0 \to$
-    case $v_0$ of {
-      $db~v_1~v_0 \to$
-        $r[v0 := v2, v1 := v3, v2 := v4]$
+$\lambda~0 \to$
+$\lambda~0 \to$
+$\lambda~0 \to$
+case $2$ of {
+  $da~2~1~0 \to$
+    case $0$ of {
+      $db~1~0 \to$
+        $r[0 := 2, 1 := 3, 2 := 4]$
       ...
     }
   ...
