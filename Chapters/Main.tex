@@ -113,11 +113,24 @@ removing and unnecessary case expression, and immediately binding the appropriat
 \section{Implementation}
 \label{sec:implementation}
 
-Given the Haskell data type of Agda's treeless representation, as shown in Figure~\ref{code:TTerm}...
+We discuss in this section some implementation details of our optimisation with reference to the Haskell data type of Agda's treeless representation, as shown in Figure~\ref{code:TTerm}.
 
 \subsection{Inlining Projections}
 
-TODO This isn't really implementation so much as output
+\subsection{Case Squashing}
+
+\subsection{Generating Pattern Lets}
+
+Our next optimisation centres around generating these ``pattern lets''. The function \lstinline{term :: T.TTerm -> CC HS.Exp} in the Agda compiler backend transforms Agda terms into Haskell expressions. In this function, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets, namely let expressions where the let body is a case expression, with a single constructor alternative, scrutinizing the variable bound by the parent let. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinizing the 0 (most recently bound) variable.
+
+...
+
+\subsection{Let Pattern Floating}
+
+\section{Usage}
+\label{sec:usage}
+
+\subsection{Inlining Projections}
 
 We added the option:
 
@@ -127,60 +140,9 @@ We added the option:
 
 to Agda which, when enabled, will replace every call to a function that is a proper projection with its function body. (Note that proper projections do not include projection-like functions, or record field values, i.e. projections applied to an argument.)
 
-\input{Figures/Agda/latex/Inline1}
-
-Take for example the simple usage of record projections in Figure~\ref{code:inline1}. When we compile this module once without \texttt{--inline-proj} on, and once again with \texttt{--inline-proj} enabled, a unified \texttt{diff} of two of the generated Haskell files gives us what is shown in Figure~\ref{fig:inline1_diff}.
-
-% TODO Possibly move this earlier as motivation for the work
-% TODO Replace with nicer looking diff, maybe from SourceTree?
-\begin{figure}
-\begin{verbatim}
---- Inline1-compile/MAlonzo/Code/Inline1.hs
-+++ Inline1-compile-inline/MAlonzo/Code/Inline1.hs
-@@ -31,4 +31,9 @@
-       MAlonzo.Code.IO.du42 ()
-       (coe
-          MAlonzo.Code.IO.d150
--         (coe MAlonzo.Code.Data.Nat.Show.d22 (coe d18 d22)))
-+         (coe MAlonzo.Code.Data.Nat.Show.d22
-+            (let v0 = coe d22 in
-+             case coe v0 of
-+               C20 v1 v2 -> coe v2
-+               _ -> MAlonzo.RTE.mazUnreachableError)))
-\end{verbatim}
-
-\caption{Unified difference of the \AgdaModule{Inline1} module compiled without and then with \texttt{--inline-proj}.}
-\label{fig:inline1_diff}
-\end{figure}
-
-The compiled projection function \AgdaField{Pair.snd}, that is \lstinline{d18} in the Haskell code, is replaced with a Haskell expression that cases on the pair (\AgdaFunction{p} in Agda, \lstinline{d22} in Haskell) and returns the second field.
-
-This inline expansion can yield benfits on its own in certain codebases (see Section~TODO) by creating opportunities for GHC to optimise. The resulting inlined code also gives us better opportunities for further optimization within the Agda backend, as we discuss in Sections TODO and TODO.
-
 \subsection{Case Squashing}
 
-TODO
-
 \subsection{Generating Pattern Lets}
-
-We can avoid generating certain trivial case expressions in our Haskell expressions by identifying structures like the following in our Agda terms:
-
-\begin{lstlisting}
-let v0 = e
-in case v0 of
-  C0 v1 v2 v3 -> t
-\end{lstlisting}
-
-and transforming them into ``pattern lets'':
-
-\begin{lstlisting}
-let v0@(C0 v1 v2 v3) = e
-in t
-\end{lstlisting}
-
-Our next optimisation centres around generating these ``pattern lets''. The function \lstinline{term :: T.TTerm -> CC HS.Exp} in the Agda compiler backend transforms Agda terms into Haskell expressions. In this function, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets, namely let expressions where the let body is a case expression, with a single constructor alternative, scrutinizing the variable bound by the parent let. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinizing the 0 (most recently bound) variable.
-
-...
 
 \subsection{Let Pattern Floating}
 
