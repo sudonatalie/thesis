@@ -83,6 +83,26 @@ We perform this ``case squashing'' by accumulating an environment of all previou
 
 \subsection{Generating Pattern Lets}
 
+We can avoid generating certain trivial case expressions by identifying expressions like the following:
+
+\begin{lstlisting}[style=math]
+let $0$ = $e$
+in case $0$ of
+  $da~2 1 0 \to t$
+	otherwise $\to X$
+\end{lstlisting}
+
+In the above example, the body of a \lstinline{let} expression is a \lstinline{case} expression scrutinizing the variable just bound by the enclosing \lstinline{let} where only one case alternative exists, and the default case is marked as \textit{unreachable}. TODO explain Unreachable markers
+
+Our treeless syntax does not support pattern matching, but when these cases are identified before transofrming into Haskell expressions, we can replace them with ``pattern lets'' like the following:
+
+\begin{lstlisting}
+let v0@(C0 v1 v2 v3) = e
+in t
+\end{lstlisting}
+
+removing and unnecessary case expression, and immediately binding the appropriate constructor parameters in the \lstinline{let} expression.
+
 \subsection{Let Pattern Floating}
 % floating let patterns as described in Issue 1895,
 % possibly including FloatingCase (which will have to end up
