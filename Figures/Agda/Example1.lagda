@@ -1,6 +1,6 @@
 \begin{figure}
 \begin{code}
-module Inline1 where
+module Example1 where
 
 data ℕ : Set where
   zero : ℕ
@@ -19,5 +19,5 @@ f z = fst z (snd z)
 \end{code}
 
 \caption{A simple record projection in Agda.}
-\label{code:inline1}
+\label{code:example1_agda}
 \end{figure}

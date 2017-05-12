@@ -2,15 +2,15 @@ In this chapter, we look at the effect of the optimisation techniques formulated
 
 \section{Inlining a Simple Module}
 
-\input{Figures/Agda/latex/Inline1}
+\input{Figures/Agda/latex/Example1}
 
 Take for example the simple usage of record projections in Figure~\ref{code:inline1}. When we compile this module once without \texttt{--inline-proj} on, and once again with \texttt{--inline-proj} enabled, a unified \texttt{diff} of two of the generated Haskell files gives us what is shown in Figure~\ref{fig:inline1_diff}.
 
 % TODO Replace with nicer looking diff, maybe from SourceTree?
 \begin{figure}
 \begin{verbatim}
---- Inline1-compile/MAlonzo/Code/Inline1.hs
-+++ Inline1-compile-inline/MAlonzo/Code/Inline1.hs
+--- Example1-compile/MAlonzo/Code/Example1.hs
++++ Example1-compile-inline/MAlonzo/Code/Example1.hs
 @@ -31,4 +31,9 @@
        MAlonzo.Code.IO.du42 ()
        (coe
@@ -23,7 +23,7 @@ Take for example the simple usage of record projections in Figure~\ref{code:inli
 +               _ -> MAlonzo.RTE.mazUnreachableError)))
 \end{verbatim}
 
-\caption{Unified difference of the \AgdaModule{Inline1} module compiled without and then with \texttt{--inline-proj}.}
+\caption{Unified difference of the \AgdaModule{Example1} module compiled without and then with \texttt{--inline-proj}.}
 \label{fig:inline1_diff}
 \end{figure}
 
