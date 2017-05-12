@@ -21,7 +21,7 @@ We present in Figure~\ref{fig:treeless_grammar} a simplified logical representat
 \begin{figure}
 \begin{align*}
 t ::=~& i & \text{variable}\\
-|~& d & \text{definition}\\
+|~& d & \text{function or datatype name}\\
 |~& t~t^* & \text{application}\\
 |~& \lambda~0 \to t & \text{lambda abstraction}\\
 |~& l & \text{literal}\\
@@ -41,7 +41,7 @@ l \in~& \{\text{literal}\}\\
 
 \subsection{Inlining Projections}
 
-The logical representation of inlining is fairly straightforward. While recursing through the treeless representation of an Agda module, for every application of a defintion to a term (that is, $d~t$, where $d$ is the name of a function or datatype, identifying a definition, and $t$ is a treeless term)... TODO
+The logical representation of inlining is fairly straightforward. We recurse through the treeless representation of an Agda module. For every application of a function or datatype to a list of arguments, that is $d~t^*$, where $d$ is the name of a function or datatype, and $t$s are treeless terms, we replace $d~t^*$ with the function or datatype definition corresponding to $d$ and substitute in the $t^*$ arguments.
 
 \subsection{Case Squashing}
 
@@ -53,18 +53,15 @@ TODO use colours to indicate which i's refer to the same variable bindings
 $\lambda~0 \to$
 $\lambda~0 \to$
 $\lambda~0 \to$
-case $2$ of {
+case $2$ of
   $da~2~1~0 \to$
-    case $0$ of {
+    case $0$ of
       $db~1~0 \to$
-        case $7$ of {
+        case $7$ of
           $da~2~1~0 \to r$
           ...
-        }
       ...
-    }
   ...
-}
 \end{lstlisting}
 
 we can follow the de Bruijn indices to their matching variable bindings, to see that the first and third case expressions are scrutinizing the same variable, the one bound by the outermost $\lambda$ function. Therefore, with only static analysis of the expression tree, we know that the third case expression must follow the $da~2~1~0$ branch, and we can thus safely transform our expression into the following:
@@ -75,16 +72,14 @@ $\lambda~0 \to$
 $\lambda~0 \to$
 case $2$ of {
   $da~2~1~0 \to$
-    case $0$ of {
+    case $0$ of
       $db~1~0 \to$
-        $r[0 := 2, 1 := 3, 2 := 4]$
+        $r[2 := 4, 1 := 3, 0 := 2]$
       ...
-    }
   ...
-}
 \end{lstlisting}
 
-We perform this ``case squashing'' by accumulating an environment of all previously scrutinized variables as we traverse the tree structure (appropriately shifting de Bruijn indices in the environment as new variables are bound), and replacing case expressions matching on the same variable as an ancestor case expressions wherever possible.
+We perform this ``case squashing'' by accumulating an environment of all previously scrutinized variables as we traverse the tree structure (appropriately shifting de Bruijn indices in the environment as new variables are bound), and replacing case expressions that match on the same variable as an ancestor case expressions, with the corresponding case branch's body. Any variables in the body that refer to bindings in the removed branch should be replaced with references to the bindings in the matching ancestor case expression branch.
 
 \subsection{Generating Pattern Lets}
 
