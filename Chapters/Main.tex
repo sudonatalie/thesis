@@ -47,17 +47,15 @@ The logical representation of inlining is fairly straightforward. We recurse thr
 
 The goal of case squashing is to eliminate case expressions where the scrutinee has already been matched on by an enclosing ancestor case expression. For example, given the following simplified treeless expression:
 
-TODO use colours to indicate which i's refer to the same variable bindings
-
 \begin{lstlisting}[style=math]
+$\lambda~\textcolor{red}{0} \to$
 $\lambda~0 \to$
 $\lambda~0 \to$
-$\lambda~0 \to$
-case $2$ of
+case $\textcolor{red}{2}$ of
   $da~2~1~0 \to$
     case $0$ of
       $db~1~0 \to$
-        case $7$ of
+        case $\textcolor{red}{7}$ of
           $da~2~1~0 \to r$
           ...
       ...
@@ -71,10 +69,10 @@ $\lambda~0 \to$
 $\lambda~0 \to$
 $\lambda~0 \to$
 case $2$ of {
-  $da~2~1~0 \to$
+  $da~\textcolor{red}{2}~\textcolor{blue}{1}~\textcolor{green}{0} \to$
     case $0$ of
       $db~1~0 \to$
-        $r[2 := 4, 1 := 3, 0 := 2]$
+        $r[2 := \textcolor{red}{4}, 1 := \textcolor{blue}{3}, 0 := \textcolor{green}{2}]$
       ...
   ...
 \end{lstlisting}
