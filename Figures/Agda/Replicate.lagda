@@ -15,6 +15,6 @@ replicate zero    x = []
 replicate (suc n) x = x ∷ replicate n x
 \end{code}
 
-\caption{The \AgdaFunction{replicate} function in Agda.}
+\caption{The \AgdaFunction{replicate}~function in Agda.}
 \label{code:replicate}
 \end{figure}

@@ -14,6 +14,6 @@ if true  then t else f = t
 if false then t else f = f
 \end{code}
 
-\caption{The \AgdaFunction{if\_then\_else\_} function in Agda.}
+\caption{The \AgdaFunction{if\_then\_else\_}~function in Agda.}
 \label{code:if_function}
 \end{figure}
