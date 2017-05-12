@@ -1,10 +1,10 @@
 In this chapter, we look at the effect of the optimisation techniques formulated in Chapter~\ref{cha:main_chapter} on different Agda code samples. Through a series of examples, we will see the effect of these optimisations and the degree to which they can yield increases in efficiency for both memory allocation space and execution time.
 
-\section{Inlining a Simple Module}
+\section{Simple Module}
 
 \input{Figures/Agda/latex/Example1}
 
-Take for example the simple usage of record projections in Figure~\ref{code:inline1}. When we compile this module once without \texttt{-{}-inline-proj} on, and once again with \texttt{-{}-inline-proj} enabled, a unified diff of two of the generated Haskell files gives us what is shown in Figure~\ref{fig:Example1_inline}.
+Take for example the simple usage of record projections in Figure~\ref{code:example1_agda}. When we compile this module once without \texttt{-{}-inline-proj} on, and once again with \texttt{-{}-inline-proj} enabled, a unified diff of the two generated Haskell files gives us what is shown in Figure~\ref{fig:Example1_inline}.
 
 \begin{figure}
     \centering
@@ -15,16 +15,19 @@ Take for example the simple usage of record projections in Figure~\ref{code:inli
 
 The compiled projection function \AgdaField{Pair.snd}, that is \lstinline{d18} in the Haskell code, is replaced with a Haskell expression that cases on the pair (\AgdaFunction{p} in Agda, \lstinline{d22} in Haskell) and returns the second field.
 
-This inline expansion can yield benfits on its own in certain codebases (see Section~TODO) by creating opportunities for GHC to optimise. The resulting inlined code also gives us better opportunities for further optimization within the Agda backend, as we discuss in Sections TODO and TODO.
+% TODO Move this somewhere else
+% This inline expansion can yield benfits on its own in certain codebases (see Section~TODO) by creating opportunities for GHC to optimise. The resulting inlined code also gives us better opportunities for further optimization within the Agda backend, as we discuss in Sections TODO and TODO.
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\textwidth]{Figures/Example1_inline}
-    \caption{Unified difference of the \AgdaModule{Example1}~module compiled without and then with \texttt{-{}-squash-cases}.}
+    \includegraphics[width=0.5\textwidth]{Figures/Example1_squash}
+    \caption{Unified difference of the \AgdaModule{Example1}~module compiled  with \texttt{-{}-inline-proj} and then also with \texttt{-{}-squash-cases}.}
     \label{fig:Example1_squash}
 \end{figure}
 
-\section{Inlining RATH-Agda Main}
+We then compile the same file with both \texttt{-{}-inline-proj} and \texttt{-{}-squash-cases}, and the difference between only inlining and both inlining and squashing can be seen in Figure~\ref{fig:Example1_squash}.
+
+\section{RATH-Agda Main}
 \label{sec:app_one}
 % Begin Section
 
