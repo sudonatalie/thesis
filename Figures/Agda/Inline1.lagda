@@ -2,10 +2,9 @@
 \begin{code}
 module Inline1 where
 
-open import Data.Nat
-open import Data.Nat.Show
-
-open import IO
+data ℕ : Set where
+  zero : ℕ
+  suc : ℕ → ℕ
 
 record Pair (A : Set) (B : Set) : Set where
   constructor _,_
@@ -13,10 +12,10 @@ record Pair (A : Set) (B : Set) : Set where
     fst : A
     snd : B
 
-p : Pair ℕ ℕ
-p = 0 , 1
+open Pair
 
-main = run (putStrLn (show (Pair.snd p)))
+f : Pair (ℕ → ℕ) ℕ → ℕ
+f z = fst z (snd z)
 \end{code}
 
 \caption{A simple record projection in Agda.}
