@@ -4,34 +4,25 @@ In this chapter, we look at the effect of the optimisation techniques formulated
 
 \input{Figures/Agda/latex/Example1}
 
-Take for example the simple usage of record projections in Figure~\ref{code:inline1}. When we compile this module once without \texttt{--inline-proj} on, and once again with \texttt{--inline-proj} enabled, a unified \texttt{diff} of two of the generated Haskell files gives us what is shown in Figure~\ref{fig:inline1_diff}.
+Take for example the simple usage of record projections in Figure~\ref{code:inline1}. When we compile this module once without \texttt{-{}-inline-proj} on, and once again with \texttt{-{}-inline-proj} enabled, a unified diff of two of the generated Haskell files gives us what is shown in Figure~\ref{fig:Example1_inline}.
 
-% TODO Replace with nicer looking diff, maybe from SourceTree?
 \begin{figure}
-\begin{verbatim}
---- Example1-compile/MAlonzo/Code/Example1.hs
-+++ Example1-compile-inline/MAlonzo/Code/Example1.hs
-@@ -31,4 +31,9 @@
-       MAlonzo.Code.IO.du42 ()
-       (coe
-          MAlonzo.Code.IO.d150
--         (coe MAlonzo.Code.Data.Nat.Show.d22 (coe d18 d22)))
-+         (coe MAlonzo.Code.Data.Nat.Show.d22
-+            (let v0 = coe d22 in
-+             case coe v0 of
-+               C20 v1 v2 -> coe v2
-+               _ -> MAlonzo.RTE.mazUnreachableError)))
-\end{verbatim}
-
-\caption{Unified difference of the \AgdaModule{Example1} module compiled without and then with \texttt{--inline-proj}.}
-\label{fig:inline1_diff}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/Example1_inline}
+    \caption{Unified difference of the \AgdaModule{Example1} module compiled without and then with \texttt{-{}-inline-proj}.}
+    \label{fig:Example1_inline}
 \end{figure}
 
 The compiled projection function \AgdaField{Pair.snd}, that is \lstinline{d18} in the Haskell code, is replaced with a Haskell expression that cases on the pair (\AgdaFunction{p} in Agda, \lstinline{d22} in Haskell) and returns the second field.
 
 This inline expansion can yield benfits on its own in certain codebases (see Section~TODO) by creating opportunities for GHC to optimise. The resulting inlined code also gives us better opportunities for further optimization within the Agda backend, as we discuss in Sections TODO and TODO.
 
-TODO Squash it too
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/Example1_inline}
+    \caption{Unified difference of the \AgdaModule{Example1} module compiled without and then with \texttt{-{}-squash-cases}.}
+    \label{fig:Example1_squash}
+\end{figure}
 
 \section{Inlining RATH-Agda Main}
 \label{sec:app_one}
@@ -51,7 +42,7 @@ Because enabling profiling does have an affect on execution, we also re-compiled
 
 \input{Figures/Output/MainInlineProf}
 
-By compiling \AgdaModule{Main} with our new option, \texttt{--inline-proj}, enabled, we reduced total runtime and memory allocation, as can be seen by comparing Figure~\ref{fig:main_inline_prof} and Figure~\ref{fig:main_prof}.
+By compiling \AgdaModule{Main} with our new option, \texttt{-{}-inline-proj}, enabled, we reduced total runtime and memory allocation, as can be seen by comparing Figure~\ref{fig:main_inline_prof} and Figure~\ref{fig:main_prof}.
 
 We again re-compiled the module without profiling and ran it six times, measuring execution time with the Unix \texttt{time} command, to determing its average runtime with projections inlined as 1.44 seconds. We therefore produced a speedup of 1.11$\times$.
 
