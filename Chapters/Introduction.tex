@@ -1,4 +1,4 @@
-In this chapter, we introduce dependently typed functional programming. In Section~\ref{sec:general_context}, we give an introduction to the Agda programming language and explain its history, advantages, and potential future. In Section~\ref{sec:specific_context}, we introduce the Agda compiler and GHC. In Section~\ref{sec:literature_survey}, we provide a review of the literature and discuss some existing techniques for improving functional code with optimising compilers and indicating how the existing techniques are not sufficient to achieve the desired performance in our use cases. In Section~\ref{sec:motivation}, we give the motivation for the new optimisation strategies introduced here. In Section~\ref{sec:problem_statement}, we state the problem subject of our work. In Section~\ref{sec:main_contributions}, we summarize our contributions, namely the optimisation strategies and their implementation in the Agda backend. Finally, in Section~\ref{sec:structure_of_the_thesis}, we give the structure of the remainder of the thesis.
+In this chapter, we introduce dependently typed functional programming. In Section~\ref{sec:general_context}, we give an introduction to the Agda programming language and explain its history, advantages, and potential future. In Section~\ref{sec:specific_context}, we introduce the Agda compiler and GHC. In Section~\ref{sec:related_work}, we provide a survey of the literature and discuss some existing techniques for improving functional code with optimising compilers and indicating how the existing techniques are not sufficient to achieve the desired performance in our use cases. In Section~\ref{sec:motivation}, we give the motivation for the new optimisation strategies introduced here. In Section~\ref{sec:problem_statement}, we state the problem subject of our work. In Section~\ref{sec:main_contributions}, we summarize our contributions, namely the optimisation strategies and their implementation in the Agda backend. Finally, in Section~\ref{sec:structure_of_the_thesis}, we give the structure of the remainder of the thesis.
 
 \section{General Context}
 \label{sec:general_context}
@@ -16,14 +16,12 @@ Agda \cite{norell2007} is a dependently-typed programming language and theorem p
 
 % End Section
 
-\section{Literature Survey}
-\label{sec:literature_survey}
+\section{Related Work}
+\label{sec:related_work}
 % Begin Section
-% In Section~\ref{sec:literature_survey}, we provide a review of the literature and discuss some existing techniques for improving functional code with optimising compilers and indicating how the existing techniques are not sufficient to achieve the desired performance in our use cases.
+% In Section~\ref{sec:related_work}, we provide a review of the literature and discuss some existing techniques for improving functional code with optimising compilers and indicating how the existing techniques are not sufficient to achieve the desired performance in our use cases.
 
-\subsection{Compiler Theory}
-
-\subsubsection*{Common subexpression elimination}
+\subsection{Common subexpression elimination}
 
 Common subexpression elimination (CSE) is a compiler optimisation that reduces execution time by avoid repeated computations of the same expression.\cite{chitil1997} This very similar to our goal with case squashing. As anyone familiar with the nature of purely functional programming languages might realize, identification of common subexpressions is much simpler in a functional language thanks to the expectation of referential transparency.\cite{chitil1997} (As a reminder, referential transparency means that an expression always produces the same result regardless of the context in which it is evaluated.)
 
@@ -52,6 +50,21 @@ and then the recursive transormation produces:
 \caption{Common subexpression elimination transformation in Haskell.\cite{chitil1997}}
 \label{code:cse_haskell}
 \end{figure}
+
+\subsection{Let-floating}
+
+\subsection{Alternate method of case squashing}
+
+Following development of \texttt{-{}-squash-cases}, an optimisation was added to the Agda compiler's Simplify stage which accomplishes the same goals as \texttt{-{}-squash-cases} in a slightly different way. We examine here that method of removing repeated case expressions.
+
+Immediately following the conversion of compiled clauses to treeless syntax in the Agda compiler, a series of optimising transformations are applied before the treeless expression is returned. % TODO discuss this in the Specific Context section above, or Background and move this later
+One such step is the ``simplify'' group of transformations, which modify a \lstinline{TTerm} in a variety of optimising ways.
+
+As the expression is traversed, \lstinline{simplify} is recursively called on each \lstinline{TTerm} term, and \lstinline{simpAlt} is called on each \lstinline{TAlt} alternative. Given some expression casing on de Bruijn index $x$, for each alternative of the pattern \lstinline{TACon name arity body}, the scrutinized variable index in the body, $x + arity$, is looked up in the variable environment. If the variable has already been bound, and therefore has a different de Bruijn index, $y$, a rewrite rule is added to the constructor. The rewrite rule indicates that every instance of \lstinline{TApp (TCon name) (TVar i | i <- [arity-1,arity-2..0])} in the alternative's body should be replaced with a \lstinline{TVar y}.
+
+The rewrite rule is encoded as part of the wrapper \lstinline{Reader} environment that is carried along with the \lstinline{TTerm} throughout simplification, and is evaluated later by applying substitutions. It is at this point that all necessary de Bruijn index shifting is managed.
+
+An abridged version of \texttt{Treeless/Simplify.hs} showing the primary functions involved in this optimisation in the updated Agda compiler is available in Appendix~\ref{app:Simplify}.
 
 % End Section
 
