@@ -126,7 +126,7 @@ Data.SUList.ListSetMap...                                & 3.0
 \end{tabular}
 \end{table}
 
-Using the GHC built-in profiling system, we generated profiling data for the RATH-Agda library's execution and found that the time required to evaluate simple record projections combined to be the greatest cost-centres in the data (see Table \ref{table:profiling}).
+Using the GHC built-in profiling system, we generated profiling data for the RATH-Agda library's execution and found that the time required to evaluate simple record projections combined to be the greatest cost-centres in the data. This representative usage of the RATH-Agda library spends more than 20\% of execution time on just two types of projections (see Table~\ref{table:profiling}).
 
 % End Section
 
@@ -134,8 +134,12 @@ Using the GHC built-in profiling system, we generated profiling data for the RAT
 \label{sec:problem_statement}
 % Begin Section
 % In Section~\ref{sec:problem_statement}, we state the problem subject of our work.
-% TODO Get the less RATH-focused problem statement from the poster competition poster.
 
+For practical development in Agda a highly effective optimizing compiler backend is a particularly essential tool to avoid performance concerns.
+
+Our work aims to introduce a number of optimising transformations to the Agda internals and backend so that Agda users can continue to focus on elegant syntax and mathematical clarity, and leave the optimisations necessary to transform that code into a program that runs with acceptable heap allocation and execution time to the compiler.
+
+The optimisations we focus on are specifically oriented towards aiding our team's most common, and most costly, uses of the Agda programming language, but they should be useful in a general context for most Agda users.
 
 % End Section
 
