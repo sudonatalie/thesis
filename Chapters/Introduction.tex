@@ -14,6 +14,12 @@ Agda \cite{norell2007} is a dependently-typed programming language and theorem p
 % Begin Section
 % In Section~\ref{sec:specific_context}, we introduce the Agda compiler and GHC.
 
+Agda has a number of available compilers and backends, but the one that is most comonly used, and most efficient in most cases, is MAlonzo, the GHC (Glasgow Haskell Compiler) backend.\cite{benke2007} The MAlonzo backend aims to achieve the goal of compiling Agda code with the performance of the generated code matching that of GHC, and it does so by translating Agda into Haskell, so that it can be compiled, and optimised, by GHC. This is a practical and useful arrangement for real-world Agda usage, because GHC has benefited from a massive development effort by a large community to create a highly performant compiler.\cite{benke2007}
+
+The differentiating feature that Agda provides over Haskell is a more expressive type system (see Section~\ref{sec:agda}). Because Agda supports dependent types and Haskell does not, in order for Agda generated code to pass the Haskell type checker, it is necessary for the MAlonzo backend to wrap coercions around all function arguments and all function calls, which cast terms from one type to a different arbitrary type. Unfortunately, these potentially unsafe type coercions mean that there are many GHC optimisations which Agda's generated code is ``missing out on''.\cite{fredriksson2011}
+
+Some of the Agda optimisations described herein would typically be performed by GHC after translation to Haskell were it not for these coercions, so we instead ensure that we can still take advantage of these optimisations by implementing them in the Agda backend, before translation to Haskell occurs.
+
 % End Section
 
 \section{Related Work}
