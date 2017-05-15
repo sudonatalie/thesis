@@ -6,8 +6,6 @@ In this chapter, we introduce dependently typed functional programming. In Secti
 \section{General Context}
 \label{sec:general_context}
 
-% TODO In Section~\ref{sec:general_context}, we give an introduction to the Agda programming language and explain its history, advantages, and potential future.
-
 Agda \cite{norell2007} is a dependently-typed programming language and theorem prover, supporting proof construction in a functional programming style. Due to its incredibly flexible concrete syntax and support for Unicode identifiers \cite{bove2009}, Agda can be used to construct elegant and expressive proofs in a format that is understandable even to those unfamiliar with the tool. As a result, many users of Agda, including our group, are quick to sacrifice speed and efficiency in our code in favour of proof clarity. This makes a highly-optimized compiler backend a particularly essential tool for practical development with Agda.
 
 \section{Specific Context}
@@ -28,13 +26,13 @@ Common subexpression elimination (CSE) is a compiler optimisation that reduces e
 
 Appel first implemented CSE in the strict functional language ML's compiler in 1992.\cite{appel1992} Chitil first explored the implementation of CSE in a lazy functional language, Haskell, with his 1997 paper.\cite{chitil1997} The difficulty with implementing CSE in a lazy language is that, although common subexpressions are easy to identify, determining which common subexpressions will yield a benefit by being eliminated is more challenging. To avoid complex data flow analysis on functional code, Chitil developed some simple syntactic conditions for judging when CSE is beneficial in Haskell code.\cite{chitil1997} We omit these from our survey, as such heuristics are unnecessary for our optimisation. We instead focus on the relevant ``compilation by transformation'' approach used when implementing CSE in GHC.
 
-The GHC compilation process consists of translating Haskell code into a second-order $\lambda$-calculus language called Core, at which point a series of optimising transformation are performed, and the backend transforms Core code into C.\cite{chitil1997} This process is very similar to the Agda compilation process, which translates Agda code into Treeless code, applies a series of optimising transformations, and finally generates Haskell code through the backend, as discussed in Section~\ref{sec:agda_compiler}. % TODO make a diagram to show this analogous process
+The GHC compilation process consists of translating Haskell code into a second-order $\lambda$-calculus language called Core, at which point a series of optimising transformation are performed, and the backend transforms Core code into C.\cite{chitil1997} This process is very similar to the Agda compilation process, which translates Agda code into Treeless code, applies a series of optimising transformations, and finally generates Haskell code through the backend, as discussed in Section~\ref{sec:agda_compiler}. \edcomm{NP}{make a diagram to show this analogous process}
 
 The syntax of the Core intermediate language of Haskell is very similar to Treeless, with expressions consisting mainly of $\lambda$ abstractions, \lstinline{let} bindings, \lstinline{case} expressions, constructors, literals and function applications, much like Agda's Treeless syntax outlined in Figure~\ref{code:TTerm}.
 
 CSE is implemented in GHC with a single recursive traversal of the Core program. For each expression, its subexpressions are first transformed, then it is determined whether the whole transformed expression has occurred already.\cite{chitil1997} An example of this is shown in Figure~\ref{code:cse_haskell}.
 
-% TODO Review this example, it seems weird.
+\edcomm{NP}{Review this example, it seems weird.}
 \begin{figure}
 Given the expression:
 
@@ -101,7 +99,7 @@ TODO
 
 Following development of \texttt{-{}-squash-cases}, an optimisation was added to the Agda compiler's Simplify stage which accomplishes the same goals as \texttt{-{}-squash-cases} in a slightly different way. We examine here that method of removing repeated case expressions.
 
-Immediately following the conversion of compiled clauses to treeless syntax in the Agda compiler, a series of optimising transformations are applied before the treeless expression is returned. % TODO discuss this in the Specific Context section above, or Background and move this later
+Immediately following the conversion of compiled clauses to treeless syntax in the Agda compiler, a series of optimising transformations are applied before the treeless expression is returned. \edcomm{NP}{discuss this in the Specific Context section above, or Background and move this later}
 One such step is the ``simplify'' group of transformations, which modify a \lstinline{TTerm} in a variety of optimising ways.
 
 As the expression is traversed, \lstinline{simplify} is recursively called on each \lstinline{TTerm} term, and \lstinline{simpAlt} is called on each \lstinline{TAlt} alternative. Given some expression casing on de Bruijn index $x$, for each alternative of the pattern \lstinline{TACon name arity body}, the scrutinized variable index in the body, $x + arity$, is looked up in the variable environment. If the variable has already been bound, and therefore has a different de Bruijn index, $y$, a rewrite rule is added to the constructor. The rewrite rule indicates that every instance of \lstinline{TApp (TCon name) (TVar i | i <- [arity-1,arity-2..0])} in the alternative's body should be replaced with a \lstinline{TVar y}.
@@ -113,9 +111,7 @@ An abridged version of \texttt{Treeless/Simplify.hs} showing the primary functio
 \section{Motivation}
 \label{sec:motivation}
 
-% In Section~\ref{sec:motivation}, we give the motivation for the new optimisation strategies introduced here.
-
-% TODO make this less RATH-focused
+\edcomm{NP}{Make this less RATH-focused}
 
 The RATH-Agda library is a category and allegory theory project developed by Kahl et al. which takes advantage of features of the Agda programming language's flexibility. In order to achieve its primary goal of natural mathematical clarity and style, it faces, like many Agda programs, performance concerns. \cite{kahl2017}
 
@@ -159,19 +155,17 @@ However, the pass commonly results in deeply nested case expressions, many of wh
 \section{Structure of the Thesis}
 \label{sec:structure_of_the_thesis}
 
-% Finally, in Section~\ref{sec:structure_of_the_thesis}, we give the structure of the remainder of the thesis.
-
 The remainder of this thesis is organized as follows:
 
 \paragraph{Chapter~\ref{cha:background}} introduces the required compiler theory and logical background.
 
-% TODO Maybe add a chapter for using the background to descibe contributions in less technical terms, if this doesn't get accomplished elsewhere
+\edcomm{NP}{Maybe add a chapter for using the background to descibe contributions in less technical terms, if this doesn't get accomplished elsewhere}
 
 \paragraph{Chapter~\ref{cha:main_chapter}} describes the process by which we formulate a new technique to optimise Agda programs.
 
 \paragraph{Chapter~\ref{cha:application_of_main}} gives a number of illustrative examples demonstrating the application of the implemented optimisation.
 
-% TODO Maybe merge discussion and conclusion
+\edcomm{NP}{Maybe merge discussion and conclusion}
 
 \paragraph{Chapter~\ref{cha:discussion}} discusses the impact of our contribution in helping to remedy the problems of poor performance.
 

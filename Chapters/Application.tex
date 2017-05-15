@@ -18,8 +18,9 @@ Take for example the simple usage of record projections in Figure~\ref{code:exam
 
 The compiled projection function \AgdaField{Pair.snd}, that is \lstinline{d18} in the Haskell code, is replaced with a Haskell expression that cases on the pair (\AgdaFunction{p} in Agda, \lstinline{d22} in Haskell) and returns the second field.
 
-% TODO Move this somewhere else
-% This inline expansion can yield benfits on its own in certain codebases (see Section~TODO) by creating opportunities for GHC to optimise. The resulting inlined code also gives us better opportunities for further optimization within the Agda backend, as we discuss in Sections TODO and TODO.
+\edcomm{NP}{Move this somewhere else}
+
+This inline expansion can yield benfits on its own in certain codebases (see Section~TODO) by creating opportunities for GHC to optimise. The resulting inlined code also gives us better opportunities for further optimization within the Agda backend, as we discuss in Sections TODO and TODO.
 
 \begin{figure}
     \centering

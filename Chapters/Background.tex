@@ -1,10 +1,6 @@
 \chapter{Background}
 \label{cha:background}
 
-%# Inline expansion
-
-%Inline expansion replaces a function call site with the body of the called function
-
 In this chapter, we introduce the necessary compiler theory and logical background concepts required for the understanding of the material presented in the thesis. In Section~\ref{sec:agda}, we give an introduction to Agda and its compiler. In Section~\ref{sec:lambda_calc}, we review some of the mathematical background useful for understanding our optimisations. Finally, in Section~\ref{sec:background_conclusion}, we conclude with a summary of the core concepts and describe where they are used throughout the remainder of the thesis.
 
 \section{Agda}
@@ -20,12 +16,11 @@ Agda also supports a flexible mixfix syntax, as seen in Figure~\ref{code:if_func
 
 \input{Figures/Agda/latex/If}
 
-% TODO some kind of figure that shows a math-y proposition, its representation as a type in Agda, the corresponding program satisfying the type, thereby proving the math-y prop true
+\edcomm{NP}{some kind of figure that shows a math-y proposition, its representation as a type in Agda, the corresponding program satisfying the type, thereby proving the math-y prop true}
 
-% Include an Agda tutorial as per: http://dspace.library.uu.nl:8080/handle/1874/256628
-% or is it necessary to understand thesis?
+\edcomm{NP}{Include an Agda tutorial as per: \url{http://dspace.library.uu.nl:8080/handle/1874/256628}}
 
-% TODO incorporate this figure somehow:
+\edcomm{NP}{incorporate this figure somehow:}
 The core syntax of Agda is a dependently typed lambda calculus, with a simple grammar as shown in Figure~\ref{fig:grammar}.
 
 \begin{figure}
@@ -42,9 +37,8 @@ a ::=~& x               & \text{variable}\\
 \end{figure}
 
 \subsection{Module System}
-% Either before or after compiler section
-% Discuss Agda module system and its translation
-% Arguments inheited from all enclosing modules
+
+\edcomm{NP}{Either before or after compiler section. Discuss Agda module system and its translation. Arguments inheited from all enclosing modules.}
 
 TODO
 
@@ -61,21 +55,22 @@ Compiled clauses are, simply put, case trees.
 
 This should sound familiar to users of functional programming languages like Haskell. Unlike Haskell, however, Agda does not permit partial functions. Therefore, functions defined by pattern matching must not exclude any possible cases from the pattern matching clauses.\cite{agdawiki} % http://wiki.portal.chalmers.se/agda/pmwiki.php?n=ReferenceManual.Totality#Coveragechecking}
 Once coverage checking is completed, pattern matching can be translated into case trees by successively splitting on each variable.\cite{agdahackage} % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-TypeChecking-CompiledClause.html
-% TODO Take for example the following case tree equivalence for a foo function, defined by pattern matching, in Agda: ??? \cite{https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-TypeChecking-CompiledClause.html}
 
-%Compiled clauses are case trees with their bodies.
-%Document compiled clauses: https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-TypeChecking-CompiledClause.html
+Take for example the following case tree equivalence for a foo function, defined by pattern matching, in Agda: TODO % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-TypeChecking-CompiledClause.html
 
-The treeless syntax is the input to the compiler backend of Agda. After all type-checking is complete, the higher-level internal syntax of compiled clauses is translated to a ``treeless'' syntax, the name for which is derived from its use of case expressions instead of case trees. The other notable difference between compiled clauses and treeless syntax is the absence of datatypes and constructors.\cite{agdahackage} %TODO WHY? % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-Syntax-Treeless.html
+\edcomm{NP}{Document compiled clauses: \url{https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-TypeChecking-CompiledClause.html}. Compiled clauses are case trees with their bodies.}
+
+The treeless syntax is the input to the compiler backend of Agda. After all type-checking is complete, the higher-level internal syntax of compiled clauses is translated to a ``treeless'' syntax, the name for which is derived from its use of case expressions instead of case trees. The other notable difference between compiled clauses and treeless syntax is the absence of datatypes and constructors.\cite{agdahackage} % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-Syntax-Treeless.html
+\edcomm{NP}{WHY?}
 
 \subsubsection{Treeless Syntax}
 
-The treeless syntax is constructed from \lstinline{TTerm}s %TODO What does the T stand for?
+The treeless syntax is constructed from \lstinline{TTerm}s \edcomm{NP}{What does the T stand for?}
 and is a representation of the abstract syntax tree for the compiler backend. It can be reasoned about as a lambda calculus with all local variable using de Bruijn indices. A listing of \lstinline{TTerm} constructors is shown in Figure~\ref{code:TTerm}.
 
 In this section we examine the constructors of \lstinline{TTerm}s one-by-one\cite{agdahackage}, then discuss how substitutions can be safely performed on \lstinline{TTerm}s as a preface for discussing our optimizations.
 
-% TODO Read about how sharing is lost with substitution in the agda mailing list: https://lists.chalmers.se/pipermail/agda/2017/009379.html
+\edcomm{NP}{Read about how sharing is lost with substitution in the agda mailing list: \url{https://lists.chalmers.se/pipermail/agda/2017/009379.html}}
 
 \begin{figure}
 \begin{lstlisting}[style=blockhaskell]
@@ -103,13 +98,13 @@ data TAlt = TACon QName Nat TTerm
 \label{code:TTerm}
 \end{figure}
 
-% TODO present de bruijn indices
+\edcomm{NP}{present de bruijn indices}
 
 A \textbf{\lstinline{TVar}} is a de Bruijn indexed variable term.
 
 A \textbf{\lstinline{TPrim}} is a compiler-related primitive, such as addition, subtraction and equality on some primitive types.
 
-A \textbf{\lstinline{TDef}} is a qualified name identifying a function or datatype definition % TODO confirm
+A \textbf{\lstinline{TDef}} is a qualified name identifying a function or datatype definition \edcomm{NP}{confirm}
 
 A \textbf{\lstinline{TApp}} is a \lstinline{TTerm} applied to a list of arguments, where each argument is itself a \lstinline{TTerm}.
 
@@ -130,7 +125,7 @@ The case alternatives, \textbf{\lstinline{TAlt}}s, may be constructed from:
 \item a \lstinline{TALit}, which matches on a literal term.
 \end{itemize}
 
-A \textbf{\lstinline{TUnit}} is used for levels. % TODO what does that mean
+A \textbf{\lstinline{TUnit}} is used for levels. \edcomm{NP}{what does that mean}
 
 A \textbf{\lstinline{TSort}}
 
@@ -141,7 +136,7 @@ A \textbf{\lstinline{TError}} is used to indicate a runtime error.
 \section{Lambda Calculus}
 \label{sec:lambda_calc}
 
-% TODO actually introduce what lambda calculus is. Musa suggests this: https://pdfs.semanticscholar.org/2d0a/07723f93b26c3d673f386ac903cdcb6cc521.pdf
+\edcomm{NP}{actually introduce what lambda calculus is. Musa suggests this: \url{https://pdfs.semanticscholar.org/2d0a/07723f93b26c3d673f386ac903cdcb6cc521.pdf}}
 
 In order to perform the desired optimisations on the abstract syntax tree, we must be able to perform substitutions on terms. Treating the \lstinline{TTerm} structure as a specialized $\lambda$-calculus, we can implement substitution as a function on terms.
 
@@ -151,11 +146,11 @@ Because our terms are built on de Bruijn indexed variables, we use the explicit 
 
 In order to eliminate the need for named variables in $\lambda$-calculus notation, de Bruijn notation is used to represent bound terms (variables) with natural numbers. In any term, the positive integer $n$ refers to the $n$th surrounding $\lambda$ binder.\cite{debruijn1972}
 
-% TODO Graphical example like this: https://en.wikipedia.org/wiki/De_Bruijn_index#/media/File:De_Bruijn_index_illustration_1.svg, but emphasize that in different scope locations, different numbers point to the same bound variable.
+\edcomm{NP}{Graphical example like this: \url{https://en.wikipedia.org/wiki/De_Bruijn_index\#/media/File:De_Bruijn_index_illustration_1.svg}, but emphasize that in different scope locations, different numbers point to the same bound variable.}
 
 Take then, for instance, a simple case of the classical application of the $\beta$-rule (See Figure~\ref{eq:beta_rule}). Beta reduction is the process of simplifying an application of a function to the resulting substituted term. However, in order to $\beta$-reduce $(\lambda a)b$, we must not only substitute $b$ into the appropriate occurrences in $a$. As the $\lambda$ binding disappears, we must also decrement all remaining free indices in $a$. This adapted form of the $\beta$-rule can be represented by the infinite substitution showin in Figure~\ref{eq:beta_rule2}).\cite{abadi1991}
 
-% TODO Combine beta rule figures into subfigures a and b in a single figure
+\edcomm{NP}{Combine beta rule figures into subfigures a and b in a single figure}
 
 \begin{figure}
 \begin{equation*}
@@ -187,4 +182,4 @@ It is also important when applying substitutions to $\lambda$ terms that we avoi
 
 Recognizing the required index ``shifting'' and ``lifting'' in the Figure~\ref{eq:debruijn_sub} substitution rule should suffice as background for understanding the variable manipulation performed in our optimisation.
 
-% Here has a good introduction that may be a good reference: http://fi.ort.edu.uy/innovaportal/file/5328/3/formalisationconstructivetypetheorystoughtonsubstitution.pdf
+\edcomm{NP}{Here has a good introduction that may be a good reference: \url{http://fi.ort.edu.uy/innovaportal/file/5328/3/formalisationconstructivetypetheorystoughtonsubstitution.pdf}}

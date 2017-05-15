@@ -92,11 +92,8 @@ in t
 removing an unnecessary case expression, and immediately binding the appropriate constructor parameters in the \lstinline{let} expression.
 
 \subsection{Let Pattern Floating}
-% floating let patterns as described in Issue 1895,
-% possibly including FloatingCase (which will have to end up
-% producing irrefutable patterns on the function left-hand sides,
-% not done yet), but definitely a separate section for cross-call-floating.
-% See: Log/2017-04-26_Float-across-function-calls_notes.txt
+
+\edcomm{NP}{Kahl: floating let patterns as described in Issue 1895, possibly including FloatingCase (which will have to end up producing irrefutable patterns on the function left-hand sides, not done yet), but definitely a separate section for cross-call-floating. See: Log/2017-04-26\_Float-across-function-calls\_notes.txt}
 
 TODO
 
@@ -107,7 +104,7 @@ We discuss in this section some implementation details of our optimisation with 
 
 \subsection{Inlining Projections}
 
-%(Note that proper projections do not include projection-like functions, or record field values, i.e. projections applied to an argument.)
+Note that proper projections do not include projection-like functions, or record field values, i.e. projections applied to an argument.
 
 TODO
 
@@ -119,7 +116,7 @@ TODO
 
 TODO
 
-%Our next optimisation centres around generating these ``pattern lets''. The function \lstinline{term :: T.TTerm -> CC HS.Exp} in the Agda compiler backend transforms Agda terms into Haskell expressions. In this function, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets, namely let expressions where the let body is a case expression, with a single constructor alternative, scrutinizing the variable bound by the parent let. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinizing the 0 (most recently bound) variable.
+Our next optimisation centres around generating these ``pattern lets''. The function \lstinline{term :: T.TTerm -> CC HS.Exp} in the Agda compiler backend transforms Agda terms into Haskell expressions. In this function, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets, namely let expressions where the let body is a case expression, with a single constructor alternative, scrutinizing the variable bound by the parent let. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinizing the 0 (most recently bound) variable.
 
 \subsection{Let Pattern Floating}
 
