@@ -5,16 +5,13 @@ In this chapter, we introduce dependently typed functional programming. In Secti
 
 \section{General Context}
 \label{sec:general_context}
-% Begin Section
+
 % TODO In Section~\ref{sec:general_context}, we give an introduction to the Agda programming language and explain its history, advantages, and potential future.
 
 Agda \cite{norell2007} is a dependently-typed programming language and theorem prover, supporting proof construction in a functional programming style. Due to its incredibly flexible concrete syntax and support for Unicode identifiers \cite{bove2009}, Agda can be used to construct elegant and expressive proofs in a format that is understandable even to those unfamiliar with the tool. As a result, many users of Agda, including our group, are quick to sacrifice speed and efficiency in our code in favour of proof clarity. This makes a highly-optimized compiler backend a particularly essential tool for practical development with Agda.
 
-% End Section
-
 \section{Specific Context}
 \label{sec:specific_context}
-% Begin Section
 
 Agda has a number of available compilers and backends, but the one that is most comonly used, and most efficient in most cases, is MAlonzo, the GHC (Glasgow Haskell Compiler) backend.\cite{benke2007} The MAlonzo backend aims to achieve the goal of compiling Agda code with the performance of the generated code matching that of GHC, and it does so by translating Agda into Haskell, so that it can be compiled, and optimised, by GHC. This is a practical and useful arrangement for real-world Agda usage, because GHC has benefited from a massive development effort by a large community to create a highly performant compiler.\cite{benke2007}
 
@@ -22,11 +19,8 @@ The differentiating feature that Agda provides over Haskell is a more expressive
 
 Some of the Agda optimisations described herein would typically be performed by GHC after translation to Haskell were it not for these coercions, so we instead ensure that we can still take advantage of these optimisations by implementing them in the Agda backend, before translation to Haskell occurs.
 
-% End Section
-
 \section{Related Work}
 \label{sec:related_work}
-% Begin Section
 
 \subsection{Common subexpression elimination}
 
@@ -116,11 +110,9 @@ The rewrite rule is encoded as part of the wrapper \lstinline{Reader} environmen
 
 An abridged version of \texttt{Treeless/Simplify.hs} showing the primary functions involved in this optimisation in the updated Agda compiler is available in Appendix~\ref{app:Simplify}.
 
-% End Section
-
 \section{Motivation}
 \label{sec:motivation}
-% Begin Section
+
 % In Section~\ref{sec:motivation}, we give the motivation for the new optimisation strategies introduced here.
 
 % TODO make this less RATH-focused
@@ -141,11 +133,8 @@ Data.SUList.ListSetMap...                                & 3.0
 
 Using the GHC built-in profiling system, we generated profiling data for the RATH-Agda library's execution and found that the time required to evaluate simple record projections combined to be the greatest cost-centres in the data. This representative usage of the RATH-Agda library spends more than 20\% of execution time on just two types of projections (see Table~\ref{table:profiling}).
 
-% End Section
-
 \section{Problem Statement}
 \label{sec:problem_statement}
-% Begin Section
 
 For practical development in Agda a highly effective optimizing compiler backend is a particularly essential tool to avoid performance concerns.
 
@@ -153,11 +142,8 @@ Our work aims to introduce a number of optimising transformations to the Agda in
 
 The optimisations we focus on are specifically oriented towards aiding our team's most common, and most costly, uses of the Agda programming language, but they should be useful in a general context for most Agda users.
 
-% End Section
-
 \section{Main Contributions}
 \label{sec:main_contributions}
-% Begin Section
 
 The main contributions to the Agda compiler include:
 \begin{enumerate}[(i)]
@@ -170,11 +156,9 @@ The Agda compiler's type checker allows us to identify proper projections, and w
 
 However, the pass commonly results in deeply nested case expressions, many of which are pattern matching on the same constructors as its ancestors, thereby duplicating variables that the compiler has already bound. By gathering the matched patterns throughout a pass over the nested terms, we are able to prune patterns that are unnecessarily repeated, and substitute in place the previously bound pattern variables.
 
-% End Section
-
 \section{Structure of the Thesis}
 \label{sec:structure_of_the_thesis}
-% Begin Section
+
 % Finally, in Section~\ref{sec:structure_of_the_thesis}, we give the structure of the remainder of the thesis.
 
 The remainder of this thesis is organized as follows:
@@ -193,4 +177,3 @@ The remainder of this thesis is organized as follows:
 
 \paragraph{Chapter~\ref{cha:conclusion_and_future_work}} draws conclusions and suggests future work.
 
-% End Section
