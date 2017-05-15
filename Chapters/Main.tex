@@ -1,17 +1,4 @@
-In this chapter, we discuss the design and implementation of our optimisations to the Agda compiler. In Section~\ref{sec:assumptions}, we list our assumptions. In Section~\ref{sec:logical_representation}, we give a logical representation of the optimisations. In Section~\ref{sec:implementation}, we present our implementation, with references to source code in the Appendix.
-
-\section{Assumptions}
-\label{sec:assumptions}
-% Begin Section
-
-In formulating the problem of XYZ, we make the following assumptions:
-\begin{enumerate}[(i)]
-	\item Assumption one.
-	\item Assumption two.
-	\item Assumption three.
-\end{enumerate}
-
-% End Section
+In this chapter, we discuss the design and implementation of our optimisations to the Agda compiler. In Section~\ref{sec:logical_representation}, we give a logical representation of the optimisations. In Section~\ref{sec:implementation}, we present our implementation, with references to source code in the Appendix. In Section~\ref{sec:usage}, we present the usage instructions for these features in our compiler branch.
 
 \section{Logical Representation}
 \label{sec:logical_representation}
@@ -86,20 +73,20 @@ We can avoid generating certain trivial case expressions by identifying expressi
 \begin{lstlisting}[style=math]
 let $0$ = $e$
 in case $0$ of
-  $da~2 1 0 \to t$
+  $da~2~1~0 \to t$
 	otherwise $\to X$
 \end{lstlisting}
 
 In the above example, the body of a \lstinline{let} expression is a \lstinline{case} expression scrutinizing the variable just bound by the enclosing \lstinline{let} where only one case alternative exists, and the default case is marked as \textit{unreachable}. TODO explain Unreachable markers
 
-Our treeless syntax does not support pattern matching, but when these cases are identified before transofrming into Haskell expressions, we can replace them with ``pattern lets'' like the following:
+Our treeless syntax does not support pattern matching, but when these cases are identified before transforming into Haskell expressions, we can replace them with ``pattern lets'' like the following:
 
 \begin{lstlisting}
 let v0@(C0 v1 v2 v3) = e
 in t
 \end{lstlisting}
 
-removing and unnecessary case expression, and immediately binding the appropriate constructor parameters in the \lstinline{let} expression.
+removing an unnecessary case expression, and immediately binding the appropriate constructor parameters in the \lstinline{let} expression.
 
 \subsection{Let Pattern Floating}
 % floating let patterns as described in Issue 1895,
@@ -115,13 +102,13 @@ We discuss in this section some implementation details of our optimisation with 
 
 \subsection{Inlining Projections}
 
+%(Note that proper projections do not include projection-like functions, or record field values, i.e. projections applied to an argument.)
+
 \subsection{Case Squashing}
 
 \subsection{Generating Pattern Lets}
 
-Our next optimisation centres around generating these ``pattern lets''. The function \lstinline{term :: T.TTerm -> CC HS.Exp} in the Agda compiler backend transforms Agda terms into Haskell expressions. In this function, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets, namely let expressions where the let body is a case expression, with a single constructor alternative, scrutinizing the variable bound by the parent let. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinizing the 0 (most recently bound) variable.
-
-...
+%Our next optimisation centres around generating these ``pattern lets''. The function \lstinline{term :: T.TTerm -> CC HS.Exp} in the Agda compiler backend transforms Agda terms into Haskell expressions. In this function, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets, namely let expressions where the let body is a case expression, with a single constructor alternative, scrutinizing the variable bound by the parent let. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinizing the 0 (most recently bound) variable.
 
 \subsection{Let Pattern Floating}
 
@@ -136,18 +123,18 @@ We added the option:
 --inline-proj                               inline proper projections
 \end{verbatim}
 
-to Agda which, when enabled, will replace every call to a function that is a proper projection with its function body. (Note that proper projections do not include projection-like functions, or record field values, i.e. projections applied to an argument.)
+to our Agda branch which, when enabled, will replace every call to a function that is a proper projection with its function body. 
 
 \subsection{Case Squashing}
+
+We added the option:
+
+\begin{verbatim}
+--squash-cases                              remove unnecessary case expressions
+\end{verbatim}
+
+to our Agda branch which, when enabled, will perform the case squashing optimisation described above.
 
 \subsection{Generating Pattern Lets}
 
 \subsection{Let Pattern Floating}
-
-\section{Conclusion}
-\label{sec:main_conclusion}
-% Begin Section
-
-Pellentesque aliquet tempor condimentum. Nulla vulputate ultricies felis, ut feugiat nisl auctor a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dapibus turpis ac tortor ullamcorper, in eleifend mi fringilla. Nam luctus tortor pulvinar neque molestie, quis scelerisque nisi volutpat. Integer et risus facilisis, vehicula libero nec, feugiat ante. Donec ultricies libero et mauris mollis, eu pretium neque iaculis. Sed in elit quis dui molestie dapibus vitae vel sapien. Etiam fermentum maximus accumsan
-
-% End Section
