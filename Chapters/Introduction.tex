@@ -1,7 +1,7 @@
 \chapter{Introduction}
 \label{cha:introduction}
 
-In this chapter, we introduce Agda, discuss the optimisation of functional languages, and give an overview of this project. In Section~\ref{sec:general_context}, we give an introduction to the Agda programming language and explain its history, advantages, and potential future. In Section~\ref{sec:specific_context}, we introduce the Agda compiler and GHC. In Section~\ref{sec:related_work}, we provide a survey of the literature and discuss some existing techniques for improving functional code that relate closely to our work. In Section~\ref{sec:motivation}, we give the motivation for the new optimisation strategies introduced here. In Section~\ref{sec:problem_statement}, we state the problem subject of our work. In Section~\ref{sec:main_contributions}, we summarize our contributions, namely the optimisation strategies and their implementation in the Agda backend. Finally, in Section~\ref{sec:structure_of_the_thesis}, we give the structure of the remainder of the thesis.
+In this chapter, we introduce Agda, discuss the optimisation of functional languages, and give an overview of this project. In Section~\ref{sec:general_context}, we give an introduction to the Agda programming language and explain its history, advantages, and potential future. In Section~\ref{sec:specific_context}, we introduce the Agda compiler and GHC. In Section~\ref{sec:motivation}, we give the motivation for the new optimisation strategies introduced here. In Section~\ref{sec:problem_statement}, we state the problem subject of our work. In Section~\ref{sec:main_contributions}, we summarize our contributions, namely the optimisation strategies and their implementation in the Agda backend. Finally, in Section~\ref{sec:structure_of_the_thesis}, we give the structure of the remainder of the thesis.
 
 \section{General Context}
 \label{sec:general_context}
@@ -16,97 +16,6 @@ Agda has a number of available compilers and backends, but the one that is most 
 The differentiating feature that Agda provides over Haskell is a more expressive type system (see Section~\ref{sec:agda}). Because Agda supports dependent types and Haskell does not, in order for Agda generated code to pass the Haskell type checker, it is necessary for the MAlonzo backend to wrap coercions around all function arguments and all function calls, which cast terms from one type to a different arbitrary type. Unfortunately, these potentially unsafe type coercions mean that there are many GHC optimisations which Agda's generated code is ``missing out on''.\cite{fredriksson2011}
 
 Some of the Agda optimisations described herein would typically be performed by GHC after translation to Haskell were it not for these coercions, so we instead ensure that we can still take advantage of these optimisations by implementing them in the Agda backend, before the translation to Haskell occurs.
-
-\section{Related Work}
-\label{sec:related_work}
-
-\subsection{Common subexpression elimination}
-
-Common subexpression elimination (CSE) is a compiler optimisation that reduces execution time by avoid repeated computations of the same expression.\cite{chitil1997} This very similar to our goal with case squashing. As anyone familiar with the nature of purely functional programming languages might realize, identification of common subexpressions is much simpler in a functional language thanks to the expectation of referential transparency.\cite{chitil1997} (As a reminder, referential transparency means that an expression always produces the same result regardless of the context in which it is evaluated.)
-
-Appel first implemented CSE in the strict functional language ML's compiler in 1992.\cite{appel1992} Chitil first explored the implementation of CSE in a lazy functional language, Haskell, with his 1997 paper.\cite{chitil1997} The difficulty with implementing CSE in a lazy language is that, although common subexpressions are easy to identify, determining which common subexpressions will yield a benefit by being eliminated is more challenging. To avoid complex data flow analysis on functional code, Chitil developed some simple syntactic conditions for judging when CSE is beneficial in Haskell code.\cite{chitil1997} We omit these from our survey, as such heuristics are unnecessary for our optimisation. We instead focus on the relevant ``compilation by transformation'' approach used when implementing CSE in GHC.
-
-The GHC compilation process consists of translating Haskell code into a second-order $\lambda$-calculus language called Core, at which point a series of optimising transformation are performed, and the backend transforms Core code into C.\cite{chitil1997} This process is very similar to the Agda compilation process, which translates Agda code into Treeless code, applies a series of optimising transformations, and finally generates Haskell code through the backend, as discussed in Section~\ref{sec:agda_compiler}. \edcomm{NP}{make a diagram to show this analogous process}
-
-The syntax of the Core intermediate language of Haskell is very similar to Treeless, with expressions consisting mainly of $\lambda$ abstractions, \lstinline{let} bindings, \lstinline{case} expressions, constructors, literals and function applications, much like Agda's Treeless syntax outlined in Figure~\ref{code:TTerm}.
-
-CSE is implemented in GHC with a single recursive traversal of the Core program. For each expression, its subexpressions are first transformed, then it is determined whether the whole transformed expression has occurred already.\cite{chitil1997} An example of this is shown in Figure~\ref{code:cse_haskell}.
-
-\edcomm{NP}{Review this example, it seems weird.}
-\begin{figure}
-Given the expression:
-
-\lstinline{let x = 3 in let y = 2+3 in 2+3+4}
-
-the first CSE on the subexpressions yields:
-
-\lstinline{let x = 3 in let y = 2+x in y+4}
-
-and then the recursive transormation produces:
-
-\lstinline{let x = 3 in let y = 2+x in 2+x+4}
-
-\caption{Common subexpression elimination transformation in Haskell.\cite{chitil1997}}
-\label{code:cse_haskell}
-\end{figure}
-
-\subsection{Let-floating}
-
-The 1996 paper by Simon Peyton Jones et al., ``Let-foating: moving bindings to give faster programs'', discusses the effects of a group of compiler optimisations for Haskell which move let bindings to reduce heap allocation and execution time.\cite{jones1996}
-
-In this paper, three types of let-floating transformations are presented:
-\begin{enumerate}
-\item ``Floating inwards'' to move bindings as far inwards as possible,
-\item ``The full laziness transformation'' which floats some bindings outside enclosing lambda abstractions, and
-\item ``Local transformations'' which move bindings a several optimising ways.\cite{jones1996}
-\end{enumerate}
-
-\subsubsection*{Floating inwards}
-
-Floating inwards is an straighforward optimisation that aims to move all let bindings as far inward in the expression tree as possible. This accomplishes three separate benefits:
-\begin{itemize}
-\item It increases the chance that a binding will not be met in program execution, if it is not needed on a particular branch.
-\item It increases the chance that strictness analysis will be able to perform further optimisations.
-\item It makes it possible for further redundant expressions to be eliminated.\cite{jones1996}
-\end{itemize}
-
-Consider as an example, the Haskell code:
-\begin{lstlisting}
-let x = case y of (a,b) -> a
-in
-case y of
-  (p,q) -> x+p
-\end{lstlisting}
-
-and its optimised version with let-bindings floated inward:
-\begin{lstlisting}
-case y of
-  (p,q) -> let x = case y of (a,b) -> a
-           in x+p
-\end{lstlisting}
-
-These two Haskell expressions are semantically-equivalent, but the second has potential to become more efficient than the first because later optimisations will be able to idenfity the opportunity to remove the redundant inner case expression which scrutinises the same variable as the outer case expression.\cite{jones1996} Though it wasn't clear in the first expression, because the case expressions weren't nested, the second expression can now benefit from a GHC optimisation much like our ``case squashing'' optimisation.
-
-\subsubsection*{Full laziness}
-
-TODO
-
-\subsubsection*{Local transformations}
-
-TODO
-
-\subsection{Alternate method of case squashing}
-
-Following development of \texttt{-{}-squash-cases}, an optimisation was added to the Agda compiler's Simplify stage which accomplishes the same goals as \texttt{-{}-squash-cases} in a slightly different way. We examine here that method of removing repeated case expressions.
-
-Immediately following the conversion of compiled clauses to treeless syntax in the Agda compiler, a series of optimising transformations are applied before the treeless expression is returned. \edcomm{NP}{discuss this in the Specific Context section above, or Background and move this later}
-One such step is the ``simplify'' group of transformations, which modify a \lstinline{TTerm} in a variety of optimising ways.
-
-As the expression is traversed, \lstinline{simplify} is recursively called on each \lstinline{TTerm} term, and \lstinline{simpAlt} is called on each \lstinline{TAlt} alternative. Given some expression casing on de Bruijn index $x$, for each alternative of the pattern \lstinline{TACon name arity body}, the scrutinized variable index in the body, $x + arity$, is looked up in the variable environment. If the variable has already been bound, and therefore has a different de Bruijn index, $y$, a rewrite rule is added to the constructor. The rewrite rule indicates that every instance of \lstinline{TApp (TCon name) (TVar i | i <- [arity-1,arity-2..0])} in the alternative's body should be replaced with a \lstinline{TVar y}.
-
-The rewrite rule is encoded as part of the wrapper \lstinline{Reader} environment that is carried along with the \lstinline{TTerm} throughout simplification, and is evaluated later by applying substitutions. It is at this point that all necessary de Bruijn index shifting is managed.
-
-An abridged version of \texttt{Treeless/Simplify.hs} showing the primary functions involved in this optimisation in the updated Agda compiler is available in Appendix~\ref{app:Simplify}.
 
 \section{Motivation}
 \label{sec:motivation}
@@ -170,4 +79,3 @@ The remainder of this thesis is organized as follows:
 \paragraph{Chapter~\ref{cha:discussion}} discusses the impact of our contribution in helping to remedy the problems of poor performance.
 
 \paragraph{Chapter~\ref{cha:conclusion_and_future_work}} draws conclusions and suggests future work.
-
