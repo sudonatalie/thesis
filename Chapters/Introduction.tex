@@ -3,27 +3,49 @@
 
 In this chapter, we introduce Agda, discuss the optimisation of functional languages, and give an overview of this project. In Section~\ref{sec:general_context}, we give an introduction to the Agda programming language and explain its history, advantages, and potential future. In Section~\ref{sec:specific_context}, we introduce the Agda compiler and GHC. In Section~\ref{sec:motivation}, we give the motivation for the new optimisation strategies introduced here. In Section~\ref{sec:problem_statement}, we state the problem subject of our work. In Section~\ref{sec:main_contributions}, we summarize our contributions, namely the optimisation strategies and their implementation in the Agda backend. Finally, in Section~\ref{sec:structure_of_the_thesis}, we give the structure of the remainder of the thesis.
 
-\section{General Context}
+\section{Agda}
 \label{sec:general_context}
 
 Agda \cite{norell2007} is a dependently-typed programming language and theorem prover, supporting proof construction in a functional programming style. Due to its incredibly flexible concrete syntax and support for Unicode identifiers \cite{bove2009}, Agda can be used to construct elegant and expressive proofs in a format that is understandable even to those unfamiliar with the tool. As a result, many users of Agda, including our group, are quick to sacrifice speed and efficiency in our code in favour of proof clarity. This makes a highly-optimized compiler backend a particularly essential tool for practical development with Agda.
 
-Agda is a dependently typed functional programming language. In traditional functional languages, types may depend on other types. For example, the Haskell type signature \lstinline{xs :: Vector a} denotes a vector containing elements of type \lstinline{a}, where \lstinline{a} is a type variable. In a dependently typed language like Agda types can depend not only on other types, but also on values. Consider the \AgdaFunction{replicate} function in Figure~\ref{code:replicate}, which produces a \AgdaDatatype{Vec}tor of elements of type \AgdaBound{A} with length \AgdaBound{n}.\cite{norell2009}
+\subsection{Dependent Types}
+
+Type signatures in Agda support dependent-types, which means that types may depend on values. In traditional functional languages, types may depend on other types. For example, the Haskell type signature \lstinline{xs :: Vector a} denotes a vector containing elements of type \lstinline{a}, where \lstinline{a} is a type variable. In a dependently-typed language like Agda types can depend not only on other types, but also on values. Consider the \AgdaFunction{replicate} function in Figure~\ref{code:replicate}, which produces a \AgdaDatatype{Vec}tor of elements of type \AgdaBound{A} with length \AgdaBound{n}.\cite{norell2009} In many languages that don't support dependent types a programmer can represent a parametrized vector type that contains elements of any arbitrary type, however, they cannot represent a parametrized vector type of any arbitrary specific length.
 
 \input{Figures/Agda/latex/Replicate}
 
-The ability for types to contain arbitrary values is significant because it allows us to encode (almost) any proposition or formula as a type. By the Curry–Howard isomorphism (or the proofs-as-programs interpretation), we can then prove these propositions true by providing an element (program) of its corresponding type.\cite{poernomo2005} In order to ensure this logic holds true for all Agda programs, the Agda type-checker requires that all programs be both total and terminating.\cite{norell2009}
+\subsection{Type Theory}
+The core syntax of Agda is a dependently-typed lambda calculus, with a simple grammar as shown in Figure~\ref{fig:grammar}. Most functional languages, such as Haskell or ML, are built on a foundation of a simply-typed lambda calculus. This basis allows the expression of propositions in mathematical logic as types of a lambda calculus.
+
+By the Curry–Howard isomorphism (or the proofs-as-programs interpretation), we can then prove these propositions true by providing an element (program) of its corresponding type.\cite{poernomo2005} Using constructive logic, a proof of a proposition is the construction of an object that is a member of the type representing that proposition. The isomorphism between concepts in type theory and concepts in logic can be seen in Table~\ref{tab:curry_howard}
+
+\begin{figure}
+\begin{center}
+\begin{tabular}{c|c}
+Logic & Type theory \\
+\hline
+proposition & type\\
+theorem & inhabited type\\
+proof & program\\
+implication & function space\\
+conjunction & product\\
+disjunction & sum\\
+second order quantifier & type quantifier\\
+truth & inhabited type\\
+falsity & uninhabited type\\
+\end{tabular}
+\end{center}
+\caption{Isomorphic concepts in logic and type theory.}
+\label{tab:curry_howard}
+\end{figure}
+
+The ability for types to contain arbitrary values is significant because it expands the domain of theorems we can encode as types to the space of predicate logic. This allows us to encode (almost\footnote{TODO}) any proposition or formula as a type.
+
+ In order to ensure this logic holds true for all Agda programs, the Agda type-checker requires that all programs be both total and terminating.\cite{norell2009} Therefore, when an Agda program passes type-checking\footnote{(assuming a correct compiler)}, all of the propositions (types) therein are proven true (inhabited).
 
 Agda also supports a flexible mixfix syntax, as seen in Figure~\ref{code:if_function}, and Unicode characters, such as the \AgdaDatatype{ℕ} to represent natural numbers in Figure~\ref{code:replicate}. These features along with Agda's constructive functional style make Agda both an interesting programming language, but also a powerful proof assistant for generating elegant, expressive proofs.
 
 \input{Figures/Agda/latex/If}
-
-\edcomm{NP}{some kind of figure that shows a math-y proposition, its representation as a type in Agda, the corresponding program satisfying the type, thereby proving the math-y prop true}
-
-\edcomm{NP}{Include an Agda tutorial as per: \url{http://dspace.library.uu.nl:8080/handle/1874/256628}}
-
-\edcomm{NP}{incorporate this figure somehow:}
-The core syntax of Agda is a dependently typed lambda calculus, with a simple grammar as shown in Figure~\ref{fig:grammar}.
 
 \begin{figure}
 \begin{align*}
