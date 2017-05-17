@@ -111,13 +111,16 @@ Therefore, the first compiler optimisation we sought to add was an efficient aut
 The main contributions to the Agda compiler include:
 \begin{enumerate}[(i)]
 	\item automatic inlining of proper projections
-	\item removal of duplicate case expressions
-	\item TODO
+	\item removal of repeated case expressions
+	\item avoiding trivial case expressions with patterned let expressions
+  \item let pattern floating across function calls
 \end{enumerate}
 
 The Agda compiler's type checker allows us to identify proper projections, and we have developed a patch for automatically inlining such projections.
 
-However, the pass commonly results in deeply nested case expressions, many of which are pattern matching on the same constructors as its ancestors, thereby duplicating variables that the compiler has already bound. By gathering the matched patterns throughout a pass over the nested terms, we are able to prune patterns that are unnecessarily repeated, and substitute in place the previously bound pattern variables.
+However, the pass commonly results in deeply nested case expressions, many of which are pattern matching on the same constructor as its ancestors, thereby duplicating variables that the compiler has already bound. By gathering the matched patterns throughout a pass over the nested terms, we are able to prune patterns that are unnecessarily repeated, and substitute in place the previously bound pattern variables.
+
+\edcomm{NP}{Summary of generating pattern lets and let pattern floating}
 
 \section{Structure of the Thesis}
 \label{sec:structure_of_the_thesis}
