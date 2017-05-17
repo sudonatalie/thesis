@@ -1,18 +1,11 @@
 \chapter{Background}
 \label{cha:background}
 
-In this chapter, we introduce the necessary compiler theory and logical background concepts required for the understanding of the material presented in the thesis. In Section~\ref{sec:agda}, we give an introduction to Agda and its compiler. In Section~\ref{sec:lambda_calc}, we review some of the mathematical background useful for understanding our optimisations. In Section~\ref{sec:related_work}, we provide a survey of the literature and discuss some existing techniques for improving functional code that relate closely to our work. Finally, in Section~\ref{sec:background_conclusion}, we conclude with a summary of the core concepts and describe where they are used throughout the remainder of the thesis.
-
-\section{Agda}
-\label{sec:agda}
-
-\subsection{Module System}
+In this chapter, we introduce the necessary compiler theory and logical background concepts required for the understanding of the material presented in the thesis. In Section~\ref{sec:agda_compiler}, we give an introduction to the Agda compiler. In Section~\ref{sec:lambda_calc}, we review some of the mathematical background useful for understanding our optimisations. In Section~\ref{sec:related_work}, we provide a survey of the literature and discuss some existing techniques for improving functional code that relate closely to our work. Finally, in Section~\ref{sec:background_conclusion}, we conclude with a summary of the core concepts and describe where they are used throughout the remainder of the thesis.
 
 \edcomm{NP}{Either before or after compiler section. Discuss Agda module system and its translation. Arguments inheited from all enclosing modules.}
 
-TODO
-
-\subsection{Compiler}
+\section{Agda Compiler}
 \label{sec:agda_compiler}
 
 The Agda programming language's first and most-used backend is MAlonzo, or more generically, the GHC (Glasgow Haskell Compiler) backend.\cite{benke2007} Given an Adga module containig a \AgdaFunction{main} function, the Agda \texttt{-{}-compile} option will compile the program using the GHC backend, which translates an Agda program into Haskell source. The generated Haskell source can then be automatically or manually (with \texttt{-{}-ghc-dont-call-ghc}) compiled to an executable program via GHC.\cite{agdadocs} % http://agda.readthedocs.io/en/latest/tools/compilers.html
