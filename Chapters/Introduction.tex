@@ -1,10 +1,10 @@
 \chapter{Introduction}
 \label{cha:introduction}
 
-In this chapter, we introduce Agda, discuss the optimisation of functional languages, and give an overview of this project. In Section~\ref{sec:general_context}, we give an introduction to the Agda programming language and explain its history, advantages, and potential future. In Section~\ref{sec:specific_context}, we introduce the Agda compiler and GHC. In Section~\ref{sec:motivation}, we give the motivation for the new optimisation strategies introduced here. In Section~\ref{sec:problem_statement}, we state the problem subject of our work. In Section~\ref{sec:main_contributions}, we summarize our contributions, namely the optimisation strategies and their implementation in the Agda backend. Finally, in Section~\ref{sec:structure_of_the_thesis}, we give the structure of the remainder of the thesis.
+In this chapter, we introduce Agda and give an overview of this project. In Section~\ref{sec:intro_agda}, we give an introduction to the Agda programming language and explain its unique characteristics, as well as a brief introduction to its compiler. In Section~\ref{sec:problem_statement}, we state the problem subject of our work. In Section~\ref{sec:motivation}, we give the motivation for the new optimisation strategies introduced here. In Section~\ref{sec:main_contributions}, we summarize our contributions, namely the optimisation strategies we implementated in the Agda compiler. Finally, in Section~\ref{sec:structure_of_the_thesis}, we give the structure of the remainder of the thesis.
 
 \section{Agda}
-\label{sec:general_context}
+\label{sec:intro_agda}
 
 Agda \cite{norell2007} is a dependently-typed programming language and theorem prover, supporting proof construction in a functional programming style. Due to its incredibly flexible concrete syntax and support for Unicode identifiers \cite{bove2009}, Agda can be used to construct elegant and expressive proofs in a format that is understandable even to those unfamiliar with the tool. As a result, many users of Agda, including our group, are quick to sacrifice speed and efficiency in our code in favour of proof clarity. This makes a highly-optimized compiler backend a particularly essential tool for practical development with Agda.
 
@@ -61,7 +61,6 @@ a ::=~& x               & \text{variable}\\
 \end{figure}
 
 \subsection{Compiler}
-\label{sec:specific_context}
 
 Agda has a number of available compilers and backends, but the one that is most efficient and most commonly used is MAlonzo, the GHC (Glasgow Haskell Compiler) backend.\cite{benke2007} The MAlonzo backend has the goal of compiling Agda code with the performance of the generated code matching that of GHC, and it does so by translating Agda into Haskell, so that it can be compiled, and optimised by GHC. This is a practical and useful arrangement for real-world Agda usage because GHC has benefited from a massive development effort by a large community to create a highly performant compiler.\cite{benke2007}
 
