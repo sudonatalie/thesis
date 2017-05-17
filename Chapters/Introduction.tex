@@ -17,7 +17,7 @@ Type signatures in Agda support dependent-types, which means that types may depe
 \subsection{Type Theory}
 The core syntax of Agda is a dependently-typed lambda calculus, with a simple grammar as shown in Figure~\ref{fig:grammar}. Most functional languages, such as Haskell or ML, are built on a foundation of a simply-typed lambda calculus. This basis allows the expression of propositions in mathematical logic as types of a lambda calculus.
 
-By the Curry–Howard isomorphism (or the proofs-as-programs interpretation), we can then prove these propositions true by providing an element (program) of its corresponding type.\cite{poernomo2005} Using constructive logic, a proof of a proposition is the construction of an object that is a member of the type representing that proposition. The isomorphism between concepts in type theory and concepts in logic can be seen in Table~\ref{tab:curry_howard}
+By the Curry–Howard isomorphism (or the proofs-as-programs interpretation), we can then prove these propositions true by providing an element (program) of its corresponding type.\cite{poernomo2005} Using constructive logic, a proof of a proposition is the construction of an object that is a member of the type representing that proposition. The isomorphism between concepts in type theory and concepts in logic can be seen in Table~\ref{table:curry_howard}
 
 \begin{table}
 \begin{center}
@@ -36,7 +36,7 @@ falsity & uninhabited type\\
 \end{tabular}
 \end{center}
 \caption{Isomorphic concepts in logic and type theory.}
-\label{tab:curry_howard}
+\label{table:curry_howard}
 \end{table}
 
 The ability for types to contain arbitrary values is significant because it expands the domain of theorems we can encode as types to the space of predicate logic. This allows us to encode (almost\footnote{TODO}) any proposition or formula as a type.
@@ -69,35 +69,41 @@ As discussed in the previous section, Agda provides a more expressive type syste
 
 Some of the Agda optimisations described herein would typically be performed by GHC after translation to Haskell were it not for these coercions, so we instead ensure that we can still take advantage of these optimisations by implementing them in the Agda backend, before the translation to Haskell occurs.
 
-\section{Motivation}
-\label{sec:motivation}
-
-\edcomm{NP}{Make this less RATH-focused}
-
-The RATH-Agda library is a category and allegory theory project developed by Kahl et al. which takes advantage of features of the Agda programming language's flexibility. In order to achieve its primary goal of natural mathematical clarity and style, it faces, like many Agda programs, performance concerns. \cite{kahl2017}
-
-\begin{table}[h]
-\centering
-\caption{Profiler Results}
-\label{table:profiling}
-\begin{tabular}{ll}
-\textbf{COST CENTRE}                                     & \textbf{\%time} \\
-Data.Product.\textSigma.proj₂                                     & 13.1            \\
-Data.Product.\textSigma.proj₁                                     & 7.5             \\
-Data.SUList.ListSetMap...                                & 3.0
-\end{tabular}
-\end{table}
-
-Using the GHC built-in profiling system, we generated profiling data for the RATH-Agda library's execution and found that the time required to evaluate simple record projections combined to be the greatest cost-centres in the data. This representative usage of the RATH-Agda library spends more than 20\% of execution time on just two types of projections (see Table~\ref{table:profiling}).
-
 \section{Problem Statement}
 \label{sec:problem_statement}
 
-For practical development in Agda a highly effective optimizing compiler backend is a particularly essential tool to avoid performance concerns.
+For practical development in Agda, a highly effective optimizing compiler backend is a particularly essential tool to avoid performance concerns.
 
 Our work aims to introduce a number of optimising transformations to the Agda internals and backend so that Agda users can continue to focus on elegant syntax and mathematical clarity, and leave the optimisations necessary to transform that code into a program that runs with acceptable heap allocation and execution time to the compiler.
 
 The optimisations we focus on are specifically oriented towards aiding our team's most common, and most costly, uses of the Agda programming language, but they should be useful in a general context for most Agda users.
+
+\section{Motivation}
+\label{sec:motivation}
+
+As discussed above, the Agda language is highly conducive to writing elegant and expressive proofs, which leads many users of Agda, including our research group, to avoid code optimisations that may increase speed or efficiency if they have the side effect of reducing proof clarity (which they often do).
+
+As such, the optimisations presented herein are largely motivated by profiling data from our own real-world uses of Agda.
+
+The first, and simplest, such example is the results of profiling a main execution of RATH-Agda. RATH-Agda is a library of category and allegory theories developed by Kahl et al. which takes advantage of many features of the Agda programming language's flexibility.\cite{kahl2017} In order to achieve its primary goal of natural mathematical clarity and style, it faces, like many Agda programs, performance concerns.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{ll}
+\textbf{COST CENTRE}                                     & \textbf{\%time} \\
+Data.Product.\textSigma.proj₂                                     & 13.1            \\
+Data.Product.\textSigma.proj₁                                     & 7.5             \\
+Data.SUList.ListSetMap...                                & 3.0\\
+...
+\end{tabular}
+\end{center}
+\caption{Profiler results of RATH-Agda execution.}
+\label{table:profiling}
+\end{table}
+
+Using the GHC built-in profiling system, we generated profiling data for the RATH-Agda library's execution and found that the time required to evaluate simple record projections combined to be the greatest cost-centres in the data. This representative usage of the RATH-Agda library spends more than 20\% of execution time on just two types of projections (see Table~\ref{table:profiling}).
+
+Therefore, the first compiler optimisation we sought to add was an efficient automatic inlining of such projections.
 
 \section{Main Contributions}
 \label{sec:main_contributions}
