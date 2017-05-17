@@ -3,16 +3,14 @@
 
 In this chapter, we introduce the necessary compiler theory and logical background concepts required for the understanding of the material presented in the thesis. In Section~\ref{sec:agda_compiler}, we give an introduction to the Agda compiler. In Section~\ref{sec:lambda_calc}, we review some of the mathematical background useful for understanding our optimisations. Finally, in Section~\ref{sec:background_conclusion}, we conclude with a summary of the core concepts and describe where they are used throughout the remainder of the thesis.
 
-\edcomm{NP}{Either before or after compiler section. Discuss Agda module system and its translation. Arguments inheited from all enclosing modules.}
-
 \section{Agda Compiler}
 \label{sec:agda_compiler}
 
-The Agda programming language's first and most-used backend is MAlonzo, or more generically, the GHC (Glasgow Haskell Compiler) backend.\cite{benke2007} Given an Adga module containig a \AgdaFunction{main} function, the Agda \texttt{-{}-compile} option will compile the program using the GHC backend, which translates an Agda program into Haskell source. The generated Haskell source can then be automatically or manually (with \texttt{-{}-ghc-dont-call-ghc}) compiled to an executable program via GHC.\cite{agdadocs} % http://agda.readthedocs.io/en/latest/tools/compilers.html
+The Agda programming language's first and most-used backend is MAlonzo, or more generically, the GHC backend.\cite{benke2007} Given an Adga module containig a \AgdaFunction{main} function\footnote{An Agda module without a main file can be compiled with \texttt{-{}-no-main}.}, the Agda \texttt{-{}-compile} option will compile the program using the GHC backend, which translates an Agda program into Haskell source. The generated Haskell source can then be automatically or manually (with \texttt{-{}-ghc-dont-call-ghc}) compiled to an executable program via GHC.\cite{agdadocs} % http://agda.readthedocs.io/en/latest/tools/compilers.html
 
-Though there are several stages of translation and compilation in this process, the transition of primiary interest for our optimization is the conversion of compiled clauses to a ``treeless'' syntax, after Agda type-checking, but before Haskell source is generated.
+Though there are several stages of translation and compilation in this process, the transition of primary interest for our optimisations is the conversion of compiled clauses to a ``treeless'' syntax. This translations occurs after Agda type-checking but before Haskell source is generated.
 
-Agda functions are implemented by giving both a type and a definition. Functions on datatypes can be defined by pattern matching on the constructors of that datatype, describing structurally recursive functions.\cite{agdawiki} % http://wiki.portal.chalmers.se/agda/agda.php?n=Docs.DatatypeAndFunctionDefinitions
+Agda functions are implemented by providing both a type and a definition. It is worth noting that type inference is an undecidable problem for dependent types, so type signatures must be provided in many cases, and by convention, should always be provided. Functions on datatypes can be defined by pattern matching on the constructors of that datatype, describing structurally recursive functions.\cite{agdawiki} % http://wiki.portal.chalmers.se/agda/agda.php?n=Docs.DatatypeAndFunctionDefinitions
 Because function definitions in Agda are written as a series of one or more pattern matching clauses on possible variable inputs, we can construct an equivalent definition via case tree.\cite{agdawiki} % http://wiki.portal.chalmers.se/agda/agda.php?n=Docs.PatternMatching
 Compiled clauses are, simply put, case trees.
 
@@ -95,6 +93,8 @@ A \textbf{\lstinline{TSort}}
 A \textbf{\lstinline{TErased}}
 
 A \textbf{\lstinline{TError}} is used to indicate a runtime error.
+
+\edcomm{NP}{Either before or after compiler section. Discuss Agda module system and its translation. Arguments inheited from all enclosing modules.}
 
 \section{Lambda Calculus}
 \label{sec:lambda_calc}
