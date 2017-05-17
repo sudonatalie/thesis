@@ -19,7 +19,7 @@ The core syntax of Agda is a dependently-typed lambda calculus, with a simple gr
 
 By the Curry–Howard isomorphism (or the proofs-as-programs interpretation), we can then prove these propositions true by providing an element (program) of its corresponding type.\cite{poernomo2005} Using constructive logic, a proof of a proposition is the construction of an object that is a member of the type representing that proposition. The isomorphism between concepts in type theory and concepts in logic can be seen in Table~\ref{tab:curry_howard}
 
-\begin{figure}
+\begin{table}
 \begin{center}
 \begin{tabular}{c|c}
 Logic & Type theory \\
@@ -37,7 +37,7 @@ falsity & uninhabited type\\
 \end{center}
 \caption{Isomorphic concepts in logic and type theory.}
 \label{tab:curry_howard}
-\end{figure}
+\end{table}
 
 The ability for types to contain arbitrary values is significant because it expands the domain of theorems we can encode as types to the space of predicate logic. This allows us to encode (almost\footnote{TODO}) any proposition or formula as a type.
 
