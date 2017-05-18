@@ -9,7 +9,7 @@ In this chapter, we look at the effect of the optimisation techniques formulated
 
 Take for example the simple usage of record projections in Figure~\ref{code:example1_agda}. When we compile this module once without \texttt{-{}-inline-proj} on, and once again with \texttt{-{}-inline-proj} enabled, a unified diff of the two generated Haskell files gives us what is shown in Figure~\ref{fig:Example1_inline}.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{Figures/Example1_inline}
     \caption{Unified difference of the \AgdaModule{Example1}~module compiled without and then with \texttt{-{}-inline-proj}.}
@@ -22,7 +22,7 @@ The compiled projection function \AgdaField{Pair.snd}, that is \lstinline{d18} i
 
 This inline expansion can yield benfits on its own in certain codebases (see Section~TODO) by creating opportunities for GHC to optimise. The resulting inlined code also gives us better opportunities for further optimization within the Agda backend, as we discuss in Sections TODO and TODO.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.5\textwidth]{Figures/Example1_squash}
     \caption{Unified difference of the \AgdaModule{Example1}~module compiled  with \texttt{-{}-inline-proj} and then also with \texttt{-{}-squash-cases}.}

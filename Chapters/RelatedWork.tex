@@ -16,7 +16,7 @@ The syntax of the Core intermediate language of Haskell is very similar to Treel
 CSE is implemented in GHC with a single recursive traversal of the Core program. For each expression, its subexpressions are first transformed, then it is determined whether the whole transformed expression has occurred already.\cite{chitil1997} An example of this is shown in Figure~\ref{code:cse_haskell}.
 
 \edcomm{NP}{Review this example, it seems weird.}
-\begin{figure}
+\begin{figure}[h]
 Given the expression:
 
 \lstinline{let x = 3 in let y = 2+3 in 2+3+4}
