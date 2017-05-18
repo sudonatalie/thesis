@@ -6,21 +6,56 @@ In this chapter, we introduce the necessary logical and compiler background conc
 \section{Lambda Calculus}
 \label{sec:lambda_calc}
 
-\edcomm{NP}{actually introduce what lambda calculus is. Musa suggests this: \url{https://pdfs.semanticscholar.org/2d0a/07723f93b26c3d673f386ac903cdcb6cc521.pdf}}
+Lambda calculus (or $\lambda$-calculus) is a formal system for representing computational logic in terms of function abstractions and applications using variable binding and substitution. It warrants our understanding because concepts surrounding the Agda programming language and its compilation are inspired by, and can be elegantly explained by, the framework of the lambda calculi.\cite{fokkinga1987} In fact, the namesake of the default Agda GHC backend, MAlonzo, is Alonzo Church, the mathematician who first developed the lambda calculus.\cite{fokkinga1987}
 
-In order to perform the desired optimisations on the abstract syntax tree, we must be able to perform substitutions on terms. Treating the \lstinline{TTerm} structure as a specialized $\lambda$-calculus, we can implement substitution as a function on terms.
+\subsection{Pure $\lambda$-Calculus}
+
+In a pure $\lambda$-calculus, terms are built inductively from only variables, $\lambda$-abstractions and applications, as in Figure~\ref{fig:lambda_calc}.\cite{kozen1997}
+
+\begin{figure}
+\begin{align*}
+t ::=~& x               & \text{variable}\\
+    |~& \lambda x . t   & \text{abstraction}\\
+    |~& t~t             & \text{application}
+\end{align*}
+\caption{Grammar of a pure lambda calculus.}
+\label{fig:lambda_calc}
+\end{figure}
+
+\subsection{De Bruijn Index Notation}
+
+In order to eliminate the need for named variables in $\lambda$-calculus notation, de Bruijn indexed notation is used to represent bound terms (variables) with natural numbers. In any term, the positive integer $n$ refers to the $n$th surrounding $\lambda$ binder.\cite{debruijn1972} In other words, the number is an index indicating the number of variable binders (or $\lambda$-abstractions) in scope between itself and the binder for the variable being referenced. The grammar of a de Bruijn-indexed lambda calculus can be seen in Figure~\ref{fig:db_lambda_calc}. See Figure~\ref{fig:db_example} for an illustration where the variable bindings and indices are coloured to indicate matches and the references are shown with arrows.
+
+\begin{figure}
+\centering
+\includegraphics[width=8cm]{Figures/DeBruijnIndex}
+\caption{Example of a de Bruijn indexed $\lambda$-calculus expression.\cite{chaudhuri2009}}
+\label{fig:db_example}
+\end{figure}
+
+\edcomm{NP}{Better if graphic emphasizes that in different scope locations, different numbers point to the same bound variable.}
+
+\begin{figure}
+\begin{align*}
+t ::=~& \mathbb{N}      & \text{variable}\\
+    |~& \lambda~t       & \text{abstraction}\\
+    |~& t~t             & \text{application}
+\end{align*}
+\caption{Grammar of a pure lambda calculus.}
+\label{fig:db_lambda_calc}
+\end{figure}
+
+The internal representation of Agda code in the compiler is based on a de Bruijn indexed $\lambda$-calculus.
+
+\subsection{$\lambda\sigma$-Calculus}
+
+In order to perform the desired optimisations on the abstract syntax tree, we must be able to perform substitutions on terms. Treating the abstract syntax tree structure as a specialized $\lambda$-calculus, we can implement substitution as a function on terms.
 
 Because our terms are built on de Bruijn indexed variables, we use the explicit substitution of a $\lambda\sigma$-calculus as a reference for understanding correct substitution on terms in the context of local variables bound by incrementing indices. The $\lambda\sigma$-calculus is a refinement of the $\lambda$-calculus where substitutions are manipulated explicitly, and substitution application is a term constructor rather than a meta-level notation.\cite{abadi1991}
 
-\subsection{De Bruijn indices}
-
-In order to eliminate the need for named variables in $\lambda$-calculus notation, de Bruijn notation is used to represent bound terms (variables) with natural numbers. In any term, the positive integer $n$ refers to the $n$th surrounding $\lambda$ binder.\cite{debruijn1972}
-
-\edcomm{NP}{Graphical example like this: \url{https://en.wikipedia.org/wiki/De_Bruijn_index\#/media/File:De_Bruijn_index_illustration_1.svg}, but emphasize that in different scope locations, different numbers point to the same bound variable.}
+\subsection{Substitution}
 
 Take then, for instance, a simple case of the classical application of the $\beta$-rule (See Figure~\ref{eq:beta_rule}). Beta reduction is the process of simplifying an application of a function to the resulting substituted term. However, in order to $\beta$-reduce $(\lambda a)b$, we must not only substitute $b$ into the appropriate occurrences in $a$. As the $\lambda$ binding disappears, we must also decrement all remaining free indices in $a$. This adapted form of the $\beta$-rule can be represented by the infinite substitution showin in Figure~\ref{eq:beta_rule2}).\cite{abadi1991}
-
-\edcomm{NP}{Combine beta rule figures into subfigures a and b in a single figure}
 
 \begin{figure}
 \begin{equation*}
@@ -51,10 +86,6 @@ It is also important when applying substitutions to $\lambda$ terms that we avoi
 \end{figure}
 
 Recognizing the required index ``shifting'' and ``lifting'' in the Figure~\ref{eq:debruijn_sub} substitution rule should suffice as background for understanding the variable manipulation performed in our optimisation.
-
-\edcomm{NP}{Here has a good introduction that may be a good reference: \url{http://fi.ort.edu.uy/innovaportal/file/5328/3/formalisationconstructivetypetheorystoughtonsubstitution.pdf}}
-
-% then discuss how substitutions can be safely performed on \lstinline{TTerm}s as a preface for discussing our optimizations.
 
 \section{Agda Compiler}
 \label{sec:agda_compiler}
