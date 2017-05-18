@@ -1,100 +1,7 @@
 \chapter{Background}
 \label{cha:background}
 
-In this chapter, we introduce the necessary compiler theory and logical background concepts required for the understanding of the material presented in the thesis. In Section~\ref{sec:agda_compiler}, we give an introduction to the Agda compiler. In Section~\ref{sec:lambda_calc}, we review some of the mathematical background useful for understanding our optimisations. Finally, in Section~\ref{sec:background_conclusion}, we conclude with a summary of the core concepts and describe where they are used throughout the remainder of the thesis.
-
-\section{Agda Compiler}
-\label{sec:agda_compiler}
-
-The Agda programming language's first and most-used backend is MAlonzo, or more generically, the GHC backend.\cite{benke2007} Given an Adga module containig a \AgdaFunction{main} function\footnote{An Agda module without a main file can be compiled with \texttt{-{}-no-main}.}, the Agda \texttt{-{}-compile} option will compile the program using the GHC backend, which translates an Agda program into Haskell source. The generated Haskell source can then be automatically or manually (with \texttt{-{}-ghc-dont-call-ghc}) compiled to an executable program via GHC.\cite{agdadocs} % http://agda.readthedocs.io/en/latest/tools/compilers.html
-
-Though there are several stages of translation and compilation in this process, the transition of primary interest for our optimisations is the conversion of compiled clauses to a ``treeless'' syntax. This translations occurs after Agda type-checking but before Haskell source is generated.
-
-Agda functions are implemented by providing both a type and a definition. It is worth noting that type inference is an undecidable problem for dependent types, so type signatures must be provided in many cases, and by convention, should always be provided. Functions on datatypes can be defined by pattern matching on the constructors of that datatype, describing structurally recursive functions.\cite{agdawiki} % http://wiki.portal.chalmers.se/agda/agda.php?n=Docs.DatatypeAndFunctionDefinitions
-Because function definitions in Agda are written as a series of one or more pattern matching clauses on possible variable inputs, we can construct an equivalent definition via case tree.\cite{agdawiki} % http://wiki.portal.chalmers.se/agda/agda.php?n=Docs.PatternMatching
-Compiled clauses are, simply put, case trees.
-
-This should sound familiar to users of functional programming languages like Haskell. Unlike Haskell, however, Agda does not permit partial functions. Therefore, functions defined by pattern matching must not exclude any possible cases from the pattern matching clauses.\cite{agdawiki} % http://wiki.portal.chalmers.se/agda/pmwiki.php?n=ReferenceManual.Totality#Coveragechecking}
-Once coverage checking is completed, pattern matching can be translated into case trees by successively splitting on each variable.\cite{agdahackage} % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-TypeChecking-CompiledClause.html
-
-Take for example the following case tree equivalence for a foo function, defined by pattern matching, in Agda: TODO % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-TypeChecking-CompiledClause.html
-
-\edcomm{NP}{Document compiled clauses: \url{https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-TypeChecking-CompiledClause.html}. Compiled clauses are case trees with their bodies.}
-
-The treeless syntax is the input to the compiler backend of Agda. After all type-checking is complete, the higher-level internal syntax of compiled clauses is translated to a ``treeless'' syntax, the name for which is derived from its use of case expressions instead of case trees. The other notable difference between compiled clauses and treeless syntax is the absence of datatypes and constructors.\cite{agdahackage} % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-Syntax-Treeless.html
-\edcomm{NP}{WHY?}
-
-\subsubsection{Treeless Syntax}
-
-The treeless syntax is constructed from \lstinline{TTerm}s \edcomm{NP}{What does the T stand for?}
-and is a representation of the abstract syntax tree for the compiler backend. It can be reasoned about as a lambda calculus with all local variable using de Bruijn indices. A listing of \lstinline{TTerm} constructors is shown in Figure~\ref{code:TTerm}.
-
-In this section we examine the constructors of \lstinline{TTerm}s one-by-one\cite{agdahackage}, then discuss how substitutions can be safely performed on \lstinline{TTerm}s as a preface for discussing our optimizations.
-
-\edcomm{NP}{Read about how sharing is lost with substitution in the agda mailing list: \url{https://lists.chalmers.se/pipermail/agda/2017/009379.html}}
-
-\begin{figure}
-\begin{lstlisting}[style=blockhaskell]
-type Args = [TTerm]
-
-data TTerm = TVar Nat
-           | TPrim TPrim
-           | TDef QName
-           | TApp TTerm Args
-           | TLam TTerm
-           | TLit Literal
-           | TCon QName
-           | TLet TTerm TTerm
-           | TCase Nat CaseType TTerm [TAlt]
-           | TUnit
-           | TSort
-           | TErased
-           | TError TError
-
-data TAlt = TACon QName Nat TTerm
-          | TAGuard TTerm TTerm
-          | TALit Literal TTerm
-\end{lstlisting}
-\caption{\lstinline{TTerm} and \lstinline{TAlt} datatype definitions.}
-\label{code:TTerm}
-\end{figure}
-
-\edcomm{NP}{present de bruijn indices}
-
-A \textbf{\lstinline{TVar}} is a de Bruijn indexed variable term.
-
-A \textbf{\lstinline{TPrim}} is a compiler-related primitive, such as addition, subtraction and equality on some primitive types.
-
-A \textbf{\lstinline{TDef}} is a qualified name identifying a function or datatype definition \edcomm{NP}{confirm}
-
-A \textbf{\lstinline{TApp}} is a \lstinline{TTerm} applied to a list of arguments, where each argument is itself a \lstinline{TTerm}.
-
-A \textbf{\lstinline{TLam}} % TTerm
-
-A \textbf{\lstinline{TLit}} % Literal
-
-A \textbf{\lstinline{TCon}} % QName
-
-A \textbf{\lstinline{TLet}} introduces a new local term binding in a term body.
-
-A \textbf{\lstinline{TCase}} is a case expression on a case scrutinee (always a de Bruijn indexed variable), a case type, a default value and a list of alternatives.
-
-The case alternatives, \textbf{\lstinline{TAlt}}s, may be constructed from:
-\begin{itemize}
-\item a \lstinline{TACon}, which matches on a constructor of a given qualified name, binding the appropriate number of pattern variables to the body term if a match is made. Note that a \lstinline{TCase}'s list of \lstinline{Args} must have unique qualified names for each \lstinline{TACon}.
-\item a \lstinline{TAGuard}, which matches on a boolean guard and binds no variables if matched against.
-\item a \lstinline{TALit}, which matches on a literal term.
-\end{itemize}
-
-A \textbf{\lstinline{TUnit}} is used for levels. \edcomm{NP}{what does that mean}
-
-A \textbf{\lstinline{TSort}}
-
-A \textbf{\lstinline{TErased}}
-
-A \textbf{\lstinline{TError}} is used to indicate a runtime error.
-
-\edcomm{NP}{Either before or after compiler section. Discuss Agda module system and its translation. Arguments inheited from all enclosing modules.}
+In this chapter, we introduce the necessary logical and compiler background concepts required for the understanding of the material presented in this thesis. In Section~\ref{sec:lambda_calc}, we review some of the mathematical background useful for understanding our optimisations. In Section~\ref{sec:agda_compiler}, we give an introduction to the Agda compiler. Finally, in Section~\ref{sec:background_conclusion}, we conclude with a summary of the core concepts and describe where they are used throughout the remainder of the thesis.
 
 \section{Lambda Calculus}
 \label{sec:lambda_calc}
@@ -146,6 +53,97 @@ It is also important when applying substitutions to $\lambda$ terms that we avoi
 Recognizing the required index ``shifting'' and ``lifting'' in the Figure~\ref{eq:debruijn_sub} substitution rule should suffice as background for understanding the variable manipulation performed in our optimisation.
 
 \edcomm{NP}{Here has a good introduction that may be a good reference: \url{http://fi.ort.edu.uy/innovaportal/file/5328/3/formalisationconstructivetypetheorystoughtonsubstitution.pdf}}
+
+% then discuss how substitutions can be safely performed on \lstinline{TTerm}s as a preface for discussing our optimizations.
+
+\section{Agda Compiler}
+\label{sec:agda_compiler}
+
+The Agda programming language's first and most-used backend is MAlonzo, or more generically, the GHC backend.\cite{benke2007} Given an Adga module containig a \AgdaFunction{main} function\footnote{An Agda module without a main file can be compiled with \texttt{-{}-no-main}.}, the Agda \texttt{-{}-compile} option will compile the program using the GHC backend by default, which translates an Agda program into Haskell source. The generated Haskell source can then be automatically or manually (with \texttt{-{}-ghc-dont-call-ghc}) compiled to an executable program via GHC.\cite{agdadocs} % http://agda.readthedocs.io/en/latest/tools/compilers.html
+
+There are several stages of translation and compilation in this process. The transition of primary interest for our optimisations is the conversion of compiled clauses to a ``treeless'' syntax. This translations occurs after Agda type-checking but before Haskell source is generated. Most Agda optimisations occur as alterations to the treeless terms.
+
+Agda functions begin as a type\footnote{It is worth noting that type inference is an undecidable problem for definitions with dependent types, so type signatures must be provided in many cases, and by convention, should always be provided.} and a definition. Functions on datatypes can be defined by pattern matching on the constructors of that datatype, describing a structurally recursive function.\cite{agdawiki} % http://wiki.portal.chalmers.se/agda/agda.php?n=Docs.DatatypeAndFunctionDefinitions
+This should sound familiar to users of functional programming languages like Haskell. Unlike Haskell, however, Agda does not permit partial functions. Therefore, functions defined by pattern matching must not exclude any possible cases from the pattern matching clauses.\cite{agdawiki} % http://wiki.portal.chalmers.se/agda/pmwiki.php?n=ReferenceManual.Totality#Coveragechecking}
+Because function definitions in Agda are written as a series of one or more pattern matching clauses on possible variable inputs, we can construct an equivalent definition via case tree.\cite{agdawiki} % http://wiki.portal.chalmers.se/agda/agda.php?n=Docs.PatternMatching
+Once coverage checking and type checking is completed, pattern matching can be translated into case trees by successively splitting on each variable.\cite{agdahackage} % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-TypeChecking-CompiledClause.html
+Compiled clauses are the first stage of compilation and they are, simply put, case trees.
+
+Take for example the simple \AgdaFunction{not} function on booleans in Figure~\ref{code:not_agda}. The compiled clauses of \AgdaFunction{not} are shown in Figure~\ref{code:not_cc}, and the treeless syntax of \AgdaFunction{not} is shown in Figure~\ref{code:not_tterm}.
+
+\input{Figures/Agda/latex/Not}
+
+The treeless syntax is the input to the compiler backend of Agda. It's a high-level internal syntax, the name for which is derived from its use of case expressions instead of case trees. The other notable difference between compiled clauses and treeless syntax is the absence of datatypes and constructors.\cite{agdahackage} % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-Syntax-Treeless.html
+\edcomm{NP}{Why?}
+
+\subsubsection{Treeless Syntax}
+
+This treeless syntax is constructed from the \lstinline{TTerm}s (\textbf{T}reless \textbf{Terms}) data type and is the representation of the abstract syntax tree that we will refer to most frequently. It can be reasoned about as a lambda calculus with all local variable represented as de Bruijn indices. A listing of \lstinline{TTerm} constructors is shown in Figure~\ref{code:TTerm}.
+
+In this section we examine the constructors of \lstinline{TTerm}s one-by-one.\cite{agdahackage}
+
+\edcomm{NP}{Read about how sharing is lost with substitution in the agda mailing list: \url{https://lists.chalmers.se/pipermail/agda/2017/009379.html}}
+
+\begin{figure}
+\begin{lstlisting}[style=blockhaskell]
+type Args = [TTerm]
+
+data TTerm = TVar Nat
+           | TPrim TPrim
+           | TDef QName
+           | TApp TTerm Args
+           | TLam TTerm
+           | TLit Literal
+           | TCon QName
+           | TLet TTerm TTerm
+           | TCase Nat CaseType TTerm [TAlt]
+           | TUnit
+           | TSort
+           | TErased
+           | TError TError
+
+data TAlt = TACon QName Nat TTerm
+          | TAGuard TTerm TTerm
+          | TALit Literal TTerm
+\end{lstlisting}
+\caption{\lstinline{TTerm} and \lstinline{TAlt} datatype definitions.}
+\label{code:TTerm}
+\end{figure}
+
+A \textbf{\lstinline{TVar}} is a de Bruijn indexed variable term.
+
+A \textbf{\lstinline{TPrim}} is a compiler-related primitive, such as addition, subtraction and equality on some primitive types.
+
+A \textbf{\lstinline{TDef}} is a qualified name identifying a function or datatype definition \edcomm{NP}{confirm}
+
+A \textbf{\lstinline{TApp}} is a \lstinline{TTerm} applied to a list of arguments, where each argument is itself a \lstinline{TTerm}.
+
+A \textbf{\lstinline{TLam}} % TTerm
+
+A \textbf{\lstinline{TLit}} % Literal
+
+A \textbf{\lstinline{TCon}} % QName
+
+A \textbf{\lstinline{TLet}} introduces a new local term binding in a term body.
+
+A \textbf{\lstinline{TCase}} is a case expression on a case scrutinee (always a de Bruijn indexed variable), a case type, a default value and a list of alternatives.
+
+The case alternatives, \textbf{\lstinline{TAlt}}s, may be constructed from:
+\begin{itemize}
+\item a \lstinline{TACon}, which matches on a constructor of a given qualified name, binding the appropriate number of pattern variables to the body term if a match is made. Note that a \lstinline{TCase}'s list of \lstinline{Args} must have unique qualified names for each \lstinline{TACon}.
+\item a \lstinline{TAGuard}, which matches on a boolean guard and binds no variables if matched against.
+\item a \lstinline{TALit}, which matches on a literal term.
+\end{itemize}
+
+A \textbf{\lstinline{TUnit}} is used for levels. \edcomm{NP}{what does that mean}
+
+A \textbf{\lstinline{TSort}}
+
+A \textbf{\lstinline{TErased}}
+
+A \textbf{\lstinline{TError}} is used to indicate a runtime error.
+
+\edcomm{NP}{Either before or after compiler section. Discuss Agda module system and its translation. Arguments inheited from all enclosing modules.}
 
 \section{Conclusion}
 \label{sec:background_conclusion}
