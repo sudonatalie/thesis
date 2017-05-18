@@ -145,17 +145,17 @@ A \textbf{\lstinline{TVar}} is a de Bruijn indexed variable term.
 
 A \textbf{\lstinline{TPrim}} is a compiler-related primitive, such as addition, subtraction and equality on some primitive types.
 
-A \textbf{\lstinline{TDef}} is a qualified name identifying a function or datatype definition \edcomm{NP}{confirm}
+A \textbf{\lstinline{TDef}} is a qualified name identifying a function or datatype definition.
 
 A \textbf{\lstinline{TApp}} is a \lstinline{TTerm} applied to a list of arguments, where each argument is itself a \lstinline{TTerm}.
 
-A \textbf{\lstinline{TLam}} % TTerm
+A \textbf{\lstinline{TLam}} is a $\lambda$-abstraction with a body.
 
-A \textbf{\lstinline{TLit}} % Literal
+A \textbf{\lstinline{TLit}} is a literal value, such as an integer or string.
 
-A \textbf{\lstinline{TCon}} % QName
+A \textbf{\lstinline{TCon}} is a qualified name identifying a constructor.
 
-A \textbf{\lstinline{TLet}} introduces a new local term binding in a term body.
+A \textbf{\lstinline{TLet}} is a let expression, introducing a new local term binding in a term body.
 
 A \textbf{\lstinline{TCase}} is a case expression on a case scrutinee (always a de Bruijn indexed variable), a case type, a default value and a list of alternatives.
 
@@ -166,11 +166,11 @@ The case alternatives, \textbf{\lstinline{TAlt}}s, may be constructed from:
 \item a \lstinline{TALit}, which matches on a literal term.
 \end{itemize}
 
-A \textbf{\lstinline{TUnit}} is used for levels. \edcomm{NP}{what does that mean}
+A \textbf{\lstinline{TUnit}} is used for levels.
 
-A \textbf{\lstinline{TSort}}
+A \textbf{\lstinline{TSort}} is a sort, as in the type of types.
 
-A \textbf{\lstinline{TErased}}
+A \textbf{\lstinline{TErased}} is used to replace some irrelevant term that isn't needed.
 
 A \textbf{\lstinline{TError}} is used to indicate a runtime error.
 
