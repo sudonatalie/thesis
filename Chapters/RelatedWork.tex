@@ -35,7 +35,7 @@ and then the recursive transormation produces:
 
 \section{Let-floating}
 
-The 1996 paper by Simon Peyton Jones et al., ``Let-foating: moving bindings to give faster programs'', discusses the effects of a group of compiler optimisations for Haskell which move let bindings to reduce heap allocation and execution time.\cite{jones1996}
+The 1996 paper by Simon Peyton Jones et al., ``Let-floating: moving bindings to give faster programs'', discusses the effects of a group of compiler optimisations for Haskell which move let bindings to reduce heap allocation and execution time.\cite{jones1996}
 
 In this paper, three types of let-floating transformations are presented:
 \begin{enumerate}
@@ -72,11 +72,51 @@ These two Haskell expressions are semantically-equivalent, but the second has po
 
 \subsection*{Full laziness}
 
-TODO
+While the above transformation attempts to push bindings inwards, the full laziness transformation does the reverse, floating bindings outwards. By floating some bindings out of lambda abstractions, we can avoid re-computing the same expression on repeated recursive calls to the same function.\cite{jones1996}
+
+The benefit from this increased sharing outweighs the detriment of increasing the let scope in most cases where:
+\begin{itemize}
+\item the expression being bound requires a non-negligible amount of computational work to evaluate; and
+\item the lambda abstraction it is used in is called more than once.\cite{jones1996}
+\end{itemize}
+
+Consider as an example, the Haskell code\cite{jones1996}:
+\begin{lstlisting}
+f = \xs ->
+  let g = \y -> let n = length xs
+                in ...g...n...
+  in ...g...
+\end{lstlisting}
+
+and its optimised version with let-bindings floated outward:
+\begin{lstlisting}
+f = \xs ->
+  let n = length xs
+  in let g = \y -> ...g...n...
+     in ...g...
+\end{lstlisting}
+
+In order to maximise the number of opportunities for this type of let-floating, it may be necessary to create dummy let bindings for free subexpressions in the lambda abstraction, so that they can be floated out as well.\cite{jones1996}
 
 \subsection*{Local transformations}
 
-TODO
+The local transformations consist of a series of three small rewrite rules as follows:
+
+\begin{enumerate}
+\item \lstinline[style=math]{(let $v$=$e$ in $b$) $a$ $\to$ (let $v$=$e$ in $b$ $a$)}
+
+Moving the let outside the application cannot have a negative effect, but it can have a positive effect by creating opportunities for other optimisations.\cite{jones1996}
+
+\item \lstinline[style=math]{case (let $v$=$e$ in $b$) of $alts$ $\to$ let $v$=$e$ in case $b$ of $alts$}
+
+Likewise for moving the let outside a case expression, it won't have a negative effect, but could have a positive effect.\cite{jones1996}
+
+\item \lstinline[style=math]{let $x$ = let  $v$=$e$ in $b$ in $c$ $\to$ let $v$=$e$ in let $x$ = $b$ in $c$}
+
+Moving a let binding from the right-hand side of another let binding to outside it can have several advantages including potentially reducing the need for some heap allocation when the final form of the second binding becomes more clear.\cite{jones1996}
+\end{enumerate}
+
+Similar methods to these let-floating transformations are used in our patterned let-floating across function calls, with the same goal of increasing sharing and decreasing re-evaluation of the same expressions.
 
 \section{Alternate method of case squashing}
 
