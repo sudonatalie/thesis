@@ -108,13 +108,19 @@ Note that proper projections do not include projection-like functions, or record
 
 TODO
 
+See Appendix~\ref{app:to_treeless}
+
 \subsection{Case Squashing}
 
 TODO
 
+See Appendix~\ref{app:case_squash}
+
 \subsection{Generating Pattern Lets}
 
 TODO
+
+See Appendix~\ref{app:compiler}
 
 Our next optimisation centres around generating these ``pattern lets''. The function \lstinline{term :: T.TTerm -> CC HS.Exp} in the Agda compiler backend transforms Agda terms into Haskell expressions. In this function, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets, namely let expressions where the let body is a case expression, with a single constructor alternative, scrutinizing the variable bound by the parent let. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinizing the 0 (most recently bound) variable.
 

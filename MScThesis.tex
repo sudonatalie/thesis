@@ -60,7 +60,8 @@
   showspaces=false,
   showstringspaces=false,
   tabsize=2,
-  breaklines=true
+  breaklines=true,
+  literate={Γ}{\textGamma}1 {Δ}{\textDelta}1 {Θ}{\texttheta}1
 }
 \lstdefinestyle{inline}{
   basicstyle=\ttfamily\normalsize
@@ -124,7 +125,10 @@
 % Appendices
 \input{Auxiliary/ResetCounters}
 \appendix
-\input{Chapters/Appendix/Simplify}
+\input{Appendix/Simplify}
+\input{Appendix/ToTreeless}
+\input{Appendix/CaseSquash}
+\input{Appendix/Compiler}
 
 % Bibliography
 \bibliographystyle{alpha}
