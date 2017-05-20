@@ -102,6 +102,7 @@ case $2$ of {
 We perform this ``case squashing'' by accumulating an environment of all previously scrutinized variables as we traverse the tree structure (appropriately shifting de Bruijn indices in the environment as new variables are bound), and replacing case expressions that match on the same variable as an ancestor case expressions, with the corresponding case branch's body. Any variables in the body that refer to bindings in the removed branch should be replaced with references to the bindings in the matching ancestor case expression branch.
 
 \subsection{Generating Pattern Lets}
+\label{sub:logical_plet}
 
 We can avoid generating certain trivial case expressions by identifying let expressions with the following attributes:
 \begin{itemize}
@@ -168,11 +169,9 @@ For a complete listing of our implementation of the case squashing optimisation,
 
 \subsection{Generating Pattern Lets}
 
-TODO
+The \lstinline{Agda.Compiler.MAlonzo.Compiler} module is responsible for transforming Agda treeless terms into Haskell expressions. In the primary function for this compilation, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets. In order to be a suitable candidate for this optimisation, a \lstinline{let} expression must exhibit the properties described in Subsection~\ref{sub:logical_plet}. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinizing the 0 (most recently bound) variable, and the requirements can thus be represented with a pattern matching expression \lstinline{TLet _ (TCase 0 _ _ [TACon _ _ _])}, followed by a check that the default branch is unreachable.
 
-See Appendix~\ref{app:compiler}
-
-Our next optimisation centres around generating these ``pattern lets''. The function \lstinline{term :: T.TTerm -> CC HS.Exp} in the Agda compiler backend transforms Agda terms into Haskell expressions. In this function, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets, namely let expressions where the let body is a case expression, with a single constructor alternative, scrutinizing the variable bound by the parent let. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinizing the 0 (most recently bound) variable.
+For a complete listing of our implementation of the pattern let generating optimisation, refer to Appendix~\ref{app:compiler}.
 
 \subsection{Let Pattern Floating}
 
