@@ -35,7 +35,39 @@ The logical representation of inlining is fairly straightforward. We recurse thr
 
 \subsection{Case Squashing}
 
-The goal of case squashing is to eliminate case expressions where the scrutinee has already been matched on by an enclosing ancestor case expression. For example, given the following simplified treeless expression:
+The goal of case squashing is to eliminate case expressions where the scrutinee has already been matched on by an enclosing ancestor case expression. Figure~\ref{fig:case_squash_rule} shows the tranformation from a case expression with repeated scrutinisations on the same variable, to the optimised ``case squashed'' version.
+
+\begin{figure}[h]
+\centering
+\begin{subfigure}{.47\textwidth}
+  \centering
+  \begin{lstlisting}[style=math]
+  case $i : \tau$ of
+   $d~(ar-1)~..~0 \to$
+     ...
+       case $j : \tau$ of
+         $d~(ar-1)~..~0 \to r$
+  \end{lstlisting}
+  where \lstinline[style=math]{lookupVar($i$) = lookupVar($j$)}.
+\end{subfigure}
+{\large$\to$}
+\begin{subfigure}{.47\textwidth}
+  \centering
+  \begin{lstlisting}[style=math]
+  case $i : \tau$ of
+   $d~(ar-1)~..~0 \to$
+     ...
+       $r'$
+  \end{lstlisting}
+  where $r'$ is $r$ with variables $0, ..., (ar-1)$ replaced with the corresponding bound variables from the ancestor case expression.
+\end{subfigure}
+\caption{Case squashing rule.}
+\label{fig:case_squash_rule}
+\end{figure}
+
+\edcomm{NP}{Define lookupVar}
+
+For example, given the following simplified treeless expression:
 
 \begin{lstlisting}[style=math]
 $\lambda~\textcolor{red}{0} \to$
@@ -71,25 +103,41 @@ We perform this ``case squashing'' by accumulating an environment of all previou
 
 \subsection{Generating Pattern Lets}
 
-We can avoid generating certain trivial case expressions by identifying expressions like the following:
+We can avoid generating certain trivial case expressions by identifying let expressions with the following attributes:
+\begin{itemize}
+  \item the body of the \lstinline{let} expression is a \lstinline{case} expression;
+  \item the case expression is scrutinising the variable just bound by the enclosing \lstinline{let};
+  \item only one case alternative exists, a constructor alternative; and
+  \item the default case is marked as \textit{unreachable}.
+\end{itemize}
 
-\begin{lstlisting}[style=math]
-let $0$ = $e$
-in case $0$ of
-  $da~2~1~0 \to t$
-	otherwise $\to X$
-\end{lstlisting}
+Figure~\ref{fig:plet_rule} shows the rule for generating an optimised Haskell expression given a treeless expression with the above properties.
 
-In the above example, the body of a \lstinline{let} expression is a \lstinline{case} expression scrutinizing the variable just bound by the enclosing \lstinline{let} where only one case alternative exists, and the default case is marked as \textit{unreachable}. TODO explain Unreachable markers
+\begin{figure}[h]
+\centering
+\begin{subfigure}{.47\textwidth}
+  \begin{lstlisting}[style=math]
+  let $0$ = $e$
+  in case $0$ of
+    $d~(ar-1)~..~0 \to t$
+    otherwise $\to u$
+  \end{lstlisting}
+  where \lstinline[style=math]{unreachable($s$) = true}.
+\end{subfigure}
+{\large$\to$}
+\begin{subfigure}{.47\textwidth}
+  \begin{lstlisting}[style=blockhaskell]
+  let v0@(D v1 ... v(ar)) = e
+  in t
+  \end{lstlisting}
+\end{subfigure}
+\caption{Generating pattern lets rule.}
+\label{fig:plet_rule}
+\end{figure}
 
-Our treeless syntax does not support pattern matching, but when these cases are identified before transforming into Haskell expressions, we can replace them with ``pattern lets'' like the following:
+\edcomm{NP}{Define unreachable}
 
-\begin{lstlisting}
-let v0@(C0 v1 v2 v3) = e
-in t
-\end{lstlisting}
-
-removing an unnecessary case expression, and immediately binding the appropriate constructor parameters in the \lstinline{let} expression.
+Our treeless syntax does not support pattern matching, but when these cases are identified before transforming into Haskell expressions, we can replace them with ``pattern lets'', removing an unnecessary case expression, and immediately binding the appropriate constructor parameters in the enclosing \lstinline{let} expression.
 
 \subsection{Let Pattern Floating}
 
