@@ -140,11 +140,11 @@ Figure~\ref{fig:plet_rule} shows the rule for generating an optimised Haskell ex
 
 Our treeless syntax does not support pattern matching, but when these cases are identified before transforming into Haskell expressions, we can replace them with ``pattern lets'', removing an unnecessary case expression, and immediately binding the appropriate constructor parameters in the enclosing \lstinline{let} expression.
 
-\subsection{Let Pattern Floating}
+%\subsection{Let Pattern Floating}
 
-\edcomm{NP}{Kahl: floating let patterns as described in Issue 1895, possibly including FloatingCase (which will have to end up producing irrefutable patterns on the function left-hand sides, not done yet), but definitely a separate section for cross-call-floating. See: Log/2017-04-26\_Float-across-function-calls\_notes.txt}
+%\edcomm{NP}{Kahl: floating let patterns as described in Issue 1895, possibly including FloatingCase (which will have to end up producing irrefutable patterns on the function left-hand sides, not done yet), but definitely a separate section for cross-call-floating. See: Log/2017-04-26\_Float-across-function-calls\_notes.txt}
 
-TODO
+%TODO
 
 \section{Implementation}
 \label{sec:implementation}
@@ -173,9 +173,9 @@ The \lstinline{Agda.Compiler.MAlonzo.Compiler} module is responsible for transfo
 
 For a complete listing of our implementation of the pattern let generating optimisation, refer to Appendix~\ref{app:compiler}.
 
-\subsection{Let Pattern Floating}
+%\subsection{Let Pattern Floating}
 
-TODO
+%TODO
 
 \section{Usage}
 \label{sec:usage}
@@ -204,6 +204,6 @@ to our Agda branch which, when enabled, will perform the case squashing optimisa
 
 TODO
 
-\subsection{Let Pattern Floating}
+%\subsection{Let Pattern Floating}
 
-TODO
+%TODO

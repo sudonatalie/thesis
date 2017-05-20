@@ -112,7 +112,7 @@ The main contributions to the Agda compiler include:
 	\item automatic inlining of proper projections
 	\item removal of repeated case expressions
 	\item avoiding trivial case expressions with patterned let expressions
-  \item let pattern floating across function calls
+  %\item let pattern floating across function calls
 \end{enumerate}
 
 The Agda compiler's type checker allows us to identify proper projections, and we have developed a patch for automatically inlining such projections.
@@ -121,7 +121,7 @@ However, the pass commonly results in deeply nested case expressions, many of wh
 
 We remove the need for more case analysis by identifying let expressions with a case expression body, which scrutinizes the variable bound by the parent let. Often these case expressions in Agda's generated code have only one case alternative, a constructor pattern match. In these situations, we replace the case expression with the body of that single alternative, and bind the constructor variable(s) using an as-pattern.
 
-Lastly, we found an opportunity for floating let bindings up through the expression tree in cases where the same let binding can be shared among multiple function calls. This increased sharing reduces the need for the same expression to be unnecessarily evaluated multiple times.
+%Lastly, we found an opportunity for floating let bindings up through the expression tree in cases where the same let binding can be shared among multiple function calls. This increased sharing reduces the need for the same expression to be unnecessarily evaluated multiple times.
 
 \section{Structure of the Thesis}
 \label{sec:structure_of_the_thesis}
