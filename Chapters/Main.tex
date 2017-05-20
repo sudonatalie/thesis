@@ -152,11 +152,11 @@ We discuss in this section some implementation details of our optimisation with 
 
 \subsection{Inlining Projections}
 
-Note that proper projections do not include projection-like functions, or record field values, i.e. projections applied to an argument.
+It is worth noting that the only projections which we identify and inline are ``proper projections'', that is, we do not include projection-like functions, or record field values, i.e. projections applied to an argument.
 
-TODO
+The only major complication in implementing the projection inlining optimisation is accounting for the potential for recursive inlining to loop, resulting in non-termination of compilation. Therefore, when inlining projections, we maintain an environment of previously inlined projections and avoid inlining the same projection more than one level deep.
 
-See Appendix~\ref{app:to_treeless}
+For a complete listing of our implementation of the projection inlining optimisation, refer to Appendix~\ref{app:to_treeless}. The \lstinline{ToTreeless} module is responsible for converting Agda's internal syntax to the treeless syntax. It is during this translation that other manual forms of definition inlining are performed, so we introduce our optimisation as an additional guard on translating internal \lstinline{Def}s, which checks whether the definition is a projection, and performs inlining if it  is.
 
 \subsection{Case Squashing}
 
