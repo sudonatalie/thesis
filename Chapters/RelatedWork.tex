@@ -119,6 +119,7 @@ Moving a let binding from the right-hand side of another let binding to outside 
 Similar methods to these let-floating transformations are used in our patterned let-floating across function calls, with the same goal of increasing sharing and decreasing re-evaluation of the same expressions.
 
 \section{Alternate method of case squashing}
+\label{sub:alternate_case_squash}
 
 Following development of \texttt{-{}-squash-cases}, an optimisation was added to the Agda compiler's Simplify stage which accomplishes the same goals as \texttt{-{}-squash-cases} in a slightly different way. We examine here that method of removing repeated case expressions.
 
