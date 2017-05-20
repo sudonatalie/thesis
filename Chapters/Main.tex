@@ -160,9 +160,11 @@ For a complete listing of our implementation of the projection inlining optimisa
 
 \subsection{Case Squashing}
 
-TODO
+The case squashing implementation is practically very similar to it's logical representation described above. While recursing through the treeless structure we accumulate an environment containing the relevant attributes of the case expressions in scope. As new variables are bound recursing down the structure, the indices stored in this environment are incremented accordingly.
 
-See Appendix~\ref{app:case_squash}
+For more details about how variable indices are replaced in the resulting term, refer to Subsection~\ref{sub:lambda_calc_subst}.
+
+For a complete listing of our implementation of the case squashing optimisation, refer to Appendix~\ref{app:case_squash}.
 
 \subsection{Generating Pattern Lets}
 
