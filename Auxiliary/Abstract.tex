@@ -1,9 +1,1 @@
-TODO
-
-Motivation paragraph.
-
-What is the problem paragraph.
-
-The meat of the thesis goes here (how we solve the problem).
-
-Conclusion: why is our solution of interest.
+Agda is a dependently-typed programming language and theorem prover, supporting proof construction in a functional programming style. Due to its incredibly flexible concrete syntax and support for Unicode identifiers, Agda can be used to construct elegant and expressive proofs in a format that is understandable even to those unfamiliar with the tool. As a result, many users of Agda, including our group, are quick to sacrifice speed and efficiency in our code in favour of proof clarity. This makes a highly-optimized compiler backend a particularly essential tool for practical development with Agda. Profiling some typical usages of Agda, we found that repeated evaluations of simple record projections often combined to be some of the highest cost centres in execution. The main contributios of this thesis are a series of compiler optimisations that inlines these simple projections, removes some expressions with trivial evaluations that can be statically inferred, and reduces the need for repeated evaluations of the same expressions by increasing sharing. In measuring the effects of these optimisations on Agda code we show that overall improvments in runtime on the order of 10-20\% are possible. We hope that the development and discussion of these optimisations is useful to the Agda developer community, and may be helpful for future contributors interested in implementing new optimisations for Agda.
