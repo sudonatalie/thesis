@@ -106,15 +106,12 @@ Take for example the simple \AgdaFunction{not} function on booleans in Figure~\r
 \input{Figures/Agda/latex/Not}
 
 The treeless syntax is the input to the compiler backend of Agda. It's a high-level internal syntax, the name for which is derived from its use of case expressions instead of case trees. The other notable difference between compiled clauses and treeless syntax is the absence of datatypes and constructors.\cite{agdahackage} % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-Syntax-Treeless.html
-\edcomm{NP}{Why?}
 
 \subsubsection{Treeless Syntax}
 
 This treeless syntax is constructed from the \lstinline{TTerm}s (\textbf{T}reless \textbf{Terms}) data type and is the representation of the abstract syntax tree that we will refer to most frequently. It can be reasoned about as a lambda calculus with all local variable represented as de Bruijn indices. A listing of \lstinline{TTerm} constructors is shown in Figure~\ref{code:TTerm}.
 
 In this section we examine the constructors of \lstinline{TTerm}s one-by-one.\cite{agdahackage}
-
-\edcomm{NP}{Read about how sharing is lost with substitution in the agda mailing list: \url{https://lists.chalmers.se/pipermail/agda/2017/009379.html}}
 
 \begin{figure}[h]
 \begin{lstlisting}[style=blockhaskell]

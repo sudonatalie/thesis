@@ -3,6 +3,8 @@
 
 In this chapter, we discuss the design and implementation of our optimisations to the Agda compiler. In Section~\ref{sec:logical_representation}, we give a logical representation of the optimisations. In Section~\ref{sec:implementation}, we present our implementation, with references to source code in the Appendix. In Section~\ref{sec:usage}, we present the usage instructions for these features in our compiler branch.
 
+\edcomm{NP}{Read about how sharing is lost with substitution in the agda mailing list: \url{https://lists.chalmers.se/pipermail/agda/2017/009379.html}}
+
 \section{Logical Representation}
 \label{sec:logical_representation}
 
@@ -188,7 +190,7 @@ We added the option:
 --inline-proj                               inline proper projections
 \end{verbatim}
 
-to our Agda branch which, when enabled, will replace every call to a function that is a proper projection with its function body. 
+to our Agda branch which, when enabled, will replace every call to a function that is a proper projection with its function body.
 
 \subsection{Case Squashing}
 

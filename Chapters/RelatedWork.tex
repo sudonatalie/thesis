@@ -123,8 +123,7 @@ Similar methods to these let-floating transformations are used in our patterned 
 
 Following development of \texttt{-{}-squash-cases}, an optimisation was added to the Agda compiler's Simplify stage which accomplishes the same goals as \texttt{-{}-squash-cases} in a slightly different way. We examine here that method of removing repeated case expressions.
 
-Immediately following the conversion of compiled clauses to treeless syntax in the Agda compiler, a series of optimising transformations are applied before the treeless expression is returned. \edcomm{NP}{discuss this in the Specific Context section above, or Background and move this later}
-One such step is the ``simplify'' group of transformations, which modify a \lstinline{TTerm} in a variety of optimising ways.
+Immediately following the conversion of compiled clauses to treeless syntax in the Agda compiler, a series of optimising transformations are applied before the treeless expression is returned. One such step is the ``simplify'' group of transformations, which modify a \lstinline{TTerm} in a variety of optimising ways.
 
 As the expression is traversed, \lstinline{simplify} is recursively called on each \lstinline{TTerm} term, and \lstinline{simpAlt} is called on each \lstinline{TAlt} alternative. Given some expression casing on de Bruijn index $x$, for each alternative of the pattern \lstinline{TACon name arity body}, the scrutinized variable index in the body, $x + arity$, is looked up in the variable environment. If the variable has already been bound, and therefore has a different de Bruijn index, $y$, a rewrite rule is added to the constructor. The rewrite rule indicates that every instance of \lstinline{TApp (TCon name) (TVar i | i <- [arity-1,arity-2..0])} in the alternative's body should be replaced with a \lstinline{TVar y}.
 
