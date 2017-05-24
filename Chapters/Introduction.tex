@@ -6,7 +6,7 @@ In this chapter, we introduce Agda and give an overview of this project. In Sect
 \section{Agda}
 \label{sec:intro_agda}
 
-Agda \cite{norell2007} is a dependently-typed programming language and theorem prover, supporting proof construction in a functional programming style. Due to its incredibly flexible concrete syntax and support for Unicode identifiers \cite{bove2009}, Agda can be used to construct elegant and expressive proofs in a format that is understandable even to those unfamiliar with the tool. As a result, many users of Agda, including our group, are quick to sacrifice speed and efficiency in our code in favour of proof clarity. This makes a highly-optimized compiler backend a particularly essential tool for practical development with Agda.
+Agda \cite{norell2007} is a dependently-typed programming language and theorem prover, supporting proof construction in a functional programming style. Due to its incredibly flexible concrete syntax and support for Unicode identifiers \cite{bove2009}, Agda can be used to construct elegant and expressive proofs in a format that is understandable even to those unfamiliar with the tool. As a result, many users of Agda, including our group, are quick to sacrifice speed and efficiency in our code in favour of proof clarity. This makes a highly-optimised compiler backend a particularly essential tool for practical development with Agda.
 
 \subsection{Dependent Types}
 
@@ -71,7 +71,7 @@ Some of the Agda optimisations described herein would typically be performed by 
 \section{Problem Statement}
 \label{sec:problem_statement}
 
-For practical development in Agda, a highly effective optimizing compiler backend is a particularly essential tool to avoid performance concerns.
+For practical development in Agda, a highly effective optimising compiler backend is a particularly essential tool to avoid performance concerns.
 
 Our work aims to introduce a number of optimising transformations to the Agda internals and backend so that Agda users can continue to focus on elegant syntax and mathematical clarity, and leave the optimisations necessary to transform that code into a program that runs with acceptable heap allocation and execution time to the compiler.
 
