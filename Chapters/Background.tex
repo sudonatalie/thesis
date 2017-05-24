@@ -81,8 +81,10 @@ It is also important when applying substitutions to $\lambda$ terms that we avoi
 
 Recognizing the required index ``shifting'' and ``lifting'' in the Figure~\ref{eq:debruijn_sub} substitution rule should suffice as background for understanding the variable manipulation performed in our optimisation.
 
-\section{Agda Compiler}
-\label{sec:agda_compiler}
+\section{Agda}
+\label{sec:background_agda}
+
+\subsection{Compiler}
 
 The Agda programming language's first and most-used backend is MAlonzo, or more generically, the GHC backend.\cite{benke2007} Given an Adga module containig a \AgdaFunction{main} function\footnote{An Agda module without a main file can be compiled with \texttt{-{}-no-main}.}, the Agda \texttt{-{}-compile} option will compile the program using the GHC backend by default, which translates an Agda program into Haskell source. The generated Haskell source can then be automatically or manually (with \texttt{-{}-ghc-dont-call-ghc}) compiled to an executable program via GHC.\cite{agdadocs} % http://agda.readthedocs.io/en/latest/tools/compilers.html
 
@@ -165,4 +167,10 @@ A \textbf{\lstinline{TErased}} is used to replace some irrelevant term that isn'
 
 A \textbf{\lstinline{TError}} is used to indicate a runtime error.
 
-\edcomm{NP}{Either before or after compiler section. Discuss Agda module system and its translation. Arguments inheited from all enclosing modules.}
+\subsection{Module System}
+
+The Agda module is designed with simplicity in mind, with the primary goal of organizing the way names are used in Agda programs into a hierarchical structure. By default, definitions and datatypes must be referenced unambiguously with both their qualified name and the module in which it is defined.
+
+By this implementation, Agda modules don't have a ``type'', and scope checking can be accomplished entirely independently of type-checking. After type-checking, all definitions are lambda lifted \cite{agdadocs} However, because names are fully qualified and the concept of ``scope'' is removed from type-checking, information about potential sharing is lost once arguments are substituted into the types of module definitions. Because arguments are inherited from all enclosing modules, in larger Agda projects, it is easy to create a situation where very large type signatures must be serialized many times when the same modules are referenced more than once.\cite{agdamail} % https://lists.chalmers.se/pipermail/agda/2017/009406.html
+
+In Section~\ref{sec:next_steps} we discuss our attempts to re-introduce some of this lost sharing potential and reduce repeated computations.
