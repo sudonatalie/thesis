@@ -11,7 +11,7 @@ In this chapter, we look at the effect of the optimisation techniques formulated
 
 Take for example the simple usage of record projections in Figure~\ref{code:example1_agda}. When we compile this module once without \texttt{-{}-inline-proj} on, and once again with \texttt{-{}-inline-proj} enabled, a unified diff of the two generated Haskell files gives us what is shown in Figure~\ref{fig:Example1_inline}.
 
-\begin{figure}[h]
+\begin{figure}[h!]
     \centering
     \includegraphics[width=0.5\textwidth]{Figures/Example1_inline}
     \caption{Unified difference of the \AgdaModule{Example1}~module compiled without and then with \texttt{-{}-inline-proj}.}
@@ -20,7 +20,7 @@ Take for example the simple usage of record projections in Figure~\ref{code:exam
 
 The compiled projection function \AgdaField{Pair.snd}, that is \lstinline{d18} in the Haskell code, is replaced with a Haskell expression that cases on the pair (\AgdaFunction{p} in Agda, \lstinline{d22} in Haskell) and returns the second field.
 
-\begin{figure}[h]
+\begin{figure}[h!]
     \centering
     \includegraphics[width=0.5\textwidth]{Figures/Example1_squash}
     \caption{Unified difference of the \AgdaModule{Example1}~module compiled  with \texttt{-{}-inline-proj} and then also with \texttt{-{}-squash-cases}.}
@@ -29,6 +29,8 @@ The compiled projection function \AgdaField{Pair.snd}, that is \lstinline{d18} i
 
 We then compile the same file with both \texttt{-{}-inline-proj} and \texttt{-{}-squash-cases}, and the difference between only inlining and both inlining and squashing can be seen in Figure~\ref{fig:Example1_squash}.
 
+\newpage
+
 \section{RATH-Agda Main}
 \label{sec:app_one}
 
@@ -36,15 +38,13 @@ RATH-Agda is a basic category and allegory theory library developed by Kahl, et 
 
 \subsection{Before}
 
-\input{Figures/Output/MainProf}
-
 In profiling the runtime of this \AgdaModule{Main} module, we found that an inordinate amount of time was spent on evaluating simple record projections. The first few lines of the profiling report in Figure~\ref{fig:main_prof} indicate that the greatest cost centres in terms of time are the two simple record projections for the $\Sigma$ data type, with a combined 17.6\% of execution time spent evaluating them.
 
 Because enabling profiling does have an affect on execution, we also re-compiled the module without profiling and ran it six times, measuring execution time with the Unix \texttt{time} command, to determing its average runtime as 1.60 seconds.
 
-\subsection{After}
+\input{Figures/Output/MainProf}
 
-\input{Figures/Output/MainInlineProf}
+\subsection{After}
 
 By compiling \AgdaModule{Main} with our new option, \texttt{-{}-inline-proj}, enabled, we reduced total runtime and memory allocation, as can be seen by comparing Figure~\ref{fig:main_inline_prof} and Figure~\ref{fig:main_prof}.
 
