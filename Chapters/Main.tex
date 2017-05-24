@@ -65,8 +65,6 @@ The goal of case squashing is to eliminate case expressions where the scrutinee 
 \label{fig:case_squash_rule}
 \end{figure}
 
-\edcomm{NP}{Define lookupVar}
-
 For example, given the following simplified treeless expression:
 
 \begin{lstlisting}[style=math]
@@ -138,7 +136,7 @@ Figure~\ref{fig:plet_rule} shows the rule for generating an optimised Haskell ex
 \label{fig:plet_rule}
 \end{figure}
 
-\edcomm{NP}{Define unreachable}
+Note that banches may be marked \lstinline{unreachable} if they are absurd branches or just to fill in missing case defaults which cannot be reached.
 
 Our treeless syntax does not support pattern matching, but when these cases are identified before transforming into Haskell expressions, we can replace them with ``pattern lets'', removing an unnecessary case expression, and immediately binding the appropriate constructor parameters in the enclosing \lstinline{let} expression.
 
