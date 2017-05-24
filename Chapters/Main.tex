@@ -140,12 +140,6 @@ Note that banches may be marked \lstinline{unreachable} if they are absurd branc
 
 Our treeless syntax does not support pattern matching, but when these cases are identified before transforming into Haskell expressions, we can replace them with ``pattern lets'', removing an unnecessary case expression, and immediately binding the appropriate constructor parameters in the enclosing \lstinline{let} expression.
 
-%\subsection{Let Pattern Floating}
-
-%\edcomm{NP}{Kahl: floating let patterns as described in Issue 1895, possibly including FloatingCase (which will have to end up producing irrefutable patterns on the function left-hand sides, not done yet), but definitely a separate section for cross-call-floating. See: Log/2017-04-26\_Float-across-function-calls\_notes.txt}
-
-%TODO
-
 \section{Implementation}
 \label{sec:implementation}
 
