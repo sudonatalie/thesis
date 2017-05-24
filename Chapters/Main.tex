@@ -203,12 +203,11 @@ to our Agda branch which, when enabled, will perform the case squashing optimisa
 
 \subsection{Generating Pattern Lets}
 
-We added the option:
+We added the options:
 
 \begin{verbatim}
---ghc-generate-pattern-let  make the GHC backend generate pattern lets
+--abstract-plet                             abstract pattern lets in generated code
+--ghc-generate-pattern-let                  make the GHC backend generate pattern lets
 \end{verbatim}
 
-to our Agda branch which, when enabled, will generate pattern lets in the GHC backend during compilation.
-
-\edcomm{NP}{I think there's another option that needs to be turned on for this to work}
+to our Agda branch which, when enabled together, will generate pattern lets in the GHC backend during compilation.
