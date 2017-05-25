@@ -1,10 +1,7 @@
 \chapter{Main Chapter}
 \label{cha:main_chapter}
 
-In this chapter, we discuss the design and implementation of our optimisations to the Agda compiler. In Section~\ref{sec:logical_representation}, we give a logical representation of the optimisations. In Section~\ref{sec:implementation}, we present our implementation, with references to source code in the Appendix. In Section~\ref{sec:usage}, we present the usage instructions for these features in our compiler branch.
-
-\section{Logical Representation}
-\label{sec:logical_representation}
+In this chapter, we discuss the design and implementation of our optimisations to the Agda compiler. We present each optimisation in a Section. In each Section, we give a logical representation of the optimisation, present our implementation and give usage instructions for the feature in our compiler branch. We also give references to the source code in the Appendix.
 
 We present in Figure~\ref{fig:treeless_grammar} a simplified logical representation of the Agda treeless syntax as a grammar. We use this simplification to discuss the optimisations at a logical level of abstraction. Note that variables are represented only by their de Bruijn index.
 
@@ -25,15 +22,49 @@ a ::=~& d~(ar-1)~..~0 \to t & \text{constructor alternative}\\
 \label{fig:treeless_grammar}
 \end{figure}
 
+In the implementation Subsections, we discuss some implementation details of our optimisations with reference to the Haskell data type of Agda's treeless representation. The treeless syntax (\lstinline{TTerm}) listing can be found in Figure~\ref{code:TTerm}.
+
 %i \in~& \mathbb{N} & \text{de Bruijn index}\\
 %d \in~& \{\text{function or datatype name}\}\\
 %l \in~& \{\text{literal}\}\\
 
-\subsection{Inlining Projections}
+\section{Inlining Projections}
+
+\subsection{Usage}
+
+We added the option:
+
+\begin{verbatim}
+--inline-proj                               inline proper projections
+\end{verbatim}
+
+to our Agda branch which, when enabled, will replace every call to a function that is a proper projection with its function body.
+
+\subsection{Logical Representation}
 
 The logical representation of inlining is fairly straightforward. We recurse through the treeless representation of an Agda module. For every application of a function or datatype to a list of arguments, that is $d~t^*$, where $d$ is the name of a function or datatype, and $t$s are treeless terms, we replace $d~t^*$ with the function or datatype definition corresponding to $d$ and substitute in the $t^*$ arguments.
 
-\subsection{Case Squashing}
+\subsection{Implementation}
+
+It is worth noting that the only projections which we identify and inline are ``proper projections'', that is, we do not include projection-like functions, or record field values, i.e. projections applied to an argument.
+
+The only major complication in implementing the projection inlining optimisation is accounting for the potential for recursive inlining to loop, resulting in non-termination of compilation. Therefore, when inlining projections, we maintain an environment of previously inlined projections and avoid inlining the same projection more than one level deep.
+
+For a complete listing of our implementation of the projection inlining optimisation, refer to Appendix~\ref{app:to_treeless}. The \lstinline{Agda.Compiler.ToTreeless} module is responsible for converting Agda's internal syntax to the treeless syntax. It is during this translation that other manual forms of definition inlining are performed, so we introduce our optimisation as an additional guard on translating internal \lstinline{Def}s, which checks whether the definition is a projection, and performs inlining if it  is.
+
+\section{Case Squashing}
+
+\subsection{Usage}
+
+We added the option:
+
+\begin{verbatim}
+--squash-cases                              remove unnecessary case expressions
+\end{verbatim}
+
+to our Agda branch which, when enabled, will perform the case squashing optimisation described above.
+
+\subsection{Logical Representation}
 
 The goal of case squashing is to eliminate case expressions where the scrutinee has already been matched on by an enclosing ancestor case expression. Figure~\ref{fig:case_squash_rule} shows the tranformation from a case expression with repeated scrutinisations on the same variable, to the optimised ``case squashed'' version.
 
@@ -99,8 +130,29 @@ case $2$ of {
 
 We perform this ``case squashing'' by accumulating an environment of all previously scrutinized variables as we traverse the tree structure (appropriately shifting de Bruijn indices in the environment as new variables are bound), and replacing case expressions that match on the same variable as an ancestor case expressions, with the corresponding case branch's body. Any variables in the body that refer to bindings in the removed branch should be replaced with references to the bindings in the matching ancestor case expression branch.
 
-\subsection{Generating Pattern Lets}
-\label{sub:logical_plet}
+\subsection{Implementation}
+
+The case squashing implementation is practically very similar to it's logical representation described above. While recursing through the treeless structure we accumulate an environment containing the relevant attributes of the case expressions in scope. As new variables are bound recursing down the structure, the indices stored in this environment are incremented accordingly.
+
+For more details about how variable indices are replaced in the resulting term, refer to Subsection~\ref{sub:lambda_calc_subst}.
+
+For a complete listing of our implementation of the case squashing optimisation, refer to Appendix~\ref{app:case_squash}.
+
+\section{Generating Pattern Lets}
+\label{sec:logical_plet}
+
+\subsection{Usage}
+
+We added the options:
+
+\begin{verbatim}
+--abstract-plet                             abstract pattern lets in generated code
+--ghc-generate-pattern-let                  make the GHC backend generate pattern lets
+\end{verbatim}
+
+to our Agda branch which, when enabled together, will generate pattern lets in the GHC backend during compilation.
+
+\subsection{Logical Representation}
 
 We can avoid generating certain trivial case expressions by identifying let expressions with the following attributes:
 \begin{itemize}
@@ -138,74 +190,16 @@ Note that banches may be marked \lstinline{unreachable} if they are absurd branc
 
 Our treeless syntax does not support pattern matching, but when these cases are identified before transforming into Haskell expressions, we can replace them with ``pattern lets'', removing an unnecessary case expression, and immediately binding the appropriate constructor parameters in the enclosing \lstinline{let} expression.
 
-\section{Implementation}
-\label{sec:implementation}
+\subsection{Implementation}
 
-We discuss in this section some implementation details of our optimisation with reference to the Haskell data type of Agda's treeless representation, as shown in Figure~\ref{code:TTerm}.
-
-\subsection{Inlining Projections}
-
-It is worth noting that the only projections which we identify and inline are ``proper projections'', that is, we do not include projection-like functions, or record field values, i.e. projections applied to an argument.
-
-The only major complication in implementing the projection inlining optimisation is accounting for the potential for recursive inlining to loop, resulting in non-termination of compilation. Therefore, when inlining projections, we maintain an environment of previously inlined projections and avoid inlining the same projection more than one level deep.
-
-For a complete listing of our implementation of the projection inlining optimisation, refer to Appendix~\ref{app:to_treeless}. The \lstinline{Agda.Compiler.ToTreeless} module is responsible for converting Agda's internal syntax to the treeless syntax. It is during this translation that other manual forms of definition inlining are performed, so we introduce our optimisation as an additional guard on translating internal \lstinline{Def}s, which checks whether the definition is a projection, and performs inlining if it  is.
-
-\subsection{Case Squashing}
-
-The case squashing implementation is practically very similar to it's logical representation described above. While recursing through the treeless structure we accumulate an environment containing the relevant attributes of the case expressions in scope. As new variables are bound recursing down the structure, the indices stored in this environment are incremented accordingly.
-
-For more details about how variable indices are replaced in the resulting term, refer to Subsection~\ref{sub:lambda_calc_subst}.
-
-For a complete listing of our implementation of the case squashing optimisation, refer to Appendix~\ref{app:case_squash}.
-
-\subsection{Generating Pattern Lets}
-
-The \lstinline{Agda.Compiler.MAlonzo.Compiler} module is responsible for transforming Agda treeless terms into Haskell expressions. In the primary function for this compilation, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets. In order to be a suitable candidate for this optimisation, a \lstinline{let} expression must exhibit the properties described in Subsection~\ref{sub:logical_plet}. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinizing the 0 (most recently bound) variable, and the requirements can thus be represented with a pattern matching expression \lstinline{TLet _ (TCase 0 _ _ [TACon _ _ _])}, followed by a check that the default branch is unreachable.
+The \lstinline{Agda.Compiler.MAlonzo.Compiler} module is responsible for transforming Agda treeless terms into Haskell expressions. In the primary function for this compilation, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets. In order to be a suitable candidate for this optimisation, a \lstinline{let} expression must exhibit the properties described in Subsection~\ref{sec:logical_plet}. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinizing the 0 (most recently bound) variable, and the requirements can thus be represented with a pattern matching expression \lstinline{TLet _ (TCase 0 _ _ [TACon _ _ _])}, followed by a check that the default branch is unreachable.
 
 For a complete listing of our implementation of the pattern let generating optimisation, refer to Appendix~\ref{app:compiler}.
 
-\section{Next Steps}
-\label{sec:next_steps}
-
-\subsection{Pattern Let Floating}
+\section{Pattern Let Floating}
 
 These generated pattern lets have two-fold benefits. Firstly, their use reduces the amount of case analysis required in execution, which saves both the time and space needed to run. Secondly, it creates significant opportunities for increasing sharing of expression evaluations which could not have been found when they were \lstinline{case} expressions. This leads us to our next optimisation currently being developed, which we expect to have the largest positive impact: pattern let floating.
 
-Pattern let floating combines the benefits of pattern lets, described in Subsection~\ref{sub:logical_plet}, with the benefits of floating described in Section~\ref{sec:let_floating}. We take inspiration from Peyton Jones, et al.'s ``Full laziness'' transformation in GHC and apply it to the code generated by the Agda compiler backend.\cite{jones1996} In our pattern let floating optimisation, we float the pattern let as far upwards in an expression tree if and until they can be joined with another floated pattern let on the same variable.  By doing so, we avoid re-computing the same expression when it is used in multiple subexpressions.
+Pattern let floating combines the benefits of pattern lets, described in Subsection~\ref{sec:logical_plet}, with the benefits of floating described in Section~\ref{sec:let_floating}. We take inspiration from Peyton Jones, et al.'s ``Full laziness'' transformation in GHC and apply it to the code generated by the Agda compiler backend.\cite{jones1996} In our pattern let floating optimisation, we float the pattern let as far upwards in an expression tree if and until they can be joined with another floated pattern let on the same variable.  By doing so, we avoid re-computing the same expression when it is used in multiple subexpressions.
 
 Our goal is to further expand this optimisation such that it can not only be floated up expressions, but also across function calss. By floating pattern lets across function calss, we can also avoid even more duplicated computation through sharing.
-
-\section{Usage}
-\label{sec:usage}
-
-\subsection{Inlining Projections}
-
-We added the option:
-
-\begin{verbatim}
---inline-proj                               inline proper projections
-\end{verbatim}
-
-to our Agda branch which, when enabled, will replace every call to a function that is a proper projection with its function body.
-
-\subsection{Case Squashing}
-
-We added the option:
-
-\begin{verbatim}
---squash-cases                              remove unnecessary case expressions
-\end{verbatim}
-
-to our Agda branch which, when enabled, will perform the case squashing optimisation described above.
-
-\subsection{Generating Pattern Lets}
-
-We added the options:
-
-\begin{verbatim}
---abstract-plet                             abstract pattern lets in generated code
---ghc-generate-pattern-let                  make the GHC backend generate pattern lets
-\end{verbatim}
-
-to our Agda branch which, when enabled together, will generate pattern lets in the GHC backend during compilation.
