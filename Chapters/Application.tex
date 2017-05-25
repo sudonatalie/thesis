@@ -40,6 +40,23 @@ Figure~\ref{fig:Example1_inline_squash} shows the overall unified diff from neit
 
 \newpage
 
+\section{Triangle Module}
+
+\edcomm{NP}{Explain what this module does}
+
+When we compile this module once without \texttt{-{}-ghc-generate-pattern-let} on, and once again with \texttt{-{}-ghc-generate-pattern-let} enabled, a unified diff of the two generated Haskell files gives us what is shown in Figure~\ref{fig:Triangle_genplet}. Both times, the module was compiled with \texttt{-{}-inline-proj}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/Triangle_genplet}
+    \caption{Unified difference of the \AgdaModule{Triangle3sPB}~module compiled without and then with \texttt{-{}-ghc-generate-pattern-let}.}
+    \label{fig:Triangle_genplet}
+\end{figure}
+
+As is shown by this difference, the case analysis on \lstinline{v0} is no longer required and instead the constructor paramters are immediately bound in the enclosing \lstinline{let} expression.
+
+\edcomm{NP}{Time and space results}
+
 \section{RATH-Agda Main}
 \label{sec:app_one}
 
@@ -62,20 +79,3 @@ We again re-compiled the module without profiling and ran it six times, measurin
 \edcomm{NP}{Make a table out of those 6 trials}
 
 \input{Figures/Output/MainInlineProf}
-
-\section{Triangle Module}
-
-\edcomm{NP}{Explain what this module does}
-
-When we compile this module once without \texttt{-{}-ghc-generate-pattern-let} on, and once again with \texttt{-{}-ghc-generate-pattern-let} enabled, a unified diff of the two generated Haskell files gives us what is shown in Figure~\ref{fig:Triangle_genplet}. Both times, the module was compiled with \texttt{-{}-inline-proj}.
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=0.5\textwidth]{Figures/Triangle_genplet}
-    \caption{Unified difference of the \AgdaModule{Triangle3sPB}~module compiled without and then with \texttt{-{}-ghc-generate-pattern-let}.}
-    \label{fig:Triangle_genplet}
-\end{figure}
-
-As is shown by this difference, the case analysis on \lstinline{v0} is no longer required and instead the constructor paramters are immediately bound in the enclosing \lstinline{let} expression.
-
-\edcomm{NP}{Time and space results}
