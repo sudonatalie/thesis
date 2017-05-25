@@ -5,6 +5,7 @@ all:	figs
 	pdflatex ${filename}
 	bibtex ${filename}||true
 	pdflatex ${filename}
+	bibtex ${filename}||true
 	pdflatex ${filename}
 
 quick:
