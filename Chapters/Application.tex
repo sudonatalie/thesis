@@ -29,6 +29,15 @@ The compiled projection function \AgdaField{Pair.snd}, that is \lstinline{d18} i
 
 We then compile the same file with both \texttt{-{}-inline-proj} and \texttt{-{}-squash-cases}, and the difference between only inlining and both inlining and squashing can be seen in Figure~\ref{fig:Example1_squash}.
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/Example1_inline_squash}
+    \caption{Unified difference of the \AgdaModule{Example1}~module compiled without either optimisation, then with both \texttt{-{}-inline-proj} and \texttt{-{}-squash-cases}.}
+    \label{fig:Example1_inline_squash}
+\end{figure}
+
+Figure~\ref{fig:Example1_inline_squash} shows the overall unified diff from neither optimisation to both.
+
 \newpage
 
 \section{RATH-Agda Main}
