@@ -38,7 +38,44 @@ and then the recursive transormation produces:
 % TODO
 \edcomm{WK}{3.2 Let-floating would profit from expansion and examples for every transformation.}
 
-The 1996 paper by Simon Peyton Jones et al., ``Let-floating: moving bindings to give faster programs'', discusses the effects of a group of compiler optimisations for Haskell which move let bindings to reduce heap allocation and execution time.\citep{jones1996}
+\citet{jones1996}'s ``Let-floating: moving bindings to give faster programs'' discusses the effects of a group of compiler optimisations for Haskell which move let bindings to reduce heap allocation and execution time. The cumulative impact of their efforts to move let-bindings around in Haskell code resulted in more than a 30\% reduction in heap allocation and a 15\% reduction in execution time.
+
+\citet{jones1996} explain that GHC (the Glasgow Haskell Compiler) is an optimising compiler whose guiding principle is \textit{compilation by transformation}. Whenever possible, optimisations in GHC are implemented as correctness-preserving program transformations, a principle that is reflected in the Agda compiler as well. Most of the optimisations we present later in Chapter~\ref{cha:main_chapter} are also best thought of as ``correctness-preserving program transformations''.
+
+Before we approach the optimisations presented by \citet{jones1996} we discuss the operational interpretation of the Haskell Core language. Haskell Core expressions are built from the syntax shown in Figure~\ref{fig:haskell_core}.
+
+\begin{figure}[h]
+\begin{align*}
+Expr \to~& Expr~Atom & \text{application}\\
+|~& Expr~ty & \text{type application}\\
+|~& \lambda~var_1 ... var_n \mathtt{->} Expr & \text{lambda abstraction}\\
+|~& \Lambda~ty \mathtt{->} Expr & \text{type abstraction}\\
+|~& \mathtt{case}~Expr~\mathtt{of}~Alts & \text{case expression}\\
+|~& \mathtt{let}~var\mathtt{=}Expr~\mathtt{in}~Expr & \text{local definition}\\
+|~& con~var_1 ... var_n & \text{constructor, $n \geq 0$}\\
+|~& prim~var_1 ... var_n & \text{primitive, $n \geq 0$}\\
+|~& Atom & \text{literal}\\
+\\
+Atom \to~& var & \text{variable}\\
+|~& Literal & \text{unboxed object}\\
+\\
+Alts \to~& Calt_1; ...; Calt_n; Default & \text{$n \geq 0$}\\
+|~& Lalt_1; ...; Lalt_n; Default & \text{$n \geq 0$}\\
+\\
+Calt \to~& con~var_1 ... var_n \mathtt{->} Expr & \text{constructor alt, $n \geq 0$}\\
+Lalt \to~& Literal \mathtt{->} Expr & \text{literal alt}\\
+Default \to~& \mathtt{NoDefault} & \text{}\\
+|~& var \mathtt{->} Expr & \text{}
+\end{align*}
+\caption{Syntax of the Haskell Core language.}
+\label{fig:haskell_core}
+\end{figure}
+
+In order to best understand the advantages of the let-floating tranformations described below, there are two facts about the operational semantics of Core that are useful to know:
+\begin{enumerate}
+\item \lstinline{let} bindings, and only \lstinline{let} bindings, perform heap allocation.
+\item \lstinline{case} expressions, and only \lstinline{case} expressions, perform evaluation.
+\end{enumerate}
 
 In this paper, three types of let-floating transformations are presented:
 \begin{enumerate}
