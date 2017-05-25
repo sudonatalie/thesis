@@ -5,15 +5,15 @@ In this chapter, we provide a survey of the literature and discuss some existing
 
 \section{Common subexpression elimination}
 
-Common subexpression elimination (CSE) is a compiler optimisation that reduces execution time by avoid repeated computations of the same expression.\cite{chitil1997} This very similar to our goal with case squashing. As anyone familiar with the nature of purely functional programming languages might realize, identification of common subexpressions is much simpler in a functional language thanks to the expectation of referential transparency.\cite{chitil1997} (As a reminder, referential transparency means that an expression always produces the same result regardless of the context in which it is evaluated.)
+Common subexpression elimination (CSE) is a compiler optimisation that reduces execution time by avoid repeated computations of the same expression.\cite{Chitil-1998} This very similar to our goal with case squashing. As anyone familiar with the nature of purely functional programming languages might realize, identification of common subexpressions is much simpler in a functional language thanks to the expectation of referential transparency.\cite{Chitil-1998} (As a reminder, referential transparency means that an expression always produces the same result regardless of the context in which it is evaluated.)
 
-Appel first implemented CSE in the strict functional language ML's compiler in 1992.\cite{appel1992} Chitil first explored the implementation of CSE in a lazy functional language, Haskell, with his 1997 paper.\cite{chitil1997} The difficulty with implementing CSE in a lazy language is that, although common subexpressions are easy to identify, determining which common subexpressions will yield a benefit by being eliminated is more challenging. To avoid complex data flow analysis on functional code, Chitil developed some simple syntactic conditions for judging when CSE is beneficial in Haskell code.\cite{chitil1997} We omit these from our survey, as such heuristics are unnecessary for our optimisation. We instead focus on the relevant ``compilation by transformation'' approach used when implementing CSE in GHC.
+Appel first implemented CSE in the strict functional language ML's compiler in 1992.\cite{appel1992} Chitil first explored the implementation of CSE in a lazy functional language, Haskell, with his 1998 paper.\cite{Chitil-1998} The difficulty with implementing CSE in a lazy language is that, although common subexpressions are easy to identify, determining which common subexpressions will yield a benefit by being eliminated is more challenging. To avoid complex data flow analysis on functional code, Chitil developed some simple syntactic conditions for judging when CSE is beneficial in Haskell code.\cite{Chitil-1998} We omit these from our survey, as such heuristics are unnecessary for our optimisation. We instead focus on the relevant ``compilation by transformation'' approach used when implementing CSE in GHC.
 
-The GHC compilation process consists of translating Haskell code into a second-order $\lambda$-calculus language called Core, at which point a series of optimising transformation are performed, and the backend transforms Core code into C.\cite{chitil1997} This process is very similar to the Agda compilation process, which translates Agda code into Treeless code, applies a series of optimising transformations, and finally generates Haskell code through the backend, as discussed in Section~\ref{sec:agda_compiler}.
+The GHC compilation process consists of translating Haskell code into a second-order $\lambda$-calculus language called Core, at which point a series of optimising transformation are performed, and the backend transforms Core code into C.\cite{Chitil-1998} This process is very similar to the Agda compilation process, which translates Agda code into Treeless code, applies a series of optimising transformations, and finally generates Haskell code through the backend, as discussed in Section~\ref{sec:agda_compiler}.
 
 The syntax of the Core intermediate language of Haskell is very similar to Treeless, with expressions consisting mainly of $\lambda$ abstractions, \lstinline{let} bindings, \lstinline{case} expressions, constructors, literals and function applications, much like Agda's Treeless syntax outlined in Figure~\ref{code:TTerm}.
 
-CSE is implemented in GHC with a single recursive traversal of the Core program. For each expression, its subexpressions are first transformed, then it is determined whether the whole transformed expression has occurred already.\cite{chitil1997} An example of this is shown in Figure~\ref{code:cse_haskell}.
+CSE is implemented in GHC with a single recursive traversal of the Core program. For each expression, its subexpressions are first transformed, then it is determined whether the whole transformed expression has occurred already.\cite{Chitil-1998} An example of this is shown in Figure~\ref{code:cse_haskell}.
 
 \begin{figure}[h]
 Given the expression:
@@ -28,7 +28,7 @@ and then the recursive transormation produces:
 
 \lstinline{let x = 3 in let y = 2+x in 2+x+4}
 
-\caption{Common subexpression elimination transformation in Haskell.\cite{chitil1997}}
+\caption{Common subexpression elimination transformation in Haskell.\cite{Chitil-1998}}
 \label{code:cse_haskell}
 \end{figure}
 
