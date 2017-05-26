@@ -24,7 +24,7 @@ the first CSE on the subexpressions yields:
 
 \lstinline{let x = 3 in let y = 2+x in y+4}
 
-and then the recursive transormation produces:
+and then the recursive transformation produces:
 
 \lstinline{let x = 3 in let y = 2+x in 2+x+4}
 
@@ -68,7 +68,7 @@ Default \to~& \mathtt{NoDefault} & \text{}\\
 \label{fig:haskell_core}
 \end{figure}
 
-In order to best understand the advantages of the let-floating tranformations described below, there are two facts about the operational semantics of Core that are useful to know:
+In order to best understand the advantages of the let-floating transformations described below, there are two facts about the operational semantics of Core that are useful to know:
 \begin{enumerate}
 \item \lstinline{let} bindings, and only \lstinline{let} bindings, perform heap allocation.
 \item \lstinline{case} expressions, and only \lstinline{case} expressions, perform evaluation.
@@ -83,7 +83,7 @@ In this paper, three types of let-floating transformations are presented:
 
 \subsection*{Floating inwards}
 
-Floating inwards is an straighforward optimisation that aims to move all let bindings as far inward in the expression tree as possible. This accomplishes three separate benefits:
+Floating inwards is an straightforward optimisation that aims to move all let bindings as far inward in the expression tree as possible. This accomplishes three separate benefits:
 \begin{itemize}
 \item It increases the chance that a binding will not be met in program execution, if it is not needed on a particular branch.
 \item It increases the chance that strictness analysis will be able to perform further optimisations.
@@ -105,7 +105,7 @@ case y of
            in x+p
 \end{lstlisting}
 
-These two Haskell expressions are semantically-equivalent, but the second has potential to become more efficient than the first because later optimisations will be able to idenfity the opportunity to remove the redundant inner case expression which scrutinises the same variable as the outer case expression.\citep{jones1996} Though it wasn't clear in the first expression, because the case expressions weren't nested, the second expression can now benefit from a GHC optimisation much like our ``case squashing'' optimisation.
+These two Haskell expressions are semantically-equivalent, but the second has potential to become more efficient than the first because later optimisations will be able to identify the opportunity to remove the redundant inner case expression which scrutinises the same variable as the outer case expression.\citep{jones1996} Though it wasn't clear in the first expression, because the case expressions weren't nested, the second expression can now benefit from a GHC optimisation much like our ``case squashing'' optimisation.
 
 \subsection*{Full laziness}
 
@@ -191,7 +191,7 @@ in let x = (v,v)
    in <body>
 \end{lstlisting}
 
-This means that when \lstinline{x} is met in the \lstinline{<body>} and evaluated, no update to the thunk woul dbe needed, saving a significant amount of memory traffic.\citep{jones1996}
+This means that when \lstinline{x} is met in the \lstinline{<body>} and evaluated, no update to the thunk would be needed, saving a significant amount of memory traffic.\citep{jones1996}
 
 \end{enumerate}
 

@@ -66,7 +66,7 @@ to our Agda branch which, when enabled, will perform the case squashing optimisa
 
 \subsection{Logical Representation}
 
-The goal of case squashing is to eliminate case expressions where the scrutinee has already been matched on by an enclosing ancestor case expression. Figure~\ref{fig:case_squash_rule} shows the tranformation from a case expression with repeated scrutinisations on the same variable, to the optimised ``case squashed'' version.
+The goal of case squashing is to eliminate case expressions where the scrutinee has already been matched on by an enclosing ancestor case expression. Figure~\ref{fig:case_squash_rule} shows the transformation from a case expression with repeated scrutinisations on the same variable, to the optimised ``case squashed'' version.
 
 \begin{figure}[h]
 \centering
@@ -186,7 +186,7 @@ Figure~\ref{fig:plet_rule} shows the rule for generating an optimised Haskell ex
 \label{fig:plet_rule}
 \end{figure}
 
-Note that banches may be marked \lstinline{unreachable} if they are absurd branches or just to fill in missing case defaults which cannot be reached.
+Note that branches may be marked \lstinline{unreachable} if they are absurd branches or just to fill in missing case defaults which cannot be reached.
 
 Our treeless syntax does not support pattern matching, but when these cases are identified before transforming into Haskell expressions, we can replace them with ``pattern lets'', removing an unnecessary case expression, and immediately binding the appropriate constructor parameters in the enclosing \lstinline{let} expression.
 

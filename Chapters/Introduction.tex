@@ -1,7 +1,7 @@
 \chapter{Introduction}
 \label{cha:introduction}
 
-In this chapter, we introduce Agda and give an overview of this project. In Section~\ref{sec:intro_agda}, we give an introduction to the Agda programming language and explain its unique characteristics, as well as a brief introduction to its compiler. In Section~\ref{sec:problem_statement}, we state the problem subject of our work. In Section~\ref{sec:motivation}, we give the motivation for the new optimisation strategies introduced here. In Section~\ref{sec:main_contributions}, we summarise our contributions, namely the optimisation strategies we implementated in the Agda compiler. Finally, in Section~\ref{sec:structure_of_the_thesis}, we give the structure of the remainder of the thesis.
+In this chapter, we introduce Agda and give an overview of this project. In Section~\ref{sec:intro_agda}, we give an introduction to the Agda programming language and explain its unique characteristics, as well as a brief introduction to its compiler. In Section~\ref{sec:problem_statement}, we state the problem subject of our work. In Section~\ref{sec:motivation}, we give the motivation for the new optimisation strategies introduced here. In Section~\ref{sec:main_contributions}, we summarise our contributions, namely the optimisation strategies we implemented in the Agda compiler. Finally, in Section~\ref{sec:structure_of_the_thesis}, we give the structure of the remainder of the thesis.
 
 \section{Agda}
 \label{sec:intro_agda}
@@ -43,7 +43,7 @@ The ability for types to contain arbitrary values is significant because it expa
 
  In order to ensure this logic holds true for all Agda programs, the Agda type-checker requires that all programs be both total and terminating.\citep{norell2009} Therefore, when an Agda program passes type-checking\footnote{(assuming a correct compiler)}, all of the propositions (types) therein are proven true (inhabited).
 
-Agda also supports a flexible mixfix syntax, as seen in Figure~\ref{code:if_function}, and Unicode characters, such as the \AgdaDatatype{ℕ} to represent natural numbers in Figure~\ref{code:replicate}. These features along with Agda's constructive functional style make Agda both an interesting programming language, but also a powerful proof assistant for generating elegant, expressive proofs.
+Agda also supports a flexible mix-fix syntax, as seen in Figure~\ref{code:if_function}, and Unicode characters, such as the \AgdaDatatype{ℕ} to represent natural numbers in Figure~\ref{code:replicate}. These features along with Agda's constructive functional style make Agda both an interesting programming language, but also a powerful proof assistant for generating elegant, expressive proofs.
 
 \input{Figures/Agda/latex/If}
 
