@@ -3,8 +3,6 @@
 
 In this chapter, we look at the effect of the optimisation techniques formulated in Chapter~\ref{cha:main_contributions} on different Agda code samples. Through a series of examples, we will see the effect of these optimisations and the degree to which they can yield increases in efficiency for both memory allocation space and execution time.
 
-\edcomm{NP}{Show negligible impact on compile time}
-
 \section{Simple Module}
 
 \input{Figures/Agda/latex/Example1}
@@ -55,8 +53,6 @@ When we compile this module once without \texttt{-{}-ghc-generate-pattern-let} o
 
 As is shown by this difference, the case analysis on \lstinline{v0} is no longer required and instead the constructor parameters are immediately bound in the enclosing \lstinline{let} expression.
 
-\edcomm{NP}{Time and space results}
-
 \section{RATH-Agda Main}
 \label{sec:app_one}
 
@@ -75,7 +71,5 @@ Because enabling profiling does have an affect on execution, we also re-compiled
 By compiling \AgdaModule{Main} with our new option, \texttt{-{}-inline-proj}, enabled, we reduced total runtime and memory allocation, as can be seen by comparing Figure~\ref{fig:main_inline_prof} and Figure~\ref{fig:main_prof}.
 
 We again re-compiled the module without profiling and ran it six times, measuring execution time with the Unix \texttt{time} command, to determine its average runtime with projections inlined as 1.44 seconds. We therefore produced a speedup of 1.11$\times$.
-
-\edcomm{NP}{Make a table out of those 6 trials}
 
 \input{Figures/Output/MainInlineProf}
