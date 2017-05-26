@@ -35,9 +35,6 @@ and then the recursive transormation produces:
 \section{Let-floating}
 \label{sec:let_floating}
 
-% TODO
-\edcomm{WK}{3.2 Let-floating would profit from expansion and examples for every transformation.}
-
 \citet{jones1996}'s ``Let-floating: moving bindings to give faster programs'' discusses the effects of a group of compiler optimisations for Haskell which move let bindings to reduce heap allocation and execution time. The cumulative impact of their efforts to move let-bindings around in Haskell code resulted in more than a 30\% reduction in heap allocation and a 15\% reduction in execution time.
 
 \citet{jones1996} explain that GHC (the Glasgow Haskell Compiler) is an optimising compiler whose guiding principle is \textit{compilation by transformation}. Whenever possible, optimisations in GHC are implemented as correctness-preserving program transformations, a principle that is reflected in the Agda compiler as well. Most of the optimisations we present later in Chapter~\ref{cha:main_chapter} are also best thought of as ``correctness-preserving program transformations''.
@@ -147,13 +144,55 @@ The local transformations consist of a series of three small rewrite rules as fo
 
 Moving the let outside the application cannot have a negative effect, but it can have a positive effect by creating opportunities for other optimisations.\citep{jones1996}
 
+Consider the case where $b$ is a lambda function. Before floating the let outside the application, the function cannot be applied to $a$:
+
+\begin{lstlisting}
+(let v = <v-rhs> in (\x -> ...x...)) a
+\end{lstlisting}
+
+However, after floating the let outside, it is clear that a beta-reduction rule can be applied, substituting an \lstinline{a} for ever \lstinline{x} at compile-time:
+
+\begin{lstlisting}
+let v = <v-rhs> in (\x -> ...x...) a
+\end{lstlisting}
+
 \item \lstinline[style=math]{case (let $v$=$e$ in $b$) of $alts$ $\to$ let $v$=$e$ in case $b$ of $alts$}
 
 Likewise for moving the let outside a case expression, it won't have a negative effect, but could have a positive effect.\citep{jones1996}
 
+Consider the case where $b$ is a constructor application. Before floating the let outside the case expression, there isn't a clear correspondence between the constructor and the alternatives:
+
+\begin{lstlisting}
+case (let v = <v-rhs> in con v1 v2 v3) of <alts>
+\end{lstlisting}
+
+However, after floating the let outside, it is clear that the case expression can be simplified to the body of the alternative with the same constructor, without any evaluation being performed:
+
+\begin{lstlisting}
+let v = <v-rhs> in case con v1 v2 v3 of <alts>
+\end{lstlisting}
+
 \item \lstinline[style=math]{let $x$ = let  $v$=$e$ in $b$ in $c$ $\to$ let $v$=$e$ in let $x$ = $b$ in $c$}
 
 Moving a let binding from the right-hand side of another let binding to outside it can have several advantages including potentially reducing the need for some heap allocation when the final form of the second binding becomes more clear.\citep{jones1996}
+
+In the following example, floating the let binding out reveals a head normal form. Without floating, when \lstinline{x} was met in the \lstinline{<body>}, we would evaluate \lstinline{x} by computing the pair \lstinline{(v,v)} and overwriting the heap-allocated thunk for \lstinline{x} with the result:
+
+\begin{lstlisting}
+let x = let v = <v-rhs> in (v,v)
+in <body>
+\end{lstlisting}
+
+With floating, we would instead allocate a thunk for \lstinline{v} and a pair for \lstinline{x}, so that \lstinline{x} is allocated in its final form:
+
+\begin{lstlisting}
+let v = <v-rhs>
+in let x = (v,v)
+   in <body>
+\end{lstlisting}
+
+This means that when \lstinline{x} is met in the \lstinline{<body>} and evaluated, no update to the thunk woul dbe needed, saving a significant amount of memory traffic.\citep{jones1996}
+
 \end{enumerate}
 
 Similar methods to these let-floating transformations are used in our patterned let-floating across function calls, with the same goal of increasing sharing and decreasing re-evaluation of the same expressions.
