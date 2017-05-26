@@ -1,7 +1,7 @@
 \chapter{Introduction}
 \label{cha:introduction}
 
-In this chapter, we introduce Agda and give an overview of this project. In Section~\ref{sec:intro_agda}, we give an introduction to the Agda programming language and explain its unique characteristics, as well as a brief introduction to its compiler. In Section~\ref{sec:problem_statement}, we state the problem subject of our work. In Section~\ref{sec:motivation}, we give the motivation for the new optimisation strategies introduced here. In Section~\ref{sec:main_contributions}, we summarize our contributions, namely the optimisation strategies we implementated in the Agda compiler. Finally, in Section~\ref{sec:structure_of_the_thesis}, we give the structure of the remainder of the thesis.
+In this chapter, we introduce Agda and give an overview of this project. In Section~\ref{sec:intro_agda}, we give an introduction to the Agda programming language and explain its unique characteristics, as well as a brief introduction to its compiler. In Section~\ref{sec:problem_statement}, we state the problem subject of our work. In Section~\ref{sec:motivation}, we give the motivation for the new optimisation strategies introduced here. In Section~\ref{sec:main_contributions}, we summarise our contributions, namely the optimisation strategies we implementated in the Agda compiler. Finally, in Section~\ref{sec:structure_of_the_thesis}, we give the structure of the remainder of the thesis.
 
 \section{Agda}
 \label{sec:intro_agda}
@@ -10,7 +10,7 @@ Agda \citep{Norell-2007} is a dependently-typed programming language and theorem
 
 \subsection{Dependent Types}
 
-Type signatures in Agda support dependent-types, which means that types may depend on values. In traditional functional languages, types may depend on other types. For example, the Haskell type signature \lstinline{xs :: Vector a} denotes a vector containing elements of type \lstinline{a}, where \lstinline{a} is a type variable. In a dependently-typed language like Agda types can depend not only on other types, but also on values. Consider the \AgdaFunction{replicate} function in Figure~\ref{code:replicate}, which produces a \AgdaDatatype{Vec}tor of elements of type \AgdaBound{A} with length \AgdaBound{n}.\citep{norell2009} In many languages that don't support dependent types a programmer can represent a parametrized vector type that contains elements of any arbitrary type, however, they cannot represent a parametrized vector type of any arbitrary specific length.
+Type signatures in Agda support dependent-types, which means that types may depend on values. In traditional functional languages, types may depend on other types. For example, the Haskell type signature \lstinline{xs :: Vector a} denotes a vector containing elements of type \lstinline{a}, where \lstinline{a} is a type variable. In a dependently-typed language like Agda types can depend not only on other types, but also on values. Consider the \AgdaFunction{replicate} function in Figure~\ref{code:replicate}, which produces a \AgdaDatatype{Vec}tor of elements of type \AgdaBound{A} with length \AgdaBound{n}.\citep{norell2009} In many languages that don't support dependent types a programmer can represent a parametrised vector type that contains elements of any arbitrary type, however, they cannot represent a parametrised vector type of any arbitrary specific length.
 
 \input{Figures/Agda/latex/Replicate}
 
@@ -119,14 +119,14 @@ The Agda compiler's type checker allows us to identify proper projections, and w
 
 However, the pass commonly results in deeply nested case expressions, many of which are pattern matching on the same constructor as its ancestors, thereby duplicating variables that the compiler has already bound. By gathering the matched patterns throughout a pass over the nested terms, we are able to prune patterns that are unnecessarily repeated, and substitute in place the previously bound pattern variables.
 
-We remove the need for more case analysis by identifying let expressions with a case expression body, which scrutinizes the variable bound by the parent let. Often these case expressions in Agda's generated code have only one case alternative, a constructor pattern match. In these situations, we replace the case expression with the body of that single alternative, and bind the constructor variable(s) using an as-pattern.
+We remove the need for more case analysis by identifying let expressions with a case expression body, which scrutinises the variable bound by the parent let. Often these case expressions in Agda's generated code have only one case alternative, a constructor pattern match. In these situations, we replace the case expression with the body of that single alternative, and bind the constructor variable(s) using an as-pattern.
 
 %Lastly, we found an opportunity for floating let bindings up through the expression tree in cases where the same let binding can be shared among multiple function calls. This increased sharing reduces the need for the same expression to be unnecessarily evaluated multiple times.
 
 \section{Structure of the Thesis}
 \label{sec:structure_of_the_thesis}
 
-The remainder of this thesis is organized as follows:
+The remainder of this thesis is organised as follows:
 
 \paragraph{Chapter~\ref{cha:background}} introduces the required compiler theory and logical background.
 

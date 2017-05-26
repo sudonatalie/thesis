@@ -42,7 +42,7 @@ The internal representation of Agda code in the compiler is based on a de Bruijn
 
 \subsection{$\lambda\sigma$-Calculus}
 
-In order to perform the desired optimisations on the abstract syntax tree, we must be able to perform substitutions on terms. Treating the abstract syntax tree structure as a specialized $\lambda$-calculus, we can implement substitution as a function on terms.
+In order to perform the desired optimisations on the abstract syntax tree, we must be able to perform substitutions on terms. Treating the abstract syntax tree structure as a specialised $\lambda$-calculus, we can implement substitution as a function on terms.
 
 Because our terms are built on de Bruijn indexed variables, we use the explicit substitution of a $\lambda\sigma$-calculus as a reference for understanding correct substitution on terms in the context of local variables bound by incrementing indices. The $\lambda\sigma$-calculus is a refinement of the $\lambda$-calculus where substitutions are manipulated explicitly, and substitution application is a term constructor rather than a meta-level notation.\citep{Abadi-Cardelli-Curien-Levy-1990}
 
@@ -79,7 +79,7 @@ It is also important when applying substitutions to $\lambda$ terms that we avoi
 \label{eq:debruijn_sub}
 \end{figure}
 
-Recognizing the required index ``shifting'' and ``lifting'' in the Figure~\ref{eq:debruijn_sub} substitution rule should suffice as background for understanding the variable manipulation performed in our optimisation.
+Recognising the required index ``shifting'' and ``lifting'' in the Figure~\ref{eq:debruijn_sub} substitution rule should suffice as background for understanding the variable manipulation performed in our optimisation.
 
 \section{Agda}
 \label{sec:background_agda}
@@ -169,8 +169,8 @@ A \textbf{\lstinline{TError}} is used to indicate a runtime error.
 
 \subsection{Module System}
 
-The Agda module is designed with simplicity in mind, with the primary goal of organizing the way names are used in Agda programs into a hierarchical structure. By default, definitions and datatypes must be referenced unambiguously with both their qualified name and the module in which it is defined.
+The Agda module is designed with simplicity in mind, with the primary goal of organising the way names are used in Agda programs into a hierarchical structure. By default, definitions and datatypes must be referenced unambiguously with both their qualified name and the module in which it is defined.
 
-By this implementation, Agda modules don't have a ``type'', and scope checking can be accomplished entirely independently of type-checking. After type-checking, all definitions are lambda lifted \citep{agdadocs} However, because names are fully qualified and the concept of ``scope'' is removed from type-checking, information about potential sharing is lost once arguments are substituted into the types of module definitions. Because arguments are inherited from all enclosing modules, in larger Agda projects, it is easy to create a situation where very large type signatures must be serialized many times when the same modules are referenced more than once.\citep{agdamail} % https://lists.chalmers.se/pipermail/agda/2017/009406.html
+By this implementation, Agda modules don't have a ``type'', and scope checking can be accomplished entirely independently of type-checking. After type-checking, all definitions are lambda lifted \citep{agdadocs} However, because names are fully qualified and the concept of ``scope'' is removed from type-checking, information about potential sharing is lost once arguments are substituted into the types of module definitions. Because arguments are inherited from all enclosing modules, in larger Agda projects, it is easy to create a situation where very large type signatures must be serialised many times when the same modules are referenced more than once.\citep{agdamail} % https://lists.chalmers.se/pipermail/agda/2017/009406.html
 
 In Section~\ref{sec:next_steps} we discuss our attempts to re-introduce some of this lost sharing potential and reduce repeated computations.
