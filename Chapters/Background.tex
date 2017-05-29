@@ -198,4 +198,4 @@ The Agda module is designed with simplicity in mind, with the primary goal of or
 
 By this implementation, Agda modules don't have a ``type'', and scope checking can be accomplished entirely independently of type-checking. After type-checking, all definitions are lambda lifted \citep{agdadocs} However, because names are fully qualified and the concept of ``scope'' is removed from type-checking, information about potential sharing is lost once arguments are substituted into the types of module definitions. Because arguments are inherited from all enclosing modules, in larger Agda projects, it is easy to create a situation where very large type signatures must be serialised many times when the same modules are referenced more than once \citep{agdamail}. % https://lists.chalmers.se/pipermail/agda/2017/009406.html
 
-In Chapter~\ref{cha:main_contributions} we discuss our attempts to re-introduce some of this lost sharing potential and reduce repeated computations.
+In Chapter~\ref{cha:plet-floating} we discuss our attempts to re-introduce some of this lost sharing potential and reduce repeated computations.

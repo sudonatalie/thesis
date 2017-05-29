@@ -37,7 +37,7 @@ and then the recursive transformation produces:
 
 \citet{jones1996}'s ``Let-floating: moving bindings to give faster programs'' discusses the effects of a group of compiler optimisations for Haskell which move let bindings to reduce heap allocation and execution time. The cumulative impact of their efforts to move let-bindings around in Haskell code resulted in more than a 30\% reduction in heap allocation and a 15\% reduction in execution time.
 
-\citet{jones1996} explain that GHC (the Glasgow Haskell Compiler) is an optimising compiler whose guiding principle is \textit{compilation by transformation}. Whenever possible, optimisations in GHC are implemented as correctness-preserving program transformations, a principle that is reflected in the Agda compiler as well. Most of the optimisations we present later in Chapter~\ref{cha:main_contributions} are also best thought of as ``correctness-preserving program transformations''.
+\citet{jones1996} explain that GHC (the Glasgow Haskell Compiler) is an optimising compiler whose guiding principle is \textit{compilation by transformation}. Whenever possible, optimisations in GHC are implemented as correctness-preserving program transformations, a principle that is reflected in the Agda compiler as well. Most of our optimisations that we present later in this thesis are also best thought of as ``correctness-preserving program transformations''.
 
 Before we approach the optimisations presented by \citet{jones1996} we discuss the operational interpretation of the Haskell Core language. Haskell Core expressions are built from the syntax shown in Figure~\ref{fig:haskell_core}.
 
