@@ -92,17 +92,17 @@ Floating inwards is an straightforward optimisation that aims to move all let bi
 
 Consider as an example, the Haskell code:
 \begin{lstlisting}
-let x = case y of (a,b) -> a
-in
-case y of
-  (p,q) -> x+p
+  let x = case y of (a,b) -> a
+  in
+  case y of
+    (p,q) -> x+p
 \end{lstlisting}
 
 and its optimised version with let-bindings floated inward:
 \begin{lstlisting}
-case y of
-  (p,q) -> let x = case y of (a,b) -> a
-           in x+p
+  case y of
+    (p,q) -> let x = case y of (a,b) -> a
+             in x+p
 \end{lstlisting}
 
 These two Haskell expressions are semantically-equivalent, but the second has potential to become more efficient than the first because later optimisations will be able to identify the opportunity to remove the redundant inner case expression which scrutinises the same variable as the outer case expression \citep{jones1996}. Though it wasn't clear in the first expression, because the case expressions weren't nested, the second expression can now benefit from a GHC optimisation much like our ``case squashing'' optimisation.
@@ -119,18 +119,18 @@ The benefit from this increased sharing outweighs the detriment of increasing th
 
 Consider as an example, the Haskell code\citep{jones1996}:
 \begin{lstlisting}
-f = \xs ->
-  let g = \y -> let n = length xs
-                in ...g...n...
-  in ...g...
+  f = \ xs ->
+    let g = \ y -> let n = length xs
+                  in ...g...n...
+    in ...g...
 \end{lstlisting}
 
 and its optimised version with let-bindings floated outward:
 \begin{lstlisting}
-f = \xs ->
-  let n = length xs
-  in let g = \y -> ...g...n...
-     in ...g...
+  f = \ xs ->
+    let n = length xs
+    in let g = \ y -> ...g...n...
+       in ...g...
 \end{lstlisting}
 
 In order to maximise the number of opportunities for this type of let-floating, it may be necessary to create dummy let bindings for free subexpressions in the lambda abstraction, so that they can be floated out as well \citep{jones1996}.
@@ -147,13 +147,13 @@ Moving the let outside the application cannot have a negative effect, but it can
 Consider the case where $b$ is a lambda function. Before floating the let outside the application, the function cannot be applied to $a$:
 
 \begin{lstlisting}
-(let v = <v-rhs> in (\x -> ...x...)) a
+  (let v = <v-rhs> in (\ x -> ...x...)) a
 \end{lstlisting}
 
 However, after floating the let outside, it is clear that a beta-reduction rule can be applied, substituting an \lstinline{a} for ever \lstinline{x} at compile-time:
 
 \begin{lstlisting}
-let v = <v-rhs> in (\x -> ...x...) a
+  let v = <v-rhs> in (\ x -> ...x...) a
 \end{lstlisting}
 
 \item \lstinline[style=math]{case (let $v$=$e$ in $b$) of $alts$ $\to$ let $v$=$e$ in case $b$ of $alts$}
@@ -163,13 +163,13 @@ Likewise for moving the let outside a case expression, it won't have a negative 
 Consider the case where $b$ is a constructor application. Before floating the let outside the case expression, there isn't a clear correspondence between the constructor and the alternatives:
 
 \begin{lstlisting}
-case (let v = <v-rhs> in con v1 v2 v3) of <alts>
+  case (let v = <v-rhs> in con v1 v2 v3) of <alts>
 \end{lstlisting}
 
 However, after floating the let outside, it is clear that the case expression can be simplified to the body of the alternative with the same constructor, without any evaluation being performed:
 
 \begin{lstlisting}
-let v = <v-rhs> in case con v1 v2 v3 of <alts>
+  let v = <v-rhs> in case con v1 v2 v3 of <alts>
 \end{lstlisting}
 
 \item \lstinline[style=math]{let $x$ = let  $v$=$e$ in $b$ in $c$ $\to$ let $v$=$e$ in let $x$ = $b$ in $c$}
@@ -179,16 +179,16 @@ Moving a let binding from the right-hand side of another let binding to outside 
 In the following example, floating the let binding out reveals a head normal form. Without floating, when \lstinline{x} was met in the \lstinline{<body>}, we would evaluate \lstinline{x} by computing the pair \lstinline{(v,v)} and overwriting the heap-allocated thunk for \lstinline{x} with the result:
 
 \begin{lstlisting}
-let x = let v = <v-rhs> in (v,v)
-in <body>
+  let x = let v = <v-rhs> in (v,v)
+  in <body>
 \end{lstlisting}
 
 With floating, we would instead allocate a thunk for \lstinline{v} and a pair for \lstinline{x}, so that \lstinline{x} is allocated in its final form:
 
 \begin{lstlisting}
-let v = <v-rhs>
-in let x = (v,v)
-   in <body>
+  let v = <v-rhs>
+  in let x = (v,v)
+     in <body>
 \end{lstlisting}
 
 This means that when \lstinline{x} is met in the \lstinline{<body>} and evaluated, no update to the thunk would be needed, saving a significant amount of memory traffic \citep{jones1996}.
