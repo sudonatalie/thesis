@@ -123,17 +123,17 @@ We remove the need for more case analysis by identifying let expressions with a 
 
 %Lastly, we found an opportunity for floating let bindings up through the expression tree in cases where the same let binding can be shared among multiple function calls. This increased sharing reduces the need for the same expression to be unnecessarily evaluated multiple times.
 
+%In this chapter, we look at the effect of the optimisation techniques formulated in Chapter~\ref{cha:main_contributions} on different Agda code samples. Through a series of examples, we will see the effect of these optimisations and the degree to which they can yield increases in efficiency for both memory allocation space and execution time.
+
 \section{Structure of the Thesis}
 \label{sec:structure_of_the_thesis}
 
 The remainder of this thesis is organised as follows:
 
-\paragraph{Chapter~\ref{cha:background}} introduces the required compiler theory and logical background.
-
 \paragraph{Chapter~\ref{cha:related_work}} surveys some literature and projects relevant to our work.
 
-\paragraph{Chapters~\ref{cha:inline_proj}~to~\ref{cha:plet-floating}} describes the processes by which we optimise Agda programs.
+\paragraph{Chapter~\ref{cha:background}} introduces the required compiler theory and logical background.
 
-\paragraph{Chapter~\ref{cha:application}} gives a number of illustrative examples demonstrating the application of the implemented optimisation.
+\paragraph{Chapters~\ref{cha:inline_proj}~to~\ref{cha:plet-floating}} describes the processes by which we optimise Agda programs, and gives a number of illustrative examples demonstrating the application of the implemented optimisations.
 
 \paragraph{Chapter~\ref{cha:conclusion}} discusses the contribution's strengths and weaknesses and draws some conclusions.

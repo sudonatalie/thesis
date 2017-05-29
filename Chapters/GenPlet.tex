@@ -57,3 +57,18 @@ These generated pattern lets have two-fold benefits. Firstly, their use reduces 
 The \lstinline{Agda.Compiler.MAlonzo.Compiler} module is responsible for transforming Agda treeless terms into Haskell expressions. In the primary function for this compilation, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets. In order to be a suitable candidate for this optimisation, a \lstinline{let} expression must exhibit the properties described in section~\ref{cha:logical_plet}. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinising the 0 (most recently bound) variable, and the requirements can thus be represented with a pattern matching expression \lstinline{TLet _ (TCase 0 _ _ [TACon _ _ _])}, followed by a check that the default branch is unreachable.
 
 For a complete listing of our implementation of the pattern let generating optimisation, refer to Appendix~\ref{app:compiler}.
+
+\section{Application}
+
+Triangle3sPB gives us an sample usage of mathematical pullbacks, by constructing triangle-shaped graphs and products of those graphs, as an example. These types of computations are relevant and important in many graph-rewriting calculations and can benefit from our optimisations.
+
+When we compile this module once without \texttt{-{}-ghc-generate-pattern-let} on, and once again with \texttt{-{}-ghc-generate-pattern-let} enabled, a unified diff of the two generated Haskell files gives us what is shown in Figure~\ref{fig:Triangle_genplet}. Both times, the module was compiled with \texttt{-{}-inline-proj}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/Triangle_genplet}
+    \caption{Unified difference of the \AgdaModule{Triangle3sPB}~module compiled without and then with \texttt{-{}-ghc-generate-pattern-let}.}
+    \label{fig:Triangle_genplet}
+\end{figure}
+
+As is shown by this difference, the case analysis on \lstinline{v0} is no longer required and instead the constructor parameters are immediately bound in the enclosing \lstinline{let} expression.

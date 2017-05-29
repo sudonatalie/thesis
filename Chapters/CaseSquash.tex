@@ -84,3 +84,36 @@ The case squashing implementation is practically very similar to it's logical re
 For more details about how variable indices are replaced in the resulting term, refer to section~\ref{sub:lambda_calc_subst}.
 
 For a complete listing of our implementation of the case squashing optimisation, refer to Appendix~\ref{app:case_squash}.
+
+\section{Application}
+
+\input{Figures/Agda/latex/Example1}
+
+Take for example the simple usage of record projections in Figure~\ref{code:example1_agda}. When we compile this module once without \texttt{-{}-inline-proj} on, and once again with \texttt{-{}-inline-proj} enabled, a unified diff of the two generated Haskell files gives us what is shown in Figure~\ref{fig:Example1_inline}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/Example1_inline}
+    \caption{Unified difference of the \AgdaModule{Example1}~module compiled without and then with \texttt{-{}-inline-proj}.}
+    \label{fig:Example1_inline}
+\end{figure}
+
+The compiled projection function \AgdaField{Pair.snd}, that is \lstinline{d18} in the Haskell code, is replaced with a Haskell expression that cases on the pair (\AgdaFunction{p} in Agda, \lstinline{d22} in Haskell) and returns the second field.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/Example1_squash}
+    \caption{Unified difference of the \AgdaModule{Example1}~module compiled  with \texttt{-{}-inline-proj} and then also with \texttt{-{}-squash-cases}.}
+    \label{fig:Example1_squash}
+\end{figure}
+
+We then compile the same file with both \texttt{-{}-inline-proj} and \texttt{-{}-squash-cases}, and the difference between only inlining and both inlining and squashing can be seen in Figure~\ref{fig:Example1_squash}.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Figures/Example1_inline_squash}
+    \caption{Unified difference of the \AgdaModule{Example1}~module compiled without either optimisation, then with both \texttt{-{}-inline-proj} and \texttt{-{}-squash-cases}.}
+    \label{fig:Example1_inline_squash}
+\end{figure}
+
+Figure~\ref{fig:Example1_inline_squash} shows the overall unified diff from neither optimisation to both.
