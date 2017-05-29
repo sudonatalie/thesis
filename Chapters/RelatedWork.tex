@@ -146,6 +146,8 @@ Moving the let outside the application cannot have a negative effect, but it can
 
 Consider the case where $b$ is a lambda function. Before floating the let outside the application, the function cannot be applied to $a$:
 
+\edcomm{NP}{Change notation of <expr>s.}
+
 \begin{lstlisting}
   (let v = <v-rhs> in (\ x -> ...x...)) a
 \end{lstlisting}
