@@ -167,6 +167,29 @@ A \textbf{\lstinline{TErased}} is used to replace some irrelevant term that isn'
 
 A \textbf{\lstinline{TError}} is used to indicate a runtime error.
 
+%In the following chapters, we discuss the design and implementation of our optimisations to the Agda compiler. In each Chapter, we give a logical representation of the optimisation, present our implementation and give usage instructions for the feature in our compiler branch. We also give references to the source code in the Appendix.
+
+We also present in Figure~\ref{fig:treeless_grammar} a simplified logical representation of the Agda treeless syntax as a grammar. We use this simplification in the following chapters to discuss our optimisations at a logical level of abstraction. Note that variables are represented only by their de Bruijn index.
+
+\begin{figure}[h!]
+\begin{align*}
+t ::=~& i & \text{variable}\\
+|~& d & \text{function or datatype name}\\
+|~& t~t^* & \text{application}\\
+|~& \lambda~0 \to t & \text{lambda abstraction}\\
+|~& l & \text{literal}\\
+|~& \mathtt{let}~0 = t~\mathtt{in}~t & \text{let}\\
+|~& \mathtt{case}~i : \tau~\mathtt{of}~a^*~\mathtt{otherwise} \to t& \text{case}\\
+\\
+a ::=~& d~(ar-1)~..~0 \to t & \text{constructor alternative}\\
+|~& l \to t & \text{literal alternative}
+\end{align*}
+\caption{Simplified representation of the Agda treeless syntax grammar.}
+\label{fig:treeless_grammar}
+\end{figure}
+
+%In the implementation Subsections, we discuss some implementation details of our optimisations with reference to the Haskell data type of Agda's treeless representation. The treeless syntax (\lstinline{TTerm}) listing can be found in Figure~\ref{code:TTerm}.
+
 \subsection{Module System}
 
 The Agda module is designed with simplicity in mind, with the primary goal of organising the way names are used in Agda programs into a hierarchical structure. By default, definitions and datatypes must be referenced unambiguously with both their qualified name and the module in which it is defined.
