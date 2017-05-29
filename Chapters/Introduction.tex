@@ -17,7 +17,7 @@ Agda \citep{Norell-2007} is a dependently-typed programming language and theorem
 \subsection{Type Theory}
 The core syntax of Agda is a dependently-typed lambda calculus, with a simple grammar as shown in Figure~\ref{fig:grammar}. Most functional languages, such as Haskell or ML, are built on a foundation of a simply-typed lambda calculus. This basis allows the expression of propositions in mathematical logic as types of a lambda calculus.
 
-By the Curry–Howard isomorphism (or the proofs-as-programs interpretation), we can then prove these propositions true by providing an element (program) of its corresponding type \citep{poernomo2005}. Using constructive logic, a proof of a proposition is the construction of an object that is a member of the type representing that proposition. The isomorphism between concepts in type theory and concepts in logic can be seen in Table~\ref{table:curry_howard}
+By the Curry–Howard correspondence (or the proofs-as-programs interpretation), we can then prove these propositions true by providing an element (program) of its corresponding type \citep{poernomo2005}. Using constructive logic, a proof of a proposition is the construction of an object that is a member of the type representing that proposition. The correspondence between concepts in type theory and concepts in logic can be seen in Table~\ref{table:curry_howard}
 
 \begin{table}
 \begin{center}
@@ -35,7 +35,7 @@ truth & inhabited type\\
 falsity & uninhabited type\\
 \end{tabular}
 \end{center}
-\caption{Isomorphic concepts in logic and type theory.}
+\caption{Correspondent concepts in logic and type theory.}
 \label{table:curry_howard}
 \end{table}
 
