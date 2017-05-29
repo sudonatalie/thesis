@@ -10,14 +10,14 @@ Agda \citep{Norell-2007} is a dependently-typed programming language and theorem
 
 \subsection{Dependent Types}
 
-Type signatures in Agda support dependent-types, which means that types may depend on values. In traditional functional languages, types may depend on other types. For example, the Haskell type signature \lstinline{xs :: Vector a} denotes a vector containing elements of type \lstinline{a}, where \lstinline{a} is a type variable. In a dependently-typed language like Agda types can depend not only on other types, but also on values. Consider the \AgdaFunction{replicate} function in Figure~\ref{code:replicate}, which produces a \AgdaDatatype{Vec}tor of elements of type \AgdaBound{A} with length \AgdaBound{n}.\citep{norell2009} In many languages that don't support dependent types a programmer can represent a parametrised vector type that contains elements of any arbitrary type, however, they cannot represent a parametrised vector type of any arbitrary specific length.
+\citet{norell2009} discusses the practical usage of dependent types for programming in Agda. Type signatures in Agda support dependent types, which means that types may depend on values. In traditional functional languages, types may depend on other types. For example, the Haskell type signature \lstinline{xs :: Vector a} denotes a vector containing elements of type \lstinline{a}, where \lstinline{a} is a type variable. In a dependently-typed language like Agda types can depend not only on other types, but also on values. Consider the \AgdaFunction{replicate} function in Figure~\ref{code:replicate}, which produces a \AgdaDatatype{Vec}tor of elements of type \AgdaBound{A} with length \AgdaBound{n}. In many languages that don't support dependent types a programmer can represent a parametrised vector type that contains elements of any arbitrary type, however, they cannot represent a parametrised vector type of any arbitrary specific length.
 
 \input{Figures/Agda/latex/Replicate}
 
 \subsection{Type Theory}
 The core syntax of Agda is a dependently-typed lambda calculus, with a simple grammar as shown in Figure~\ref{fig:grammar}. Most functional languages, such as Haskell or ML, are built on a foundation of a simply-typed lambda calculus. This basis allows the expression of propositions in mathematical logic as types of a lambda calculus.
 
-By the Curry–Howard isomorphism (or the proofs-as-programs interpretation), we can then prove these propositions true by providing an element (program) of its corresponding type.\citep{poernomo2005} Using constructive logic, a proof of a proposition is the construction of an object that is a member of the type representing that proposition. The isomorphism between concepts in type theory and concepts in logic can be seen in Table~\ref{table:curry_howard}
+By the Curry–Howard isomorphism (or the proofs-as-programs interpretation), we can then prove these propositions true by providing an element (program) of its corresponding type \citep{poernomo2005}. Using constructive logic, a proof of a proposition is the construction of an object that is a member of the type representing that proposition. The isomorphism between concepts in type theory and concepts in logic can be seen in Table~\ref{table:curry_howard}
 
 \begin{table}
 \begin{center}
@@ -41,7 +41,7 @@ falsity & uninhabited type\\
 
 The ability for types to contain arbitrary values is significant because it expands the domain of theorems we can encode as types to the space of predicate logic. This allows us to encode almost any proposition or formula as a type.
 
- In order to ensure this logic holds true for all Agda programs, the Agda type-checker requires that all programs be both total and terminating.\citep{norell2009} Therefore, when an Agda program passes type-checking\footnote{(assuming a correct compiler)}, all of the propositions (types) therein are proven true (inhabited).
+ In order to ensure this logic holds true for all Agda programs, the Agda type-checker requires that all programs be both total and terminating \citep{norell2009}. Therefore, when an Agda program passes type-checking\footnote{(assuming a correct compiler)}, all of the propositions (types) therein are proven true (inhabited).
 
 Agda also supports a flexible mix-fix syntax, as seen in Figure~\ref{code:if_function}, and Unicode characters, such as the \AgdaDatatype{ℕ} to represent natural numbers in Figure~\ref{code:replicate}. These features along with Agda's constructive functional style make Agda both an interesting programming language, but also a powerful proof assistant for generating elegant, expressive proofs.
 
@@ -56,15 +56,15 @@ a ::=~& x               & \text{variable}\\
     |~& Set[n]          & \text{universe}\\
     |~& (a)             & \text{grouping}
 \end{align*}
-\caption{Agda core syntax grammar.\citep{agdawiki}}
+\caption{Agda core syntax grammar \citep{agdawiki}.}
 \label{fig:grammar}
 \end{figure}
 
 \subsection{Compiler}
 
-Agda has a number of available compilers and backends, but the one that is most efficient and most commonly used is MAlonzo, the GHC (Glasgow Haskell Compiler) backend.\citep{benke2007} The MAlonzo backend has the goal of compiling Agda code with the performance of the generated code matching that of GHC, and it does so by translating Agda into Haskell, so that it can be compiled, and optimised by GHC. This is a practical and useful arrangement for real-world Agda usage because GHC has benefited from a massive development effort by a large community to create a highly performant compiler.\citep{benke2007}
+Agda has a number of available compilers and backends, but the one that is most efficient and most commonly used is MAlonzo, the GHC (Glasgow Haskell Compiler) backend \citep{benke2007}. The MAlonzo backend has the goal of compiling Agda code with the performance of the generated code matching that of GHC, and it does so by translating Agda into Haskell, so that it can be compiled, and optimised by GHC. This is a practical and useful arrangement for real-world Agda usage because GHC has benefited from a massive development effort by a large community to create a highly performant compiler \citep{benke2007}.
 
-As discussed in the previous section, Agda provides a more expressive type system than Haskell. Because Agda supports dependent types and Haskell does not, in order for Agda generated code to pass the Haskell type checker, it is necessary for the MAlonzo backend to wrap coercions around all function arguments and all function calls, which cast terms from one type to a different arbitrary type. Unfortunately, these potentially unsafe type coercions mean that there are many GHC optimisations which Agda's generated code is ``missing out on''.\citep{fredriksson2011}
+As discussed in the previous section, Agda provides a more expressive type system than Haskell. Because Agda supports dependent types and Haskell does not, in order for Agda generated code to pass the Haskell type checker, it is necessary for the MAlonzo backend to wrap coercions around all function arguments and all function calls, which cast terms from one type to a different arbitrary type. Unfortunately, these potentially unsafe type coercions mean that there are many GHC optimisations which Agda's generated code is ``missing out on'' \citep{fredriksson2011}.
 
 Some of the Agda optimisations described herein would typically be performed by GHC after translation to Haskell were it not for these coercions, so we instead ensure that we can still take advantage of these optimisations by implementing them in the Agda backend, before the translation to Haskell occurs.
 
@@ -84,7 +84,7 @@ As discussed above, the Agda language is highly conducive to writing elegant and
 
 As such, the optimisations presented herein are largely motivated by profiling data from our own real-world uses of Agda.
 
-The first, and simplest, such example is the results of profiling a main execution of RATH-Agda. RATH-Agda is a library of category and allegory theories developed by Kahl et al. which takes advantage of many features of the Agda programming language's flexibility.\citep{Kahl-2017_RATH-Agda-2.2} In order to achieve its primary goal of natural mathematical clarity and style, it faces, like many Agda programs, performance concerns.
+The first, and simplest, such example is the results of profiling a main execution of RATH-Agda. RATH-Agda is a library of category and allegory theories developed by \citet{Kahl-2017_RATH-Agda-2.2} which takes advantage of many features of the Agda programming language's flexibility. In order to achieve its primary goal of natural mathematical clarity and style, it faces, like many Agda programs, performance concerns.
 
 \begin{table}
 \begin{center}

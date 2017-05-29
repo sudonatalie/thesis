@@ -5,15 +5,15 @@ In this chapter, we provide a survey of the literature and discuss some existing
 
 \section{Common subexpression elimination}
 
-Common subexpression elimination (CSE) is a compiler optimisation that reduces execution time by avoid repeated computations of the same expression.\citep{Chitil-1998} This very similar to our goal with case squashing. As anyone familiar with the nature of purely functional programming languages might realise, identification of common subexpressions is much simpler in a functional language thanks to the expectation of referential transparency.\citep{Chitil-1998} (As a reminder, referential transparency means that an expression always produces the same result regardless of the context in which it is evaluated.)
+Common subexpression elimination (CSE) is a compiler optimisation that reduces execution time by avoid repeated computations of the same expression \citep{Chitil-1998}. This very similar to our goal with case squashing. As anyone familiar with the nature of purely functional programming languages might realise, identification of common subexpressions is much simpler in a functional language thanks to the expectation of referential transparency \citep{Chitil-1998}. (As a reminder, referential transparency means that an expression always produces the same result regardless of the context in which it is evaluated.)
 
 \citet{appel1992} first implemented CSE in the strict functional language ML's compiler, and \citet{Chitil-1998} first explored the implementation of CSE in a lazy functional language, Haskell. The difficulty with implementing CSE in a lazy language is that, although common subexpressions are easy to identify, determining which common subexpressions will yield a benefit by being eliminated is more challenging. To avoid complex data flow analysis on functional code, \citet{Chitil-1998} developed some simple syntactic conditions for judging when CSE is beneficial in Haskell code. We omit these from our survey, as such heuristics are unnecessary for our optimisation. We instead focus on the relevant ``compilation by transformation'' approach used when implementing CSE in GHC.
 
-The GHC compilation process consists of translating Haskell code into a second-order $\lambda$-calculus language called Core, at which point a series of optimising transformation are performed, and the backend transforms Core code into C.\citep{Chitil-1998} This process is very similar to the Agda compilation process, which translates Agda code into Treeless code, applies a series of optimising transformations, and finally generates Haskell code through the backend, as discussed in Section~\ref{sec:background_agda}.
+The GHC compilation process consists of translating Haskell code into a second-order $\lambda$-calculus language called Core, at which point a series of optimising transformation are performed, and the backend transforms Core code into C \citep{Chitil-1998}. This process is very similar to the Agda compilation process, which translates Agda code into Treeless code, applies a series of optimising transformations, and finally generates Haskell code through the backend, as discussed in Section~\ref{sec:background_agda}.
 
 The syntax of the Core intermediate language of Haskell is very similar to Treeless, with expressions consisting mainly of $\lambda$ abstractions, \lstinline{let} bindings, \lstinline{case} expressions, constructors, literals and function applications, much like Agda's Treeless syntax outlined in Figure~\ref{code:TTerm}.
 
-CSE is implemented in GHC with a single recursive traversal of the Core program. For each expression, its subexpressions are first transformed, then it is determined whether the whole transformed expression has occurred already.\citep{Chitil-1998} An example of this is shown in Figure~\ref{code:cse_haskell}.
+CSE is implemented in GHC with a single recursive traversal of the Core program. For each expression, its subexpressions are first transformed, then it is determined whether the whole transformed expression has occurred already \citep{Chitil-1998}. An example of this is shown in Figure~\ref{code:cse_haskell}.
 
 \begin{figure}[h]
 Given the expression:
@@ -28,7 +28,7 @@ and then the recursive transformation produces:
 
 \lstinline{let x = 3 in let y = 2+x in 2+x+4}
 
-\caption{Common subexpression elimination transformation in Haskell.\citep{Chitil-1998}}
+\caption{Common subexpression elimination transformation in Haskell \citep{Chitil-1998}.}
 \label{code:cse_haskell}
 \end{figure}
 
@@ -78,7 +78,7 @@ In this paper, three types of let-floating transformations are presented:
 \begin{enumerate}
 \item ``Floating inwards'' to move bindings as far inwards as possible,
 \item ``The full laziness transformation'' which floats some bindings outside enclosing lambda abstractions, and
-\item ``Local transformations'' which move bindings a several optimising ways.\citep{jones1996}
+\item ``Local transformations'' which move bindings a several optimising ways \citep{jones1996}.
 \end{enumerate}
 
 \subsection*{Floating inwards}
@@ -87,7 +87,7 @@ Floating inwards is an straightforward optimisation that aims to move all let bi
 \begin{itemize}
 \item It increases the chance that a binding will not be met in program execution, if it is not needed on a particular branch.
 \item It increases the chance that strictness analysis will be able to perform further optimisations.
-\item It makes it possible for further redundant expressions to be eliminated.\citep{jones1996}
+\item It makes it possible for further redundant expressions to be eliminated \citep{jones1996}.
 \end{itemize}
 
 Consider as an example, the Haskell code:
@@ -105,16 +105,16 @@ case y of
            in x+p
 \end{lstlisting}
 
-These two Haskell expressions are semantically-equivalent, but the second has potential to become more efficient than the first because later optimisations will be able to identify the opportunity to remove the redundant inner case expression which scrutinises the same variable as the outer case expression.\citep{jones1996} Though it wasn't clear in the first expression, because the case expressions weren't nested, the second expression can now benefit from a GHC optimisation much like our ``case squashing'' optimisation.
+These two Haskell expressions are semantically-equivalent, but the second has potential to become more efficient than the first because later optimisations will be able to identify the opportunity to remove the redundant inner case expression which scrutinises the same variable as the outer case expression \citep{jones1996}. Though it wasn't clear in the first expression, because the case expressions weren't nested, the second expression can now benefit from a GHC optimisation much like our ``case squashing'' optimisation.
 
 \subsection*{Full laziness}
 
-While the above transformation attempts to push bindings inwards, the full laziness transformation does the reverse, floating bindings outwards. By floating some bindings out of lambda abstractions, we can avoid re-computing the same expression on repeated recursive calls to the same function.\citep{jones1996}
+While the above transformation attempts to push bindings inwards, the full laziness transformation does the reverse, floating bindings outwards. By floating some bindings out of lambda abstractions, we can avoid re-computing the same expression on repeated recursive calls to the same function \citep{jones1996}.
 
 The benefit from this increased sharing outweighs the detriment of increasing the let scope in most cases where:
 \begin{itemize}
 \item the expression being bound requires a non-negligible amount of computational work to evaluate; and
-\item the lambda abstraction it is used in is called more than once.\citep{jones1996}
+\item the lambda abstraction it is used in is called more than once \citep{jones1996}.
 \end{itemize}
 
 Consider as an example, the Haskell code\citep{jones1996}:
@@ -133,7 +133,7 @@ f = \xs ->
      in ...g...
 \end{lstlisting}
 
-In order to maximise the number of opportunities for this type of let-floating, it may be necessary to create dummy let bindings for free subexpressions in the lambda abstraction, so that they can be floated out as well.\citep{jones1996}
+In order to maximise the number of opportunities for this type of let-floating, it may be necessary to create dummy let bindings for free subexpressions in the lambda abstraction, so that they can be floated out as well \citep{jones1996}.
 
 \subsection*{Local transformations}
 
@@ -142,7 +142,7 @@ The local transformations consist of a series of three small rewrite rules as fo
 \begin{enumerate}
 \item \lstinline[style=math]{(let $v$=$e$ in $b$) $a$ $\to$ (let $v$=$e$ in $b$ $a$)}
 
-Moving the let outside the application cannot have a negative effect, but it can have a positive effect by creating opportunities for other optimisations.\citep{jones1996}
+Moving the let outside the application cannot have a negative effect, but it can have a positive effect by creating opportunities for other optimisations \citep{jones1996}.
 
 Consider the case where $b$ is a lambda function. Before floating the let outside the application, the function cannot be applied to $a$:
 
@@ -158,7 +158,7 @@ let v = <v-rhs> in (\x -> ...x...) a
 
 \item \lstinline[style=math]{case (let $v$=$e$ in $b$) of $alts$ $\to$ let $v$=$e$ in case $b$ of $alts$}
 
-Likewise for moving the let outside a case expression, it won't have a negative effect, but could have a positive effect.\citep{jones1996}
+Likewise for moving the let outside a case expression, it won't have a negative effect, but could have a positive effect \citep{jones1996}.
 
 Consider the case where $b$ is a constructor application. Before floating the let outside the case expression, there isn't a clear correspondence between the constructor and the alternatives:
 
@@ -174,7 +174,7 @@ let v = <v-rhs> in case con v1 v2 v3 of <alts>
 
 \item \lstinline[style=math]{let $x$ = let  $v$=$e$ in $b$ in $c$ $\to$ let $v$=$e$ in let $x$ = $b$ in $c$}
 
-Moving a let binding from the right-hand side of another let binding to outside it can have several advantages including potentially reducing the need for some heap allocation when the final form of the second binding becomes more clear.\citep{jones1996}
+Moving a let binding from the right-hand side of another let binding to outside it can have several advantages including potentially reducing the need for some heap allocation when the final form of the second binding becomes more clear \citep{jones1996}.
 
 In the following example, floating the let binding out reveals a head normal form. Without floating, when \lstinline{x} was met in the \lstinline{<body>}, we would evaluate \lstinline{x} by computing the pair \lstinline{(v,v)} and overwriting the heap-allocated thunk for \lstinline{x} with the result:
 
@@ -191,7 +191,7 @@ in let x = (v,v)
    in <body>
 \end{lstlisting}
 
-This means that when \lstinline{x} is met in the \lstinline{<body>} and evaluated, no update to the thunk would be needed, saving a significant amount of memory traffic.\citep{jones1996}
+This means that when \lstinline{x} is met in the \lstinline{<body>} and evaluated, no update to the thunk would be needed, saving a significant amount of memory traffic \citep{jones1996}.
 
 \end{enumerate}
 
