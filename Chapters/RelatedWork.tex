@@ -45,8 +45,8 @@ Before we approach the optimisations presented by \citet{jones1996} we discuss t
 \begin{align*}
 Expr \to~& Expr~Atom & \text{application}\\
 |~& Expr~ty & \text{type application}\\
-|~& \lambda~var_1 ... var_n \mathtt{->} Expr & \text{lambda abstraction}\\
-|~& \Lambda~ty \mathtt{->} Expr & \text{type abstraction}\\
+|~& \lambda~var_1 ... var_n \mathtt{{-}{>}} Expr & \text{lambda abstraction}\\
+|~& \Lambda~ty \mathtt{{-}{>}} Expr & \text{type abstraction}\\
 |~& \mathtt{case}~Expr~\mathtt{of}~Alts & \text{case expression}\\
 |~& \mathtt{let}~var\mathtt{=}Expr~\mathtt{in}~Expr & \text{local definition}\\
 |~& con~var_1 ... var_n & \text{constructor, $n \geq 0$}\\
@@ -59,10 +59,10 @@ Atom \to~& var & \text{variable}\\
 Alts \to~& Calt_1; ...; Calt_n; Default & \text{$n \geq 0$}\\
 |~& Lalt_1; ...; Lalt_n; Default & \text{$n \geq 0$}\\
 \\
-Calt \to~& con~var_1 ... var_n \mathtt{->} Expr & \text{constructor alt, $n \geq 0$}\\
-Lalt \to~& Literal \mathtt{->} Expr & \text{literal alt}\\
+Calt \to~& con~var_1 ... var_n \mathtt{{-}{>}} Expr & \text{constructor alt, $n \geq 0$}\\
+Lalt \to~& Literal \mathtt{{-}{>}} Expr & \text{literal alt}\\
 Default \to~& \mathtt{NoDefault} & \text{}\\
-|~& var \mathtt{->} Expr & \text{}
+|~& var \mathtt{{-}{>}} Expr & \text{}
 \end{align*}
 \caption{Syntax of the Haskell Core language.}
 \label{fig:haskell_core}
