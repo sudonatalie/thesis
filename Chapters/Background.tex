@@ -61,19 +61,19 @@ Take then, for instance, a simple case of the classical application of the $\bet
 
 \begin{figure}[h]
 \begin{equation*}
-(\lambda t)s \to_{\beta} t[1 := s, 2 := 1, 3 := 2, ...]
+(\lambda t)s \to_{\beta} t[0 := s, 1 := 0, 2 := 1, ...]
 \end{equation*}
 \caption{The modified $\beta$-reduction rule for de Bruijn notation.}
 \label{eq:beta_rule2}
 \end{figure}
 
-However, the substitution in this adapted rule must be evaluated carefully to produce a correct result. Consider if the term $t$ contains another $\lambda$ binding. As the substitution is applied to that nested $\lambda$ term, occurrences of $1$ should not be replaced with $s$, because occurrences of $1$ refer to the nested $\lambda$ term's bound variable. Instead, occurrences of $2$ should be replaced with $s$; likewise, occurrences of $3$ should be replaced by $2$, and so on. We thus ``shift'' the substitution \citep{Abadi-Cardelli-Curien-Levy-1990}.
+However, the substitution in this adapted rule must be evaluated carefully to produce a correct result. Consider if the term $t$ contains another $\lambda$ binding. As the substitution is applied to that nested $\lambda$ term, occurrences of $0$ should not be replaced with $s$, because occurrences of $0$ refer to the nested $\lambda$ term's bound variable. Instead, occurrences of $1$ should be replaced with $s$; likewise, occurrences of $2$ should be replaced by $1$, and so on. We thus ``shift'' the substitution \citep{Abadi-Cardelli-Curien-Levy-1990}.
 
-It is also important when applying substitutions to $\lambda$ terms that we avoid the unintended capture of free variables in our terms being substituted in. Imagine again the nested $\lambda$ term, with occurrences of $2$ being replaced with $s$. Occurrences of $1$ in $s$ must be replaced with $2$, else the nested $\lambda$ binder will capture the index. We this ``lift'' the indices of $s$. These two caveats result in the substitution rule in Figure~\ref{eq:debruijn_sub} \citep{Abadi-Cardelli-Curien-Levy-1990}.
+It is also important when applying substitutions to $\lambda$ terms that we avoid the unintended capture of free variables in our terms being substituted in. Imagine again the nested $\lambda$ term, with occurrences of $1$ being replaced with $s$. Occurrences of $0$ in $s$ must be replaced with $1$, else the nested $\lambda$ binder will capture the index. We this ``lift'' the indices of $s$. These two caveats result in the substitution rule in Figure~\ref{eq:debruijn_sub} \citep{Abadi-Cardelli-Curien-Levy-1990}.
 
 \begin{figure}[h]
 \begin{equation*}
-(\lambda t)[1 := s, 2 := 1, ...] = \lambda t[2 := s[1 := 2, 2 := 3, ...], 3 := 2, ...]
+(\lambda t)[0 := s, 1 := 0, ...] = \lambda t[1 := s[0 := 1, 1 := 2, ...], 2 := 1, ...]
 \end{equation*}
 \caption{The substitution rule for de Bruijn indexed lambda terms.}
 \label{eq:debruijn_sub}
