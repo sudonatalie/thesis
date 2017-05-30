@@ -94,11 +94,6 @@
 % Abstract
 \prefacesection{Abstract}
 \input{Auxiliary/Abstract}
-\begin{code}
-map                     :: (a->b) -> [a] -> [b]
-map f  []               =  []
-map f (x:xs)            =  f x : map f xs
-\end{code}
 
 % Acknowledgements
 \prefacesection{Acknowledgements}
