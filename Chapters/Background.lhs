@@ -84,6 +84,8 @@ Take for example the simple \AgdaFunction{not} function on booleans in Figure~\r
 
 \input{Figures/Agda/latex/Not}
 
+\input{Figures/CompiledNot}
+
 The treeless syntax is the input to the compiler backend of Agda. It's a high-level internal syntax, the name for which is derived from its use of case expressions instead of case trees. The other notable difference between compiled clauses and treeless syntax is the absence of datatypes and constructors \citep{agdahackage}. % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-Syntax-Treeless.html
 
 \subsubsection{Treeless Syntax}
