@@ -38,6 +38,8 @@
 \usepackage{Styles/agda}
 \usepackage{Styles/AgdaChars}
 \usepackage{Styles/edcomms}
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning,arrows.meta}
 
 %________________________________________________________________________
 

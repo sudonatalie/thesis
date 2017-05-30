@@ -1,0 +1,37 @@
+% Define block styles
+\tikzstyle{decision} = [diamond, draw, fill=blue!30]
+\tikzstyle{dot} = [ellipse, draw, fill=orange!30]
+\tikzstyle{file} = [rectangle, draw, fill=green!30, align=center]
+\tikzstyle{box} = [rectangle, draw, fill=orange!30, align=center, rounded corners]
+\tikzset{>={Latex[width=2mm,length=2mm]}}
+\begin{figure}[h]
+\centering
+
+\begin{tikzpicture}[auto, node distance=2.5cm]
+% Place nodes
+\node [file] (agda) {Agda\\\texttt{Example.agda}};
+\node [dot, right=of agda] (scope) {};
+\node [dot, right=of scope] (type) {};
+\node [dot, right=of type] (termin) {};
+\node [dot, below=of termin] (serial) {};
+\node [file, left=of serial] (interf) {Interface\\\texttt{Example.agdai}};
+\node [decision, left=of interf] (compile) {\texttt{-{}-compile}?};
+\node [box, below=of compile] (clause) {Compiled clauses};
+\node [box, right=of clause] (treeless) {Treeless syntax};
+\node [file, right=of treeless] (haskell) {Haskell\\\texttt{Example.hs}};
+% Draw edges
+\path (agda) edge[->] node[align=center] {scope\\checking} (scope);
+\path (scope) edge[->] node[align=center] {coverage \& type\\checking} (type);
+\path (type) edge[->] node[align=center] {termination\\checking} (termin);
+\path (termin) edge[->] node {serialization} (serial);
+\path (serial) edge[->] (interf);
+\path (interf) edge[->] (compile);
+\path (compile) edge[->] node[near start, align=center] {yes} (clause);
+\path (clause) edge[->] (treeless);
+\path (treeless) [loop above] edge[->] node [align=center] {optimizations} (treeless);
+\path (treeless) edge[->] node [align=center] {code\\geneneration} (haskell);
+\end{tikzpicture}
+
+\caption{Stages of Agda compilation.}
+\label{fig:agda_compile}
+\end{figure}
