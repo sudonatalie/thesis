@@ -11,22 +11,22 @@ Common subexpression elimination (CSE) is a compiler optimisation that reduces e
 
 The GHC compilation process consists of translating Haskell code into a second-order $\lambda$-calculus language called Core, at which point a series of optimising transformation are performed, and the backend code generator transforms Core code into the final output \citep{Chitil-1998}. This process is very similar to the Agda compilation process, which translates Agda code into Treeless code, applies a series of optimising transformations, and finally generates Haskell code through the backend, as discussed in Section~\ref{sec:background_agda}.
 
-The syntax of the Core intermediate language of Haskell is very similar to Treeless, with expressions consisting mainly of $\lambda$ abstractions, \lstinline{let} bindings, \lstinline{case} expressions, constructors, literals and function applications, much like Agda's Treeless syntax outlined in Figure~\ref{code:TTerm}.
+The syntax of the Core intermediate language of Haskell is very similar to Treeless, with expressions consisting mainly of $\lambda$ abstractions, |let| bindings, |case| expressions, constructors, literals and function applications, much like Agda's Treeless syntax outlined in Figure~\ref{code:TTerm}.
 
 CSE is implemented in GHC with a single recursive traversal of the Core program. For each expression, its subexpressions are first transformed, then it is determined whether the whole transformed expression has occurred already \citep{Chitil-1998}. An example of this is shown in Figure~\ref{code:cse_haskell}.
 
 \begin{figure}[h]
 Given the expression:
 
-\lstinline{let x = 3 in let y = 2+3 in 2+3+4}
+|let x = 3 in let y = 2+3 in 2+3+4|
 
 the first CSE on the subexpressions yields:
 
-\lstinline{let x = 3 in let y = 2+x in y+4}
+|let x = 3 in let y = 2+x in y+4|
 
 and then the recursive transformation produces:
 
-\lstinline{let x = 3 in let y = 2+x in 2+x+4}
+|let x = 3 in let y = 2+x in 2+x+4|
 
 \caption{Common subexpression elimination transformation in Haskell \citep{Chitil-1998}.}
 \label{code:cse_haskell}
@@ -41,37 +41,12 @@ and then the recursive transformation produces:
 
 Before we approach the optimisations presented by \citet{jones1996} we discuss the operational interpretation of the Haskell Core language. Haskell Core expressions are built from the syntax shown in Figure~\ref{fig:haskell_core}.
 
-\begin{figure}[h]
-\begin{align*}
-Expr \to~& Expr~Atom & \text{application}\\
-|~& Expr~ty & \text{type application}\\
-|~& \lambda~var_1 ... var_n \mathtt{{-}{>}} Expr & \text{lambda abstraction}\\
-|~& \Lambda~ty \mathtt{{-}{>}} Expr & \text{type abstraction}\\
-|~& \mathtt{case}~Expr~\mathtt{of}~Alts & \text{case expression}\\
-|~& \mathtt{let}~var\mathtt{=}Expr~\mathtt{in}~Expr & \text{local definition}\\
-|~& con~var_1 ... var_n & \text{constructor, $n \geq 0$}\\
-|~& prim~var_1 ... var_n & \text{primitive, $n \geq 0$}\\
-|~& Atom & \text{literal}\\
-\\
-Atom \to~& var & \text{variable}\\
-|~& Literal & \text{unboxed object}\\
-\\
-Alts \to~& Calt_1; ...; Calt_n; Default & \text{$n \geq 0$}\\
-|~& Lalt_1; ...; Lalt_n; Default & \text{$n \geq 0$}\\
-\\
-Calt \to~& con~var_1 ... var_n \mathtt{{-}{>}} Expr & \text{constructor alt, $n \geq 0$}\\
-Lalt \to~& Literal \mathtt{{-}{>}} Expr & \text{literal alt}\\
-Default \to~& \mathtt{NoDefault} & \text{}\\
-|~& var \mathtt{{-}{>}} Expr & \text{}
-\end{align*}
-\caption{Syntax of the Haskell Core language.}
-\label{fig:haskell_core}
-\end{figure}
+\input{Figures/HaskellCore}
 
 In order to best understand the advantages of the let-floating transformations described below, there are two facts about the operational semantics of Core that are useful to know:
 \begin{enumerate}
-\item \lstinline{let} bindings, and only \lstinline{let} bindings, perform heap allocation.
-\item \lstinline{case} expressions, and only \lstinline{case} expressions, perform evaluation.
+\item |let| bindings, and only |let| bindings, perform heap allocation.
+\item |case| expressions, and only |case| expressions, perform evaluation.
 \end{enumerate}
 
 In this paper, three types of let-floating transformations are presented:
@@ -91,19 +66,19 @@ Floating inwards is an straightforward optimisation that aims to move all let bi
 \end{itemize}
 
 Consider as an example, the Haskell code:
-\begin{lstlisting}
+\begin{code}
   let x = case y of (a,b) -> a
   in
   case y of
     (p,q) -> x+p
-\end{lstlisting}
+\end{code}
 
 and its optimised version with let-bindings floated inward:
-\begin{lstlisting}
+\begin{code}
   case y of
     (p,q) -> let x = case y of (a,b) -> a
              in x+p
-\end{lstlisting}
+\end{code}
 
 These two Haskell expressions are semantically-equivalent, but the second has potential to become more efficient than the first because later optimisations will be able to identify the opportunity to remove the redundant inner case expression which scrutinises the same variable as the outer case expression \citep{jones1996}. Though it wasn't clear in the first expression, because the case expressions weren't nested, the second expression can now benefit from a GHC optimisation much like our ``case squashing'' optimisation.
 
@@ -118,20 +93,20 @@ The benefit from this increased sharing outweighs the detriment of increasing th
 \end{itemize}
 
 Consider as an example, the Haskell code\citep{jones1996}:
-\begin{lstlisting}
+\begin{code}
   f = \ xs ->
     let g = \ y -> let n = length xs
                   in ...g...n...
     in ...g...
-\end{lstlisting}
+\end{code}
 
 and its optimised version with let-bindings floated outward:
-\begin{lstlisting}
+\begin{code}
   f = \ xs ->
     let n = length xs
     in let g = \ y -> ...g...n...
        in ...g...
-\end{lstlisting}
+\end{code}
 
 In order to maximise the number of opportunities for this type of let-floating, it may be necessary to create dummy let bindings for free subexpressions in the lambda abstraction, so that they can be floated out as well \citep{jones1996}.
 
@@ -140,60 +115,60 @@ In order to maximise the number of opportunities for this type of let-floating, 
 The local transformations consist of a series of three small rewrite rules as follows:
 
 \begin{enumerate}
-\item \lstinline[style=math]{(let $v$=$e$ in $b$) $a$ $\quad \to \quad$ (let $v$=$e$ in $b$ $a$)}
+\item |(let v = e in b) a| $\quad \to \quad$ |let v = e in b a|
 
 Moving the let outside the application cannot have a negative effect, but it can have a positive effect by creating opportunities for other optimisations \citep{jones1996}.
 
-Consider the case where $b$ is a lambda function. Before floating the let outside the application, the function cannot be applied to $a$:
+Consider the case where |b| is a lambda function. Before floating the let outside the application, the function cannot be applied to |a|:
 
 \edcomm{NP}{Change notation of <expr>s.}
 
-\begin{lstlisting}
+\begin{code}
   (let v = <v-rhs> in (\ x -> ...x...)) a
-\end{lstlisting}
+\end{code}
 
-However, after floating the let outside, it is clear that a beta-reduction rule can be applied, substituting an \lstinline{a} for ever \lstinline{x} at compile-time:
+However, after floating the let outside, it is clear that a beta-reduction rule can be applied, substituting an |a| for ever |x| at compile-time:
 
-\begin{lstlisting}
+\begin{code}
   let v = <v-rhs> in (\ x -> ...x...) a
-\end{lstlisting}
+\end{code}
 
-\item \lstinline[style=math]{case (let $v$=$e$ in $b$) of $alts$ $\quad \to \quad$ let $v$=$e$ in case $b$ of $alts$}
+\item |case (let v = e in b) of alts| $\quad \to \quad$ |let v = e in case b of alts|
 
 Likewise for moving the let outside a case expression, it won't have a negative effect, but could have a positive effect \citep{jones1996}.
 
-Consider the case where $b$ is a constructor application. Before floating the let outside the case expression, there isn't a clear correspondence between the constructor and the alternatives:
+Consider the case where |b| is a constructor application. Before floating the let outside the case expression, there isn't a clear correspondence between the constructor and the alternatives:
 
-\begin{lstlisting}
+\begin{code}
   case (let v = <v-rhs> in con v1 v2 v3) of <alts>
-\end{lstlisting}
+\end{code}
 
 However, after floating the let outside, it is clear that the case expression can be simplified to the body of the alternative with the same constructor, without any evaluation being performed:
 
-\begin{lstlisting}
+\begin{code}
   let v = <v-rhs> in case con v1 v2 v3 of <alts>
-\end{lstlisting}
+\end{code}
 
-\item \lstinline[style=math]{let $x$ = let  $v$=$e$ in $b$ in $c$ $\quad \to \quad$ let $v$=$e$ in let $x$ = $b$ in $c$}
+\item |let x = let  v = e in b in c| $\quad \to \quad$ |let v = e in let x = b in c|
 
 Moving a let binding from the right-hand side of another let binding to outside it can have several advantages including potentially reducing the need for some heap allocation when the final form of the second binding becomes more clear \citep{jones1996}.
 
-In the following example, floating the let binding out reveals a head normal form. Without floating, when \lstinline{x} was met in the \lstinline{<body>}, we would evaluate \lstinline{x} by computing the pair \lstinline{(v,v)} and overwriting the heap-allocated thunk for \lstinline{x} with the result:
+In the following example, floating the let binding out reveals a head normal form. Without floating, when |x| was met in the |<body>|, we would evaluate |x| by computing the pair |(v,v)| and overwriting the heap-allocated thunk for |x| with the result:
 
-\begin{lstlisting}
+\begin{code}
   let x = let v = <v-rhs> in (v,v)
   in <body>
-\end{lstlisting}
+\end{code}
 
-With floating, we would instead allocate a thunk for \lstinline{v} and a pair for \lstinline{x}, so that \lstinline{x} is allocated in its final form:
+With floating, we would instead allocate a thunk for |v| and a pair for |x|, so that |x| is allocated in its final form:
 
-\begin{lstlisting}
+\begin{code}
   let v = <v-rhs>
   in let x = (v,v)
      in <body>
-\end{lstlisting}
+\end{code}
 
-This means that when \lstinline{x} is met in the \lstinline{<body>} and evaluated, no update to the thunk would be needed, saving a significant amount of memory traffic \citep{jones1996}.
+This means that when |x| is met in the |<body>| and evaluated, no update to the thunk would be needed, saving a significant amount of memory traffic \citep{jones1996}.
 
 \end{enumerate}
 
@@ -202,12 +177,12 @@ Similar methods to these let-floating transformations are used in our patterned 
 \section{Alternate method of case squashing}
 \label{sub:alternate_case_squash}
 
-Following development of \texttt{-{}-squash-cases}, an optimisation was added to the Agda compiler's Simplify stage which accomplishes the same goals as \texttt{-{}-squash-cases} in a slightly different way. We examine here that method of removing repeated case expressions.
+Following development of @--squash-cases@, an optimisation was added to the Agda compiler's Simplify stage which accomplishes the same goals as @--squash-cases@ in a slightly different way. We examine here that method of removing repeated case expressions.
 
-Immediately following the conversion of compiled clauses to treeless syntax in the Agda compiler, a series of optimising transformations are applied before the treeless expression is returned. One such step is the ``simplify'' group of transformations, which modify a \lstinline{TTerm} in a variety of optimising ways.
+Immediately following the conversion of compiled clauses to treeless syntax in the Agda compiler, a series of optimising transformations are applied before the treeless expression is returned. One such step is the ``simplify'' group of transformations, which modify a |TTerm| in a variety of optimising ways.
 
-As the expression is traversed, \lstinline{simplify} is recursively called on each \lstinline{TTerm} term, and \lstinline{simpAlt} is called on each \lstinline{TAlt} alternative. Given some expression casing on de Bruijn index $x$, for each alternative of the pattern \lstinline{TACon name arity body}, the scrutinised variable index in the body, $x + arity$, is looked up in the variable environment. If the variable has already been bound, and therefore has a different de Bruijn index, $y$, a rewrite rule is added to the constructor. The rewrite rule indicates that every instance of \lstinline{TApp (TCon name) (TVar i | i <- [arity-1,arity-2..0])} in the alternative's body should be replaced with a \lstinline{TVar y}.
+As the expression is traversed, |simplify| is recursively called on each |TTerm| term, and |simpAlt| is called on each |TAlt| alternative. Given some expression casing on de Bruijn index $x$, for each alternative of the pattern |TACon name arity body|, the scrutinised variable index in the body, $x + arity$, is looked up in the variable environment. If the variable has already been bound, and therefore has a different de Bruijn index, $y$, a rewrite rule is added to the constructor. The rewrite rule indicates that every instance of |TApp (TCon name) (TVar i || i <- [arity-1,arity-2..0])| in the alternative's body should be replaced with a |TVar y|.
 
-The rewrite rule is encoded as part of the wrapper \lstinline{Reader} environment that is carried along with the \lstinline{TTerm} throughout simplification, and is evaluated later by applying substitutions. It is at this point that all necessary de Bruijn index shifting is managed.
+The rewrite rule is encoded as part of the wrapper |Reader| environment that is carried along with the |TTerm| throughout simplification, and is evaluated later by applying substitutions. It is at this point that all necessary de Bruijn index shifting is managed.
 
-An abridged version of \texttt{Treeless/Simplify.hs} showing the primary functions involved in this optimisation in the updated Agda compiler is available in Appendix~\ref{app:simplify}.
+An abridged version of @Treeless/Simplify.hs@ showing the primary functions involved in this optimisation in the updated Agda compiler is available in Appendix~\ref{app:simplify}.

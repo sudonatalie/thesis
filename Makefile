@@ -1,7 +1,7 @@
 filename=MScThesis
 lagda_dir=Figures/Agda
 
-all:	figs
+all:	figs lhs
 	pdflatex ${filename}
 	bibtex ${filename}||true
 	pdflatex ${filename}
@@ -14,6 +14,9 @@ quick:
 figs:
 	cd ${lagda_dir}; \
 	find . -name '*.lagda' -exec agda --latex {} \;
+
+lhs:
+	lhs2TeX ${filename}.lhs -o ${filename}.tex
 
 read:
 	evince ${filename}.pdf &

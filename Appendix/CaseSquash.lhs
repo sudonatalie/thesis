@@ -1,3 +1,7 @@
+\chapter{Case Squash.hs}
+\label{app:case_squash}
+
+\begin{code}
 {-# LANGUAGE CPP, PatternGuards #-}
 
 module Agda.Compiler.Treeless.CaseSquash (squashCases) where
@@ -13,20 +17,20 @@ import Agda.Compiler.Treeless.Subst
 #include "undefined.h"
 import Agda.Utils.Impossible
 
--- | Eliminates case expressions where the scrutinee has already
+--   Eliminates case expressions where the scrutinee has already
 -- been matched on by an enclosing parent case expression.
 squashCases :: QName -> TTerm -> TCM TTerm
 squashCases q body = return $ dedupTerm [] body
 
--- | Case scrutinee (de Bruijn index) with alternative match
+--   Case scrutinee (de Bruijn index) with alternative match
 --   for that expression, made up of qualified name of constructor
 --   and a list of its arguments (also as de Bruijn indices)
 type CaseMatch = (Int, (QName, [Int]))
 
--- | Environment containing 'CaseMatch'es in scope.
+--   Environment containing 'CaseMatch'es in scope.
 type Env = [CaseMatch]
 
--- | Recurse through 'TTerm's, accumulting environment of case alternatives
+--   Recurse through 'TTerm's, accumulting environment of case alternatives
 --   matched and replacing repeated cases.
 --   De Bruijn indices in environment should be appropriatedly shifted as
 --   terms are traversed.
@@ -46,7 +50,7 @@ dedupTerm env body@(TCase sc t def alts) = case lookup sc env of
 dedupTerm env (TApp tt args) = TApp (dedupTerm env tt) (map (dedupTerm env) args)
 dedupTerm env body = body
 
--- | Find the alternative with matching name and replace case term with its body
+--   Find the alternative with matching name and replace case term with its body
 --   (after necessary substitutions), if it exists.
 caseReplacement :: (QName, [Int]) -> TTerm -> TTerm
 caseReplacement (name, args) tt@(TCase _ _ _ alts)
@@ -54,13 +58,13 @@ caseReplacement (name, args) tt@(TCase _ _ _ alts)
   = varReplace [ar-1,ar-2..0] args body
 caseReplacement _ tt = tt
 
--- | Lookup 'TACon' in list of 'TAlt's by qualified name
+--   Lookup 'TACon' in list of 'TAlt's by qualified name
 lookupTACon :: QName -> [TAlt] -> Maybe TAlt
 lookupTACon match ((alt@(TACon name ar body)):alts) | match == name = Just alt
 lookupTACon match (_:alts) = lookupTACon match alts
 lookupTACon _ [] = Nothing
 
--- | Introduce new constructor matches into environment scope
+--   Introduce new constructor matches into environment scope
 dedupAlt :: Int -> Env -> TAlt -> TAlt
 dedupAlt sc env (TACon name ar body) =
   let env' = (sc + ar, (name, [ar-1,ar-2..0])):(shiftIndices (+ar) <$> env)
@@ -68,14 +72,15 @@ dedupAlt sc env (TACon name ar body) =
 dedupAlt sc env (TAGuard guard body) = TAGuard guard (dedupTerm env body)
 dedupAlt sc env (TALit lit body) = TALit lit (dedupTerm env body)
 
--- | Shift all de Bruijn indices in a case match according to provided
+--   Shift all de Bruijn indices in a case match according to provided
 --   function on integers
 shiftIndices :: (Int -> Int) -> CaseMatch -> CaseMatch
 shiftIndices f (sc, (name, vars)) = (f sc, (name, map f vars))
 
--- | Substitute list of current de Bruijn indices for list of new indices
+--   Substitute list of current de Bruijn indices for list of new indices
 --   in a term
 varReplace :: [Int] -> [Int] -> TTerm -> TTerm
 varReplace (from:froms) (to:tos) = varReplace froms tos . subst from (TVar to)
 varReplace [] [] = id
 varReplace _ _ = __IMPOSSIBLE__
+\end{code}

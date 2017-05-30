@@ -1,3 +1,7 @@
+\chapter{ToTreeless.hs (abridged)}
+\label{app:to_treeless}
+
+\begin{code}
 {-# LANGUAGE CPP #-}
 
 module Agda.Compiler.ToTreeless
@@ -67,3 +71,4 @@ substArg inlinedAncestors x | erasable x     = return C.TErased
 {-
 ...
 -}
+\end{code}

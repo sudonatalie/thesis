@@ -1,3 +1,7 @@
+\chapter{Compiler.hs (abridged)}
+\label{app:compiler}
+
+\begin{code}
 {-# LANGUAGE CPP, PatternGuards #-}
 
 module Agda.Compiler.MAlonzo.Compiler where
@@ -6,7 +10,7 @@ module Agda.Compiler.MAlonzo.Compiler where
 ...
 -}
 
--- | In @addAsPats xs numBound tp pat@, recurse through @tp@ to find all
+--   In @addAsPats xs numBound tp pat@, recurse through @tp@ to find all
 --   single constructor @TCase@s and replace @PVar@s of the same scrutinee
 --   with appropriate @PAsPat@s, until @TErased@ is reached.
 --   @xs@ contains all necessary variables introduce by the initial call
@@ -28,7 +32,7 @@ addAsPats xs numBound
 addAsPats _ _ TErased pat = return pat
 addAsPats _ _ _ _ = __IMPOSSIBLE__ -- Guaranteed by splitPLet
 
--- | In @replacePats old new p@, replace all instances of @old@ in @p@
+--   In @replacePats old new p@, replace all instances of @old@ in @p@
 --   with @new@
 replacePats :: HS.Pat -> HS.Pat -> HS.Pat -> HS.Pat
 replacePats old new p@(HS.PVar _) = if old == p then new else p
@@ -37,7 +41,7 @@ replacePats old new p@(HS.PApp q pats) =
   HS.PApp q $ map (replacePats old new) pats
 replacePats _ _ p = __IMPOSSIBLE__ -- Guaranteed by addAsPats
 
--- | Extract Agda term to Haskell expression.
+--   Extract Agda term to Haskell expression.
 --   Erased arguments are extracted as @()@.
 --   Types are extracted as @()@.
 term :: T.TTerm -> CC HS.Exp
@@ -58,3 +62,4 @@ term tm0 = asks ccGenPLet >>= \ genPLet -> case tm0 of
 {-
 ...
 -}
+\end{code}

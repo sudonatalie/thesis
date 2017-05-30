@@ -19,25 +19,25 @@ The goal of case squashing is to eliminate case expressions where the scrutinee 
 \centering
 \begin{subfigure}{.47\textwidth}
   \centering
-  \begin{lstlisting}[style=math]
-  case $i : \tau$ of
-   $d~(ar-1)~..~0 \to$
+  \begin{code}
+  case i : \tau of
+   d~(ar-1)~..~0 \to
      ...
-       case $j : \tau$ of
-         $d~(ar-1)~..~0 \to r$
-  \end{lstlisting}
-  where \lstinline[style=math]{lookupVar($i$) = lookupVar($j$)}.
+       case j : \tau of
+         d~(ar-1)~..~0 \to r
+  \end{code}
+  where |lookupVar(i) == lookupVar(j)|.
 \end{subfigure}
 {\large$\to$}
 \begin{subfigure}{.47\textwidth}
   \centering
-  \begin{lstlisting}[style=math]
-  case $i : \tau$ of
-   $d~(ar-1)~..~0 \to$
+  \begin{code}
+  case i : \tau of
+   d~(ar-1)~..~0 \to
      ...
-       $r'$
-  \end{lstlisting}
-  where $r'$ is $r$ with variables $0, ..., (ar-1)$ replaced with the corresponding bound variables from the ancestor case expression.
+       r'
+  \end{code}
+  where |r'| is |r| with variables |0, ..., (ar-1)| replaced with the corresponding bound variables from the ancestor case expression.
 \end{subfigure}
 \caption{Case squashing rule.}
 \label{fig:case_squash_rule}
@@ -89,30 +89,30 @@ For a complete listing of our implementation of the case squashing optimisation,
 
 \input{Figures/Agda/latex/Example1}
 
-Take for example the simple usage of record projections in Figure~\ref{code:example1_agda}. When we compile this module once without \texttt{-{}-inline-proj} on, and once again with \texttt{-{}-inline-proj} enabled, a unified diff of the two generated Haskell files gives us what is shown in Figure~\ref{fig:Example1_inline}.
+Take for example the simple usage of record projections in Figure~\ref{code:example1_agda}. When we compile this module once without @--inline-proj@ on, and once again with @--inline-proj@ enabled, a unified diff of the two generated Haskell files gives us what is shown in Figure~\ref{fig:Example1_inline}.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.5\textwidth]{Figures/Example1_inline}
-    \caption{Unified difference of the \AgdaModule{Example1}~module compiled without and then with \texttt{-{}-inline-proj}.}
+    \caption{Unified difference of the \AgdaModule{Example1}~module compiled without and then with @--inline-proj@.}
     \label{fig:Example1_inline}
 \end{figure}
 
-The compiled projection function \AgdaField{Pair.snd}, that is \lstinline{d18} in the Haskell code, is replaced with a Haskell expression that cases on the pair (\AgdaFunction{p} in Agda, \lstinline{d22} in Haskell) and returns the second field.
+The compiled projection function \AgdaField{Pair.snd}, that is |d18| in the Haskell code, is replaced with a Haskell expression that cases on the pair (\AgdaFunction{p} in Agda, |d22| in Haskell) and returns the second field.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.5\textwidth]{Figures/Example1_squash}
-    \caption{Unified difference of the \AgdaModule{Example1}~module compiled  with \texttt{-{}-inline-proj} and then also with \texttt{-{}-squash-cases}.}
+    \caption{Unified difference of the \AgdaModule{Example1}~module compiled  with @--inline-proj@ and then also with @--squash-cases@.}
     \label{fig:Example1_squash}
 \end{figure}
 
-We then compile the same file with both \texttt{-{}-inline-proj} and \texttt{-{}-squash-cases}, and the difference between only inlining and both inlining and squashing can be seen in Figure~\ref{fig:Example1_squash}.
+We then compile the same file with both @--inline-proj@ and @--squash-cases@, and the difference between only inlining and both inlining and squashing can be seen in Figure~\ref{fig:Example1_squash}.
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.5\textwidth]{Figures/Example1_inline_squash}
-    \caption{Unified difference of the \AgdaModule{Example1}~module compiled without either optimisation, then with both \texttt{-{}-inline-proj} and \texttt{-{}-squash-cases}.}
+    \caption{Unified difference of the \AgdaModule{Example1}~module compiled without either optimisation, then with both @--inline-proj@ and @--squash-cases@.}
     \label{fig:Example1_inline_squash}
 \end{figure}
 

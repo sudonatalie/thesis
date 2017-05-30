@@ -17,9 +17,9 @@ Pattern let floating combines the benefits of pattern lets, described in section
 
 \section{Implementation}
 
-There are a couple of implementation-specific details of interest when implementing pattern let floating. Firstly, the \lstinline{floatPLet} function will only float pattern lets which occur in multiple branches, and they are floated to the least join point of those branches.
+There are a couple of implementation-specific details of interest when implementing pattern let floating. Firstly, the |floatPLet| function will only float pattern lets which occur in multiple branches, and they are floated to the least join point of those branches.
 
-Further, it is worth noting that pattern let occurrences are duplicated at join points, indicating that identical pattern lets have ``met'' there, and are then later simplified away with the \lstinline{squashFloatings} function.
+Further, it is worth noting that pattern let occurrences are duplicated at join points, indicating that identical pattern lets have ``met'' there, and are then later simplified away with the |squashFloatings| function.
 
 \section{Next Steps}
 

@@ -1,3 +1,7 @@
+\chapter{Simplify.hs (abridged)}
+\label{app:simplify}
+
+\begin{code}
 {-# LANGUAGE CPP #-}
 module Agda.Compiler.Treeless.Simplify (simplifyTTerm) where
 
@@ -37,7 +41,7 @@ simplify FunctionKit{..} = simpl
             d  <- simpl d
             bs <- traverse (simplAlt x) bs
             tCase x t d bs
-            
+
       {-...-}
     rewrite' t = rewrite =<< simplPrim t
 
@@ -52,3 +56,4 @@ simplify FunctionKit{..} = simpl
       case v of
         TVar y | x == y -> bindVar x rhs $ cont
         _ -> addRewrite v rhs cont
+\end{code}

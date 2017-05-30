@@ -5,6 +5,7 @@
 
 % Imported Packages
 %________________________________________________________________________
+%include polycode.fmt
 \usepackage{alltt}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -93,6 +94,11 @@
 % Abstract
 \prefacesection{Abstract}
 \input{Auxiliary/Abstract}
+\begin{code}
+map                     :: (a->b) -> [a] -> [b]
+map f  []               =  []
+map f (x:xs)            =  f x : map f xs
+\end{code}
 
 % Acknowledgements
 \prefacesection{Acknowledgements}
@@ -107,36 +113,36 @@
 
 % Related Work
 \input{Auxiliary/ResetCounters}
-\input{Chapters/RelatedWork}
+%include Chapters/RelatedWork.lhs
 
 % Background
 \input{Auxiliary/ResetCounters}
-\input{Chapters/Background}
+%include Chapters/Background.lhs
 
 % Main Contributions
 \input{Auxiliary/ResetCounters}
-\input{Chapters/Inline}
+%include Chapters/Inline.lhs
 
 \input{Auxiliary/ResetCounters}
-\input{Chapters/CaseSquash}
+%include Chapters/CaseSquash.lhs
 
 \input{Auxiliary/ResetCounters}
-\input{Chapters/GenPlet}
+%include Chapters/GenPlet.lhs
 
 \input{Auxiliary/ResetCounters}
-\input{Chapters/Float}
+%include Chapters/Float.lhs
 
 % Discussion and Conclusion
 \input{Auxiliary/ResetCounters}
-\input{Chapters/Conclusion}
+%include Chapters/Conclusion.lhs
 
 % Appendices
 \input{Auxiliary/ResetCounters}
 \appendix
-\input{Appendix/Simplify}
-\input{Appendix/ToTreeless}
-\input{Appendix/CaseSquash}
-\input{Appendix/Compiler}
+%include Appendix/Simplify.lhs
+%include Appendix/ToTreeless.lhs
+%include Appendix/CaseSquash.lhs
+%include Appendix/Compiler.lhs
 
 % Bibliography
 \bibliographystyle{plainnat}

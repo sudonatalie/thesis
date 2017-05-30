@@ -12,15 +12,7 @@ Lambda calculus (or $\lambda$-calculus) is a formal system for representing comp
 
 In a pure $\lambda$-calculus, terms are built inductively from only variables, $\lambda$-abstractions and applications, as in Figure~\ref{fig:lambda_calc} \citep{kozen1997}.
 
-\begin{figure}[h]
-\begin{align*}
-t ::=~& x               & \text{variable}\\
-    |~& \lambda x . t   & \text{abstraction}\\
-    |~& t~t             & \text{application}
-\end{align*}
-\caption{Grammar of a pure lambda calculus.}
-\label{fig:lambda_calc}
-\end{figure}
+\input{Figures/LambdaCalc}
 
 \subsection{De Bruijn Index Notation}
 
@@ -28,15 +20,7 @@ In order to eliminate the need for named variables in $\lambda$-calculus notatio
 
 \input{Figures/DeBruijn}
 
-\begin{figure}[h]
-\begin{align*}
-t ::=~& \mathbb{N}      & \text{variable}\\
-    |~& \lambda~t       & \text{abstraction}\\
-    |~& t~t             & \text{application}
-\end{align*}
-\caption{Grammar of a de Bruijn indexed lambda calculus.}
-\label{fig:db_lambda_calc}
-\end{figure}
+\input{Figures/DeBruijnLambdaCalc}
 
 The internal representation of Agda code in the compiler is based on a de Bruijn indexed $\lambda$-calculus.
 
@@ -86,7 +70,7 @@ Recognising the required index ``shifting'' and ``lifting'' in the Figure~\ref{e
 
 \subsection{Compiler}
 
-The Agda programming language's first and most-used backend is MAlonzo, or more generically, the GHC backend \citep{benke2007}. Given an Adga module containing a \AgdaFunction{main} function\footnote{An Agda module without a main file can be compiled with \texttt{-{}-no-main}.}, the Agda \texttt{-{}-compile} option will compile the program using the GHC backend by default, which translates an Agda program into Haskell source. The generated Haskell source can then be automatically or manually (with \texttt{-{}-ghc-dont-call-ghc}) compiled to an executable program via GHC \citep{agdadocs}. % http://agda.readthedocs.io/en/latest/tools/compilers.html
+The Agda programming language's first and most-used backend is MAlonzo, or more generically, the GHC backend \citep{benke2007}. Given an Adga module containing a \AgdaFunction{main} function\footnote{An Agda module without a main file can be compiled with @--no-main@.}, the Agda @--compile@ option will compile the program using the GHC backend by default, which translates an Agda program into Haskell source. The generated Haskell source can then be automatically or manually (with @--ghc-dont-call-ghc@) compiled to an executable program via GHC \citep{agdadocs}. % http://agda.readthedocs.io/en/latest/tools/compilers.html
 
 There are several stages of translation and compilation in this process. The transition of primary interest for our optimisations is the conversion of compiled clauses to a ``treeless'' syntax. This translations occurs after Agda type-checking but before Haskell source is generated. Most Agda optimisations occur as alterations to the treeless terms.
 
@@ -104,12 +88,12 @@ The treeless syntax is the input to the compiler backend of Agda. It's a high-le
 
 \subsubsection{Treeless Syntax}
 
-This treeless syntax is constructed from the \lstinline{TTerm}s (\textbf{T}reless \textbf{Terms}) data type and is the representation of the abstract syntax tree that we will refer to most frequently. It can be reasoned about as a lambda calculus with all local variable represented as de Bruijn indices. A listing of \lstinline{TTerm} constructors is shown in Figure~\ref{code:TTerm}.
+This treeless syntax is constructed from the |TTerm|s (\textbf{T}reless \textbf{Terms}) data type and is the representation of the abstract syntax tree that we will refer to most frequently. It can be reasoned about as a lambda calculus with all local variable represented as de Bruijn indices. A listing of |TTerm| constructors is shown in Figure~\ref{code:TTerm}.
 
-In this section we examine the constructors of \lstinline{TTerm}s one-by-one \citep{agdahackage}.
+In this section we examine the constructors of |TTerm|s one-by-one \citep{agdahackage}.
 
 \begin{figure}[h]
-\begin{lstlisting}[style=blockhaskell]
+\begin{code}
 type Args = [TTerm]
 
 data TTerm = TVar Nat
@@ -129,43 +113,43 @@ data TTerm = TVar Nat
 data TAlt = TACon QName Nat TTerm
           | TAGuard TTerm TTerm
           | TALit Literal TTerm
-\end{lstlisting}
-\caption{\lstinline{TTerm} and \lstinline{TAlt} datatype definitions.}
+\end{code}
+\caption{|TTerm| and |TAlt| datatype definitions.}
 \label{code:TTerm}
 \end{figure}
 
-A \textbf{\lstinline{TVar}} is a de Bruijn indexed variable term.
+A \textbf{|TVar|} is a de Bruijn indexed variable term.
 
-A \textbf{\lstinline{TPrim}} is a compiler-related primitive, such as addition, subtraction and equality on some primitive types.
+A \textbf{|TPrim|} is a compiler-related primitive, such as addition, subtraction and equality on some primitive types.
 
-A \textbf{\lstinline{TDef}} is a qualified name identifying a function or datatype definition.
+A \textbf{|TDef|} is a qualified name identifying a function or datatype definition.
 
-A \textbf{\lstinline{TApp}} is a \lstinline{TTerm} applied to a list of arguments, where each argument is itself a \lstinline{TTerm}.
+A \textbf{|TApp|} is a |TTerm| applied to a list of arguments, where each argument is itself a |TTerm|.
 
-A \textbf{\lstinline{TLam}} is a $\lambda$-abstraction with a body.
+A \textbf{|TLam|} is a $\lambda$-abstraction with a body.
 
-A \textbf{\lstinline{TLit}} is a literal value, such as an integer or string.
+A \textbf{|TLit|} is a literal value, such as an integer or string.
 
-A \textbf{\lstinline{TCon}} is a qualified name identifying a constructor.
+A \textbf{|TCon|} is a qualified name identifying a constructor.
 
-A \textbf{\lstinline{TLet}} is a let expression, introducing a new local term binding in a term body.
+A \textbf{|TLet|} is a let expression, introducing a new local term binding in a term body.
 
-A \textbf{\lstinline{TCase}} is a case expression on a case scrutinee (always a de Bruijn indexed variable), a case type, a default value and a list of alternatives.
+A \textbf{|TCase|} is a case expression on a case scrutinee (always a de Bruijn indexed variable), a case type, a default value and a list of alternatives.
 
-The case alternatives, \textbf{\lstinline{TAlt}}s, may be constructed from:
+The case alternatives, \textbf{|TAlt|}s, may be constructed from:
 \begin{itemize}
-\item a \lstinline{TACon}, which matches on a constructor of a given qualified name, binding the appropriate number of pattern variables to the body term if a match is made. Note that a \lstinline{TCase}'s list of \lstinline{Args} must have unique qualified names for each \lstinline{TACon}.
-\item a \lstinline{TAGuard}, which matches on a boolean guard and binds no variables if matched against.
-\item a \lstinline{TALit}, which matches on a literal term.
+\item a |TACon|, which matches on a constructor of a given qualified name, binding the appropriate number of pattern variables to the body term if a match is made. Note that a |TCase|'s list of |Args| must have unique qualified names for each |TACon|.
+\item a |TAGuard|, which matches on a boolean guard and binds no variables if matched against.
+\item a |TALit|, which matches on a literal term.
 \end{itemize}
 
-A \textbf{\lstinline{TUnit}} is used for levels.
+A \textbf{|TUnit|} is used for levels.
 
-A \textbf{\lstinline{TSort}} is a sort, as in the type of types.
+A \textbf{|TSort|} is a sort, as in the type of types.
 
-A \textbf{\lstinline{TErased}} is used to replace some irrelevant term that isn't needed.
+A \textbf{|TErased|} is used to replace some irrelevant term that isn't needed.
 
-A \textbf{\lstinline{TError}} is used to indicate a runtime error.
+A \textbf{|TError|} is used to indicate a runtime error.
 
 %In the following chapters, we discuss the design and implementation of our optimisations to the Agda compiler. In each Chapter, we give a logical representation of the optimisation, present our implementation and give usage instructions for the feature in our compiler branch. We also give references to the source code in the Appendix.
 
@@ -173,24 +157,9 @@ We also present in Figure~\ref{fig:treeless_grammar} a simplified logical repres
 
 \edcomm{NP}{Change syntax to match the pretty-print syntax of Agda backend output.}
 
-\begin{figure}[h!]
-\begin{align*}
-t ::=~& i & \text{variable}\\
-|~& d & \text{function or datatype name}\\
-|~& t~t^* & \text{application}\\
-|~& \lambda~0 \to t & \text{lambda abstraction}\\
-|~& l & \text{literal}\\
-|~& \mathtt{let}~0 = t~\mathtt{in}~t & \text{let}\\
-|~& \mathtt{case}~i : \tau~\mathtt{of}~a^*~\mathtt{otherwise} \to t& \text{case}\\
-\\
-a ::=~& d~(ar-1)~..~0 \to t & \text{constructor alternative}\\
-|~& l \to t & \text{literal alternative}
-\end{align*}
-\caption{Simplified representation of the Agda treeless syntax grammar.}
-\label{fig:treeless_grammar}
-\end{figure}
+\input{Figures/TreelessGrammar}
 
-%In the implementation Subsections, we discuss some implementation details of our optimisations with reference to the Haskell data type of Agda's treeless representation. The treeless syntax (\lstinline{TTerm}) listing can be found in Figure~\ref{code:TTerm}.
+%In the implementation Subsections, we discuss some implementation details of our optimisations with reference to the Haskell data type of Agda's treeless representation. The treeless syntax (|TTerm|) listing can be found in Figure~\ref{code:TTerm}.
 
 \subsection{Module System}
 
