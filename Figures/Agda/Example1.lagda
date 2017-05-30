@@ -1,4 +1,4 @@
-\begin{figure}
+\begin{figure}[h]
 \begin{code}
 module Example1 where
 

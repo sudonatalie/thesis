@@ -1,4 +1,4 @@
-\begin{figure}
+\begin{figure}[h]
 
 \begin{comment}
 \begin{code}
