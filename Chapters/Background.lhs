@@ -10,17 +10,17 @@ Lambda calculus (or $\lambda$-calculus) is a formal system for representing comp
 
 \subsection{Pure $\lambda$-Calculus}
 
-In a pure $\lambda$-calculus, terms are built inductively from only variables, $\lambda$-abstractions and applications, as in Figure~\ref{fig:lambda_calc} \citep{kozen1997}.
-
 \input{Figures/LambdaCalc}
 
+In a pure $\lambda$-calculus, terms are built inductively from only variables, $\lambda$-abstractions and applications, as in Figure~\ref{fig:lambda_calc} \citep{kozen1997}.
+
 \subsection{De Bruijn Index Notation}
+
+\input{Figures/DeBruijnLambdaCalc}
 
 In order to eliminate the need for named variables in $\lambda$-calculus notation, de Bruijn indexed notation is used to represent bound terms (variables) with natural numbers, as presented by \citet{deBruijn-1972}. In any term, the positive integer $n$ refers to the $n$th surrounding $\lambda$ binder. In other words, the number is an index indicating the number of variable binders (or $\lambda$-abstractions) in scope between itself and the binder for the variable being referenced. The grammar of a de Bruijn-indexed lambda calculus can be seen in Figure~\ref{fig:db_lambda_calc}. See Figure~\ref{fig:db_example} for an illustration where the variable bindings and indices are coloured to indicate matches and the references are shown with arrows.
 
 \input{Figures/DeBruijn}
-
-\input{Figures/DeBruijnLambdaCalc}
 
 The internal representation of Agda code in the compiler is based on a de Bruijn indexed $\lambda$-calculus.
 
