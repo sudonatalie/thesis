@@ -27,26 +27,28 @@ Figure~\ref{fig:plet_rule} shows the rule for generating an optimised Haskell ex
 \begin{figure}[h]
 \centering
 \begin{subfigure}{.47\textwidth}
-  \begin{lstlisting}[style=math]
-  let $0$ = $e$
-  in case $0$ of
-    $d~(ar-1)~..~0 \to t$
-    otherwise $\to u$
-  \end{lstlisting}
-  where \lstinline[style=math]{unreachable($s$) = true}.
+\begin{spec}
+let x = e
+in case x of
+  d v0...vn -> t
+  otherwise -> u
+\end{spec}
+where |unreachable(u) == true|.
 \end{subfigure}
 {\large$\to$}
 \begin{subfigure}{.47\textwidth}
-  \begin{code}
-  let v0@(D v1 ... v(ar)) = e
-  in t
-  \end{code}
+\begin{spec}
+let x@(d v0...vn) = e
+in t
+\end{spec}
 \end{subfigure}
 \caption{Generating pattern lets rule.}
 \label{fig:plet_rule}
 \end{figure}
 
 Note that branches may be marked |unreachable| if they are absurd branches or just to fill in missing case defaults which cannot be reached.
+
+% TODO It is worth noting that this optimisation changes the evaluation order of subexpressions and, with Haskell semantics, could result in non-termination... 
 
 Our treeless syntax does not support pattern matching, but when these cases are identified before transforming into Haskell expressions, we can replace them with ``pattern lets'', removing an unnecessary case expression, and immediately binding the appropriate constructor parameters in the enclosing |let| expression.
 

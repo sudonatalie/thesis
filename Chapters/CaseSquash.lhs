@@ -18,37 +18,35 @@ The goal of case squashing is to eliminate case expressions where the scrutinee 
 \begin{figure}[h]
 \centering
 \begin{subfigure}{.47\textwidth}
-  \centering
-  \begin{code}
-  case i : \tau of
-   d~(ar-1)~..~0 \to
-     ...
-       case j : \tau of
-         d~(ar-1)~..~0 \to r
-  \end{code}
-  where |lookupVar(i) == lookupVar(j)|.
+\centering
+\begin{spec}
+case x of
+  d v0..vn ->
+    ...
+      case x of
+        d v0'...vn' -> r
+\end{spec}
 \end{subfigure}
 {\large$\to$}
 \begin{subfigure}{.47\textwidth}
-  \centering
-  \begin{code}
-  case i : \tau of
-   d~(ar-1)~..~0 \to
-     ...
-       r'
-  \end{code}
-  where |r'| is |r| with variables |0, ..., (ar-1)| replaced with the corresponding bound variables from the ancestor case expression.
+\centering
+\begin{spec}
+case x of
+  d v0...vn ->
+    ...
+      r[v0' := v0, ..., vn' := vn]
+\end{spec}
 \end{subfigure}
 \caption{Case squashing rule.}
 \label{fig:case_squash_rule}
 \end{figure}
 
-For example, given the following simplified treeless expression:
+For example, given the following treeless expression with de Bruijn indexed variables:
 
 \begin{lstlisting}[style=math]
-$\lambda~\textcolor{red}{0} \to$
-$\lambda~0 \to$
-$\lambda~0 \to$
+$\textcolor{red}{\lambda} \to$
+$\lambda \to$
+$\lambda \to$
 case $\textcolor{red}{2}$ of
   $da~2~1~0 \to$
     case $0$ of
@@ -63,9 +61,9 @@ case $\textcolor{red}{2}$ of
 we can follow the de Bruijn indices to their matching variable bindings, to see that the first and third case expressions are scrutinising the same variable, the one bound by the outermost $\lambda$ abstraction. Therefore, with only static analysis of the expression tree, we know that the third case expression must follow the $da~2~1~0$ branch, and we can thus safely transform our expression into the following substituted expression:
 
 \begin{lstlisting}[style=math]
-$\lambda~0 \to$
-$\lambda~0 \to$
-$\lambda~0 \to$
+$\lambda \to$
+$\lambda \to$
+$\lambda \to$
 case $2$ of {
   $da~\textcolor{red}{2}~\textcolor{blue}{1}~\textcolor{green}{0} \to$
     case $0$ of

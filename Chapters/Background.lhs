@@ -157,11 +157,9 @@ A \textbf{|TError|} is used to indicate a runtime error.
 
 %In the following chapters, we discuss the design and implementation of our optimisations to the Agda compiler. In each Chapter, we give a logical representation of the optimisation, present our implementation and give usage instructions for the feature in our compiler branch. We also give references to the source code in the Appendix.
 
-We also present in Figure~\ref{fig:treeless_grammar} a simplified logical representation of the Agda treeless syntax as a grammar. We use this simplification in the following chapters to discuss our optimisations at a logical level of abstraction. Note that variables are represented only by their de Bruijn index.
+We also present in Figure~\ref{fig:treeless_grammar} a simplified logical representation of the Agda treeless syntax as a grammar. We use this simplification in the following chapters to discuss our optimisations at a logical level of abstraction. Note that internally, variables are represented only by their de Bruijn index, however for ease of illustration, we use named variables in our presentation.
 
-\edcomm{NP}{Change syntax to match the pretty-print syntax of Agda backend output.}
-
-\input{Figures/TreelessGrammar}
+%include ../Figures/TreelessGrammar.lhs
 
 %In the implementation Subsections, we discuss some implementation details of our optimisations with reference to the Haskell data type of Agda's treeless representation. The treeless syntax (|TTerm|) listing can be found in Figure~\ref{code:TTerm}.
 
