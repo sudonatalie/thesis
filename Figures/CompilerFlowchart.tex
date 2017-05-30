@@ -23,12 +23,12 @@
 \path (agda) edge[->] node[align=center] {scope\\checking} (scope);
 \path (scope) edge[->] node[align=center] {coverage \& type\\checking} (type);
 \path (type) edge[->] node[align=center] {termination\\checking} (termin);
-\path (termin) edge[->] node {serialization} (serial);
+\path (termin) edge[->] node {serialisation} (serial);
 \path (serial) edge[->] (interf);
 \path (interf) edge[->] (compile);
 \path (compile) edge[->] node[near start, align=center] {yes} (clause);
 \path (clause) edge[->] (treeless);
-\path (treeless) [loop above] edge[->] node [align=center] {optimizations} (treeless);
+\path (treeless) [loop above] edge[->] node [align=center] {optimisations} (treeless);
 \path (treeless) edge[->] node [align=center] {code\\geneneration} (haskell);
 \end{tikzpicture}
 
