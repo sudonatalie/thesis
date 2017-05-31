@@ -41,8 +41,12 @@ case x of
 \label{fig:case_squash_rule}
 \end{figure}
 
-For example, given the following treeless expression with de Bruijn indexed variables:
+For example, given the treeless expression with de Bruijn indexed variables in Figure~\ref{fig:db_case_squash}, we can follow the de Bruijn indices to their matching variable bindings, to see that the first and third case expressions are scrutinising the same variable, the one bound by the outermost $\lambda$ abstraction. Therefore, with only static analysis of the expression tree, we know that the third case expression must follow the $da~2~1~0$ branch, and we can thus safely transform the expression on the left into the substituted expression on the right.
 
+\begin{figure}[h]
+\centering
+\begin{subfigure}{.3\textwidth}
+\centering
 \begin{lstlisting}[style=math]
 $\textcolor{red}{\lambda} \to$
 $\lambda \to$
@@ -57,21 +61,26 @@ case $\textcolor{red}{2}$ of
       ...
   ...
 \end{lstlisting}
-
-we can follow the de Bruijn indices to their matching variable bindings, to see that the first and third case expressions are scrutinising the same variable, the one bound by the outermost $\lambda$ abstraction. Therefore, with only static analysis of the expression tree, we know that the third case expression must follow the $da~2~1~0$ branch, and we can thus safely transform our expression into the following substituted expression:
-
+\end{subfigure}
+{\large$\qquad\to\qquad$}
+\begin{subfigure}{.3\textwidth}
+\centering
 \begin{lstlisting}[style=math]
 $\lambda \to$
 $\lambda \to$
 $\lambda \to$
 case $2$ of {
-  $da~\textcolor{red}{2}~\textcolor{blue}{1}~\textcolor{green}{0} \to$
+  $da~\textcolor{orange}{2}~\textcolor{blue}{1}~\textcolor{green}{0} \to$
     case $0$ of
       $db~1~0 \to$
-        $r[2 := \textcolor{red}{4}, 1 := \textcolor{blue}{3}, 0 := \textcolor{green}{2}]$
+        $r[2 := \textcolor{orange}{4}, 1 := \textcolor{blue}{3}, 0 := \textcolor{green}{2}]$
       ...
   ...
 \end{lstlisting}
+\end{subfigure}
+\caption{Case squashing example.}
+\label{fig:db_case_squash}
+\end{figure}
 
 We perform this ``case squashing'' by accumulating an environment of all previously scrutinised variables as we traverse the tree structure (appropriately shifting de Bruijn indices in the environment as new variables are bound), and replacing case expressions that match on the same variable as an ancestor case expressions, with the corresponding case branch's body. Any variables in the body that refer to bindings in the removed branch should be replaced with references to the bindings in the matching ancestor case expression branch.
 
