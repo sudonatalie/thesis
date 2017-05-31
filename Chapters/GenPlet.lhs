@@ -48,7 +48,7 @@ in t
 
 Note that branches may be marked |unreachable| if they are absurd branches or just to fill in missing case defaults which cannot be reached.
 
-It is worth noting that this optimisation changes the evaluation sequence of subexpressions and, with Haskell semantics, could amount to the different between a terminating and non-terminating expression. However, because we're operating on Haskell generated from an Agda program that has already been checked for termination, this semantics change is less dangerous.
+It is worth noting that this optimisation changes the evaluation sequence of subexpressions and, with Haskell semantics, could amount to the difference between a terminating and non-terminating expression. However, because we're operating on Haskell generated from an Agda program that has already been checked for termination, this semantics change is less dangerous.
 
 Our treeless syntax does not support pattern matching, but when these cases are identified before transforming into Haskell expressions, we can replace them with ``pattern lets'', removing an unnecessary case expression, and immediately binding the appropriate constructor parameters in the enclosing |let| expression.
 
