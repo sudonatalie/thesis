@@ -68,7 +68,7 @@ When we compile this module once without @--ghc-generate-pattern-let@ on, and on
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\textwidth]{Figures/Triangle_genplet}
+    \lstinputlisting[style=diff]{Figures/Triangle_genplet.diff}
     \caption{Unified difference of the \AgdaModule{Triangle3sPB}~module compiled without and then with @--ghc-generate-pattern-let@.}
     \label{fig:Triangle_genplet}
 \end{figure}

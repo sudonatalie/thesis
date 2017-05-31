@@ -1,0 +1,50 @@
+--- compile-inline/MAlonzo/Code/GraTra/Graphs.hs
++++ compile-inline-genplet/MAlonzo/Code/GraTra/Graphs.hs
+@@ -15132,66 +14864,48 @@
+ d4788 v0 v1
+   = coe
+       MAlonzo.Code.Categoric.FinColimits.Coproduct.C8807
+-      (let v2
++      (let v2@(MAlonzo.Code.Categoric.FinColimits.Coproduct.C9169 v3 v4 v5 v6)
+              = coe
+                  MAlonzo.Code.Data.Algebra.Generalised.Hom.Coproduct.du1112
+                  MAlonzo.Code.Data.Fin.VecCat.d26 MAlonzo.Code.Data.Fin.VecCat.d3920
+                  MAlonzo.Code.Data.Algebra.Signature.Graph.d20 in
+-       case coe v2 of
+-         MAlonzo.Code.Categoric.FinColimits.Coproduct.C9169 v3 v4 v5 v6
+-           -> coe v3 v0 v1
+-         _ -> MAlonzo.RTE.mazUnreachableError)
+-      (let v2
++       coe v3 v0 v1)
++      (let v2@(MAlonzo.Code.Categoric.FinColimits.Coproduct.C9169 v3 v4 v5 v6)
+              = coe
+                  MAlonzo.Code.Data.Algebra.Generalised.Hom.Coproduct.du1112
+                  MAlonzo.Code.Data.Fin.VecCat.d26 MAlonzo.Code.Data.Fin.VecCat.d3920
+                  MAlonzo.Code.Data.Algebra.Signature.Graph.d20 in
+-       case coe v2 of
+-         MAlonzo.Code.Categoric.FinColimits.Coproduct.C9169 v3 v4 v5 v6
+-           -> coe v4 v0 v1
+-         _ -> MAlonzo.RTE.mazUnreachableError)
+-      (let v2
++       coe v4 v0 v1)
++      (let v2@(MAlonzo.Code.Categoric.FinColimits.Coproduct.C9169 v3 v4 v5 v6)
+              = coe
+                  MAlonzo.Code.Data.Algebra.Generalised.Hom.Coproduct.du1112
+                  MAlonzo.Code.Data.Fin.VecCat.d26 MAlonzo.Code.Data.Fin.VecCat.d3920
+                  MAlonzo.Code.Data.Algebra.Signature.Graph.d20 in
+-       case coe v2 of
+-         MAlonzo.Code.Categoric.FinColimits.Coproduct.C9169 v3 v4 v5 v6
+-           -> coe v5 v0 v1
+-         _ -> MAlonzo.RTE.mazUnreachableError)
+-      (let v2
++       coe v5 v0 v1)
++      (let v2@(MAlonzo.Code.Categoric.FinColimits.Coproduct.C9169 v3 v4 v5 v6)
+              = coe
+                  MAlonzo.Code.Data.Algebra.Generalised.Hom.Coproduct.du1112
+                  MAlonzo.Code.Data.Fin.VecCat.d26 MAlonzo.Code.Data.Fin.VecCat.d3920
+                  MAlonzo.Code.Data.Algebra.Signature.Graph.d20 in
+-       case coe v2 of
+-         MAlonzo.Code.Categoric.FinColimits.Coproduct.C9169 v3 v4 v5 v6
+-           -> coe v6 v0 v1
+-         _ -> MAlonzo.RTE.mazUnreachableError)
++       coe v6 v0 v1)
