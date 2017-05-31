@@ -117,7 +117,7 @@
 
 % Introduction
 \input{Auxiliary/ResetCounters}
-\input{Chapters/Introduction}
+%include Chapters/Introduction.lhs
 
 % Related Work
 \input{Auxiliary/ResetCounters}

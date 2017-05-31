@@ -19,25 +19,7 @@ The core syntax of Agda is a dependently-typed lambda calculus, with a simple gr
 
 By the Curry–Howard correspondence (or the proofs-as-programs interpretation), we can then prove these propositions true by providing an element (program) of its corresponding type \citep{poernomo2005}. Using constructive logic, a proof of a proposition is the construction of an object that is a member of the type representing that proposition. The correspondence between concepts in type theory and concepts in logic can be seen in Table~\ref{table:curry_howard}
 
-\begin{table}
-\begin{center}
-\begin{tabular}{c|c}
-Logic & Type theory \\
-\hline
-proposition & type\\
-theorem & inhabited type\\
-proof & program\\
-implication & function space\\
-conjunction & product\\
-disjunction & sum\\
-second order quantifier & type quantifier\\
-truth & inhabited type\\
-falsity & uninhabited type\\
-\end{tabular}
-\end{center}
-\caption{Correspondent concepts in logic and type theory.}
-\label{table:curry_howard}
-\end{table}
+\input{Figures/CurryHoward}
 
 The ability for types to contain arbitrary values is significant because it expands the domain of theorems we can encode as types to the space of predicate logic. This allows us to encode almost any proposition or formula as a type.
 
@@ -47,18 +29,7 @@ Agda also supports a flexible mix-fix syntax, as seen in Figure~\ref{code:if_fun
 
 \input{Figures/Agda/latex/If}
 
-\begin{figure}[h]
-\begin{align*}
-a ::=~& x               & \text{variable}\\
-    |~& \lambda x \to a & \text{abstraction}\\
-    |~& a~a             & \text{application}\\
-    |~& (x : a) \to a   & \text{function space}\\
-    |~& Set[n]          & \text{universe}\\
-    |~& (a)             & \text{grouping}
-\end{align*}
-\caption{Agda core syntax grammar \citep{agdawiki}.}
-\label{fig:grammar}
-\end{figure}
+\input{Figures/AgdaCore}
 
 \subsection{Compiler}
 
@@ -67,6 +38,14 @@ Agda has a number of available compilers and backends, but the one that is most 
 As discussed in the previous section, Agda provides a more expressive type system than Haskell. Because Agda supports dependent types and Haskell does not, in order for Agda generated code to pass the Haskell type checker, it is necessary for the MAlonzo backend to wrap coercions around all function arguments and all function calls, which cast terms from one type to a different arbitrary type. Unfortunately, these potentially unsafe type coercions mean that there are many GHC optimisations which Agda's generated code is ``missing out on'' \citep{fredriksson2011}.
 
 Some of the Agda optimisations described herein would typically be performed by GHC after translation to Haskell were it not for these coercions, so we instead ensure that we can still take advantage of these optimisations by implementing them in the Agda backend, before the translation to Haskell occurs.
+
+\subsection{Sharing}
+
+In several of our optimisations presented herein, our ultimate goal is to introduce sharing that was previously ``lost''. Take for example the simple module in Figure~\ref{code:sharing_agda}. An Agda developer might, incorrectly, assume that in the calculation of \AgdaFunction{four}, the \AgdaFunction{+} function would only be called twice, with the evaluation of \AgdaBound{two} stored and shared among its two callers. In actuality, the \AgdaKeyword{let} binding in Agda does not guarantee any sharing. In the compiled Haskell generated from the \AgdaModule{Sharing} module, shown in Figure~\ref{code:sharing_haskell}, we can see that there are, in fact, three calls to the generated addition function |d8|, and the semantic ``sharing'' that was implied by the programmer who wrote the \AgdaKeyword{let} binding has been ``lost''. We work with examples like this as motivation for re-creating sharing through compiler optimisations.
+
+\input{Figures/Agda/latex/Sharing}
+
+%include ../Figures/Haskell/Sharing.lhs
 
 \section{Problem Statement}
 \label{sec:problem_statement}
