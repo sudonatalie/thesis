@@ -76,6 +76,17 @@
   basicstyle=\ttfamily\normalsize,
 	mathescape
 }
+\newcommand{\lstbg}[3][0pt]{{\fboxsep#1\colorbox{#2}{\strut #3}}}
+\lstdefinelanguage{diff}{
+  morecomment=[f][\lstbg{red!20}]-,         % deleted lines
+  morecomment=[f][\lstbg{green!20}]+,       % added lines
+  morecomment=[f][\textit]{---}, % header lines
+  morecomment=[f][\textit]{+++}
+}
+\lstdefinestyle{diff}{
+	language=diff,
+	basicstyle=\ttfamily\footnotesize
+}
 \lstset{style=inline}
 
 % Make Index

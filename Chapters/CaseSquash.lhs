@@ -91,7 +91,7 @@ Take for example the simple usage of record projections in Figure~\ref{code:exam
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.5\textwidth]{Figures/Example1_inline}
+    \lstinputlisting[style=diff]{Figures/Example1_inline.diff}
     \caption{Unified difference of the \AgdaModule{Example1}~module compiled without and then with @--inline-proj@.}
     \label{fig:Example1_inline}
 \end{figure}
@@ -100,7 +100,7 @@ The compiled projection function \AgdaField{Pair.snd}, that is |d18| in the Hask
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.5\textwidth]{Figures/Example1_squash}
+    \lstinputlisting[style=diff]{Figures/Example1_squash.diff}
     \caption{Unified difference of the \AgdaModule{Example1}~module compiled  with @--inline-proj@ and then also with @--squash-cases@.}
     \label{fig:Example1_squash}
 \end{figure}
@@ -109,7 +109,7 @@ We then compile the same file with both @--inline-proj@ and @--squash-cases@, an
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.5\textwidth]{Figures/Example1_inline_squash}
+    \lstinputlisting[style=diff]{Figures/Example1_inline_squash.diff}
     \caption{Unified difference of the \AgdaModule{Example1}~module compiled without either optimisation, then with both @--inline-proj@ and @--squash-cases@.}
     \label{fig:Example1_inline_squash}
 \end{figure}
