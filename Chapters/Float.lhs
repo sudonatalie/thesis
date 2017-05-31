@@ -21,6 +21,19 @@ There are a couple of implementation-specific details of interest when implement
 
 Further, it is worth noting that pattern let occurrences are duplicated at join points, indicating that identical pattern lets have ``met'' there, and are then later simplified away with the |squashFloatings| function.
 
+\section{Application}
+
+As readers may have noticed inspecting Figure~\ref{fig:Triangle_genplet} in the preceding chapter, there are 4 pattern let bindings for the same \texttt{v2} variable within the \texttt{d4788} function. This is a perfect opportunity for floating pattern lets, to create sharing where there formerly was none.
+
+\begin{figure}[h]
+    \centering
+    \lstinputlisting[style=diff]{Figures/Triangle_float.diff}
+    \caption{Unified difference of the \AgdaModule{Triangle3sPB}~module compiled without and then with @--float-plet@.}
+    \label{fig:Triangle_float}
+\end{figure}
+
+Figure~\ref{fig:Triangle_float} shows the result of applying @--float-plet@ to this compilation, resulting in the \texttt{v2} bindings floating above the shared function call.
+
 \section{Next Steps}
 
 Our goal is to further expand the pattern let floating optimisation such that they can not only be floated up expressions, but also across function calls. By floating pattern lets across function calls, we can avoid even more duplicated computation through sharing.
