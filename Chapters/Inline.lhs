@@ -1,6 +1,9 @@
 \chapter{Inlining Projections}
 \label{cha:inline_proj}
 
+\edcomm{WK}{You never write two headings immediately after each other.
+An overview of this chapter is missing here. This could even incorporate 4.1.}
+
 \section{Usage}
 
 We added the option:
@@ -13,7 +16,15 @@ to our Agda branch which, when enabled, will replace every call to a function th
 
 \section{Logical Representation}
 
-The logical representation of inlining is fairly straightforward. We recurse through the treeless representation of an Agda module. For every application of a function or datatype to a list of arguments, that is $d~t^*$, where $d$ is the name of a function or datatype, and $t$s are treeless terms, we replace $d~t^*$ with the function or datatype definition corresponding to $d$ and substitute in the $t^*$ arguments.
+The logical representation of inlining is fairly straightforward.
+We recurse through the treeless representation of an Agda module.
+For every application of a function or datatype to a list of arguments,
+that is $d~t^*$ \ecomm{WK}{Change $t*$ to $t_1\ \ldots\ t_n$?},
+where $d$ is the name of a function or datatype,
+and $t$s are treeless terms,
+we replace $d~t^*$
+with the function or datatype definition corresponding to $d$
+and substitute in the $t^*$ arguments.
 
 \section{Implementation}
 
