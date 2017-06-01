@@ -68,13 +68,11 @@ three calls to the generated addition function |d8|, and the semantic
 
 %include ../Figures/Haskell/Sharing.lhs
 
-We work with examples
+Though this particular illustrative example is not targetted by our
+optimizations, because it would require common subexpression elimination
+(CSE) to transform, we use examples
 like this as motivation for re-creating sharing through compiler
 optimisations.
-
-\edcomm{WK}{Either include here or point to the result of using our transformations.}
-
-\edcomm{NP}{Our transformations don't have any effect on this particular example, but it still seemed like a good distilled example of the lost sharing that's our motivation. Note that? Or remove it altogether?}
 
 \section{Problem Statement}
 \label{sec:problem_statement}
