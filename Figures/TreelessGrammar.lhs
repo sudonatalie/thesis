@@ -1,4 +1,3 @@
-\begin{figure}[h!]
 \begin{spec}
 t  ::=  x                          -- variable
    |  d                            -- function or datatype name
@@ -11,6 +10,3 @@ t  ::=  x                          -- variable
 a  ::=  d v1...vn -> t             -- constructor alternative
    |  l -> t                       -- literal alternative
 \end{spec}
-\caption{Simplified representation of the Agda treeless syntax grammar.}
-\label{fig:treeless_grammar}
-\end{figure}

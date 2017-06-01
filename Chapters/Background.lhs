@@ -6,23 +6,21 @@ In this chapter, we introduce the necessary logical and compiler background conc
 \section{Lambda Calculus}
 \label{sec:lambda_calc}
 
-Lambda calculus (or $\lambda$-calculus) is a formal system for representing computational logic in terms of function abstractions and applications using variable binding and substitution. It warrants our understanding because concepts surrounding the Agda programming language and its compilation are inspired by, and can be elegantly explained by, the framework of the lambda calculi. In fact, the namesake of the default Agda GHC backend, MAlonzo, is Alonzo Church, the mathematician who first developed the lambda calculus \citep{fokkinga1987}.
-\edcomm{WK}{What is Fokkinga used as a source for here?}
+Lambda calculus (or $\lambda$-calculus) is a formal system for representing computational logic in terms of function abstractions and applications using variable binding and substitution. It warrants our understanding because concepts surrounding the Agda programming language and its compilation are inspired by, and can be elegantly explained by, the framework of the lambda calculi. In fact, the namesake of the default Agda GHC backend, MAlonzo, is Alonzo Church, the mathematician who first developed the lambda calculus \citep{agdawiki}.
 
 \subsection{Pure $\lambda$-Calculus}
 
-\edcomm{WK}{No/fewer \texttt{figure} environments, please.}
+In a pure $\lambda$-calculus, terms are built inductively from only variables, $\lambda$-abstractions and applications \citep{Church-1941}, as shown in the following grammar:
 
 \input{Figures/LambdaCalc}
 
-In a pure $\lambda$-calculus, terms are built inductively from only variables, $\lambda$-abstractions and applications, as in Figure~\ref{fig:lambda_calc} \citep{kozen1997}.
-\edcomm{WK}{Surprising source for $\lambda$-calculus\ldots}
-
 \subsection{De Bruijn Index Notation}
+
+In order to eliminate the need for named variables in $\lambda$-calculus notation, de Bruijn indexed ntation is used to represent bound terms (variables) with natural numbers, as presented by \citet{deBruijn-1972}. In any term, the positive integer $n$ refers to the $n$th surrounding $\lambda$ binder. In other words, the number is an index indicating the number of variable binders (or $\lambda$-abstractions) in scope between itself and the binder for the variable being referenced. The grammar of a de Bruijn indexed lambda calculus is shown below:
 
 \input{Figures/DeBruijnLambdaCalc}
 
-In order to eliminate the need for named variables in $\lambda$-calculus notation, de Bruijn indexed ntation is used to represent bound terms (variables) with natural numbers, as presented by \citet{deBruijn-1972}. In any term, the positive integer $n$ refers to the $n$th surrounding $\lambda$ binder. In other words, the number is an index indicating the number of variable binders (or $\lambda$-abstractions) in scope between itself and the binder for the variable being referenced. The grammar of a de Bruijn-indexed lambda calculus can be seen in Figure~\ref{fig:db_lambda_calc}. See Figure~\ref{fig:db_example} for an illustration where the variable bindings and indices are coloured to indicate matches and the references are shown with arrows.
+See Figure~\ref{fig:db_example} for an illustration where the variable bindings and indices are coloured to indicate matches and the references are shown with arrows.
 
 \input{Figures/DeBruijn}
 
@@ -37,37 +35,27 @@ Because our terms are built on de Bruijn indexed variables, we use \citet{Abadi-
 \subsection{Substitution}
 \label{sub:lambda_calc_subst}
 
-Take then, for instance, a simple case of the classical application of the $\beta$-rule (See Figure~\ref{eq:beta_rule}). Beta reduction is the process of simplifying an application of a function to the resulting substituted term. However, in order to $\beta$-reduce $(\lambda a)b$, we must not only substitute $b$ into the appropriate occurrences in $a$. As the $\lambda$ binding disappears, we must also decrement all remaining free indices in $a$. This adapted form of the $\beta$-rule can be represented by the infinite substitution shown in Figure~\ref{eq:beta_rule2}) \citep{Abadi-Cardelli-Curien-Levy-1990}.
+Take then, for instance, the classical application of the $\beta$-reduction rule in a pure $\lambda$ calculus:
 
-\begin{figure}[h]
 \begin{equation*}
 (\lambda x.t)s \to_{\beta} t[x := s]
 \end{equation*}
-\caption{The classical $\beta$-reduction rule.}
-\label{eq:beta_rule}
-\end{figure}
 
-\begin{figure}[h]
+Beta reduction is the process of simplifying an application of a function to the resulting substituted term. However, in order to $\beta$-reduce a de Bruijn indexed expression, like $(\lambda a)b$, it isn't sufficient to only substitute $b$ into the appropriate occurrences in $a$. As the $\lambda$ binding disappears, we must also decrement all remaining free indices in $a$ \citep{Abadi-Cardelli-Curien-Levy-1990}. This adapted form of the $\beta$-rule for de Bruijn indexed $\lambda$ calculus can be represented by the following infinite substitution:
+
 \begin{equation*}
 (\lambda t)s \to_{\beta} t[0 := s, 1 := 0, 2 := 1, ...]
 \end{equation*}
-\caption{The modified $\beta$-reduction rule for de Bruijn notation.}
-\label{eq:beta_rule2}
-\end{figure}
 
 However, the substitution in this adapted rule must be evaluated carefully to produce a correct result. Consider if the term $t$ contains another $\lambda$ binding. As the substitution is applied to that nested $\lambda$ term, occurrences of $0$ should not be replaced with $s$, because occurrences of $0$ refer to the nested $\lambda$ term's bound variable. Instead, occurrences of $1$ should be replaced with $s$; likewise, occurrences of $2$ should be replaced by $1$, and so on. We thus ``shift'' the substitution \citep{Abadi-Cardelli-Curien-Levy-1990}.
 
-It is also important when applying substitutions to $\lambda$ terms that we avoid the unintended capture of free variables in our terms being substituted in. Imagine again the nested $\lambda$ term, with occurrences of $1$ being replaced with $s$. Occurrences of $0$ in $s$ must be replaced with $1$, else the nested $\lambda$ binder will capture the index. We this ``lift'' the indices of $s$. These two caveats result in the substitution rule in Figure~\ref{eq:debruijn_sub} \citep{Abadi-Cardelli-Curien-Levy-1990}.
+It is also important when applying substitutions to $\lambda$ terms that we avoid the unintended capture of free variables in our terms being substituted in. Imagine again the nested $\lambda$ term, with occurrences of $1$ being replaced with $s$. Occurrences of $0$ in $s$ must be replaced with $1$, else the nested $\lambda$ binder will capture the index. We this ``lift'' the indices of $s$ \citep{Abadi-Cardelli-Curien-Levy-1990}. These two caveats result in the following substitution rule  for de Bruijn indexed lambda terms:
 
-\begin{figure}[h]
 \begin{equation*}
 (\lambda t)[0 := s, 1 := 0, ...] = \lambda t[1 := s[0 := 1, 1 := 2, ...], 2 := 1, ...]
 \end{equation*}
-\caption{The substitution rule for de Bruijn indexed lambda terms.}
-\label{eq:debruijn_sub}
-\end{figure}
 
-Recognising the required index ``shifting'' and ``lifting'' in the Figure~\ref{eq:debruijn_sub} substitution rule should suffice as background for understanding the variable manipulation performed in our optimisation.
+Recognising the required index ``shifting'' and ``lifting'' in the substitution rule above should suffice as background for understanding the variable manipulation performed in our optimisation.
 
 \section{Agda}
 \label{sec:background_agda}
@@ -80,11 +68,11 @@ There are several stages of translation and compilation in this process, as show
 
 \input{Figures/CompilerFlowchart}
 
-Agda functions begin as a type\footnote{It is worth noting that type
+An Agda function is defined by declaring its type\footnote{It is worth noting that type
 inference is an undecidable problem for definitions with dependent
 types, so type signatures must be provided in many cases, and by
-convention, should always be provided.} and a definition.
-\edcomm{WK}{``function as a type'' \emph{sounds} wrong}
+convention, should always be provided.}
+and providing a definition in the form of one or more clauses.
 Functions on datatypes can be defined by pattern matching on the
 constructors of that datatype, describing a structurally recursive
 function \citep{agdawiki}.
@@ -106,21 +94,25 @@ on each variable \citep{agdahackage}.
 Compiled clauses are the first stage of compilation and they are,
 simply put, case trees.
 
-Take for example the simple \AgdaFunction{not} function on booleans in Figure~\ref{code:not_agda}. The compiled clauses of \AgdaFunction{not} are shown in Figure~\ref{code:not_cc}, and the treeless syntax of \AgdaFunction{not} is shown in Figure~\ref{code:not_tterm}.
+Take for example the simple \AgdaFunction{not} function on booleans below:
 
 \input{Figures/Agda/latex/Not}
 
+After successful scope, coverage and type checking, the following compiled clauses are produced for the \AgdaFunction{not} function:
+
 \input{Figures/CompiledNot}
 
+and if the @--compile@ flag is enabled, it will then be transformed into treeless syntax:
+
+\input{Figures/TreelessNot}
+
 The treeless syntax is the input to the compiler backend of Agda. It's a high-level internal syntax, the name for which is derived from its use of case expressions instead of case trees. The other notable difference between compiled clauses and treeless syntax is the absence of datatypes and constructors \citep{agdahackage}. % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-Syntax-Treeless.html
+Note that internally, variables are represented only by their de Bruijn index, however for ease of illustration, we use named variables in our pretty-printed samples of treeless terms.
 
 \subsubsection{Treeless Syntax}
 
-This treeless syntax is constructed from the |TTerm|s (\textbf{T}reless \textbf{Terms}) data type and is the representation of the abstract syntax tree that we will refer to most frequently. It can be reasoned about as a lambda calculus with all local variable represented as de Bruijn indices. A listing of |TTerm| constructors is shown in Figure~\ref{code:TTerm}.
+This treeless syntax is constructed from the |TTerm|s (\textbf{T}reless \textbf{Terms}) data type and is the representation of the abstract syntax tree that we will refer to most frequently. It can be reasoned about as a lambda calculus with all local variable represented as de Bruijn indices. A listing of |TTerm| constructors is shown below:
 
-In this section we examine the constructors of |TTerm|s one-by-one \citep{agdahackage}.
-
-\begin{figure}[h]
 \begin{code}
 type Args = [TTerm]
 
@@ -142,9 +134,8 @@ data TAlt = TACon QName Nat TTerm
           | TAGuard TTerm TTerm
           | TALit Literal TTerm
 \end{code}
-\caption{|TTerm| and |TAlt| datatype definitions.}
-\label{code:TTerm}
-\end{figure}
+
+In this section we examine the constructors of |TTerm|s one-by-one \citep{agdahackage}.
 
 A \textbf{|TVar|} is a de Bruijn indexed variable term.
 
@@ -181,9 +172,11 @@ A \textbf{|TError|} is used to indicate a runtime error.
 
 %In the following chapters, we discuss the design and implementation of our optimisations to the Agda compiler. In each Chapter, we give a logical representation of the optimisation, present our implementation and give usage instructions for the feature in our compiler branch. We also give references to the source code in the Appendix.
 
-We also present in Figure~\ref{fig:treeless_grammar} a simplified logical representation of the Agda treeless syntax as a grammar. We use this simplification in the following chapters to discuss our optimisations at a logical level of abstraction. Note that internally, variables are represented only by their de Bruijn index, however for ease of illustration, we use named variables in our presentation.
+We also present below a simplified logical representation of the Agda treeless syntax as a grammar:
 
 %include ../Figures/TreelessGrammar.lhs
+
+We use this simplification in the following chapters to discuss our optimisations at a logical level of abstraction.
 
 %In the implementation Subsections, we discuss some implementation details of our optimisations with reference to the Haskell data type of Agda's treeless representation. The treeless syntax (|TTerm|) listing can be found in Figure~\ref{code:TTerm}.
 
@@ -193,11 +186,15 @@ The Agda module is designed with simplicity in mind, with the primary goal of or
 
 By this implementation, Agda modules don't have a ``type'', and scope checking can be accomplished entirely independently of type-checking. After type-checking, all definitions are lambda lifted \citep{agdadocs}. However, because names are fully qualified and the concept of ``scope'' is removed from type-checking, information about potential sharing is lost once arguments are substituted into the types of module definitions.
 
+Consider the following simple parametrized module in Agda:
+
 \input{Figures/Agda/latex/Composer}
 
-Figure~\ref{code:composer_agda} shows a simple parametrized module in Agda. In the Haskell generated by compiling this module, shown in Figure~\ref{code:composer_haskell}, the module's explicit parameters have been abstracted over the definitions to become explicit arguments to the module's functions.
+and the Haskell generated by compiling this module:
 
 %include ../Figures/Haskell/Composer.lhs
+
+In this example the module's explicit parameters have been abstracted over the definitions to become explicit arguments to the module's functions.
 
 Because arguments are inherited from all enclosing modules, in larger Agda projects, it is easy to create a situation where very large type signatures must be serialised many times when the same modules are referenced more than once \citep{agdamail}. % https://lists.chalmers.se/pipermail/agda/2017/009406.html
 

@@ -1,4 +1,3 @@
-\begin{figure}[h]
 \begin{code}
 module MAlonzo.Code.Composer where
 
@@ -14,6 +13,3 @@ name10 = "Composer.thrice"
 d10 v0 v1 v2 = du10 v1 v2
 du10 v0 v1 = coe v0 (coe v0 (coe v0 v1))
 \end{code}
-\caption{Parametrised Agda module compiled to Haskell.}
-\label{code:composer_haskell}
-\end{figure}
