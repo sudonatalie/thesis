@@ -37,7 +37,15 @@ and then the recursive transformation produces:
 
 \citet{jones1996}'s ``Let-floating: moving bindings to give faster programs'' discusses the effects of a group of compiler optimisations for Haskell which move let bindings to reduce heap allocation and execution time. The cumulative impact of their efforts to move let-bindings around in Haskell code resulted in more than a 30\% reduction in heap allocation and a 15\% reduction in execution time.
 
-\citet{jones1996} explain that GHC (the Glasgow Haskell Compiler) is an optimising compiler whose guiding principle is \textit{compilation by transformation}. Whenever possible, optimisations in GHC are implemented as correctness-preserving program transformations, a principle that is reflected in the Agda compiler as well. Most of our optimisations that we present later in this thesis are also best thought of as ``correctness-preserving program transformations''.
+\citet{jones1996} explain that GHC (the Glasgow Haskell Compiler) is
+an optimising compiler whose guiding principle is \textit{compilation
+by transformation}. Whenever possible, optimisations in GHC are
+implemented as correctness-preserving program transformations, a
+principle that is reflected in the Agda compiler as well.
+Most of our optimisations
+\edcomm{WK}{Why only ``most''? Precision needed.}
+that we present later in this thesis are also best
+thought of as ``correctness-preserving program transformations''.
 
 Before we approach the optimisations presented by \citet{jones1996} we discuss the operational interpretation of the Haskell Core language. Haskell Core expressions are built from the syntax shown in Figure~\ref{fig:haskell_core}.
 
@@ -53,7 +61,7 @@ In this paper, three types of let-floating transformations are presented:
 \begin{enumerate}
 \item ``Floating inwards'' to move bindings as far inwards as possible,
 \item ``The full laziness transformation'' which floats some bindings outside enclosing lambda abstractions, and
-\item ``Local transformations'' which move bindings a several optimising ways \citep{jones1996}.
+\item ``Local transformations'' which move bindings a several \edcomm{WK}{``a several''?} optimising ways \citep{jones1996}.
 \end{enumerate}
 
 \subsection*{Floating inwards}
@@ -123,10 +131,13 @@ Consider the case where |b| is a lambda function. Before floating the let outsid
 
 \edcomm{NP}{Change notation of <expr>s.}
 
+% WK: Local formatting directive --- only proof-of-concept, no good rendering yet:
+%{
+%format VRHS = "\hbox{$\langle\langle$\textit{v-rhs}$\rangle\rangle$}"
 \begin{code}
-  (let v = <v-rhs> in (\ x -> ...x...)) a
+  (let v = VRHS in (\ x -> ...x...)) a
 \end{code}
-
+%}
 However, after floating the let outside, it is clear that a beta-reduction rule can be applied, substituting an |a| for ever |x| at compile-time:
 
 \begin{code}
