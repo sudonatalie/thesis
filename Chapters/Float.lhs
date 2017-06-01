@@ -18,9 +18,17 @@ Pattern let floating combines the benefits of pattern lets, described in section
 
 \section{Implementation}
 
-There are a couple of implementation-specific details of interest when implementing pattern let floating. Firstly, the |floatPLet| function will only float pattern lets which occur in multiple branches, and they are floated to the least join point of those branches.
+There are a couple of implementation-specific details of interest when implementing pattern let floating. Firstly, in order to float pattern lets, we first convert the |TTerm|s into a variant data type using named variables for ease of expression manipulation. Then the entire expression tree is recursed over, floating all $\lambda$ bindings to the top of the expression and accumulating a list of variables in each definition is accumulated.
+
+The |floatPatterns| function will only float pattern lets which occur in multiple branches, and they are floated to the least join point of those branches.
 
 Further, it is worth noting that pattern let occurrences are duplicated at join points, indicating that identical pattern lets have ``met'' there, and are then later simplified away with the |squashFloatings| function.
+
+\subsection{Next Steps}
+
+Our goal is to further expand the pattern let floating optimisation such that they can not only be floated up expressions, but also across function calls. By floating pattern lets across function calls, we can avoid even more duplicated computation through sharing.
+
+This feature can be implemented by splitting the pattern lets at the root of functions into separate pattern lets and a body. By creating secondary functions that take the variables bound by pattern lets and make them explicit arguments to a separate function, we can abstract the patterns across function calls.
 
 \section{Application}
 
@@ -34,9 +42,3 @@ As readers may have noticed inspecting Figure~\ref{fig:Triangle_genplet} in the 
 \end{figure}
 
 Figure~\ref{fig:Triangle_float} shows the result of applying @--float-plet@ to this compilation, resulting in the \texttt{v2} bindings floating above the shared function call.
-
-\section{Next Steps}
-
-Our goal is to further expand the pattern let floating optimisation such that they can not only be floated up expressions, but also across function calls. By floating pattern lets across function calls, we can avoid even more duplicated computation through sharing.
-
-\edcomm{NP}{Future work: floating cases that don't have lets}

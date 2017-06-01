@@ -31,6 +31,8 @@ In our implementations of projection inlining and case squashing, it was noted t
 
 Further testing of the projection inlining optimisation on a greater variety of Agda codebases is also a necessary next step before it can be safely integrated with a stable release branch of the compiler.
 
+\edcomm{NP}{Floating cases that don't have lets}
+
 \section{Closing Remarks}
 \label{sec:closing_remarks}
 
