@@ -1,4 +1,3 @@
-\begin{figure}[h]
 \begin{code}
 module Sharing where
 
@@ -15,6 +14,3 @@ one = suc zero
 four = let two = one + one
        in two + two
 \end{code}
-\caption{Simple Agda example where sharing is ``lost''.}
-\label{code:sharing_agda}
-\end{figure}

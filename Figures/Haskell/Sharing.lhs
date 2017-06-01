@@ -1,4 +1,3 @@
-\begin{figure}[h]
 \begin{code}
 {-# LANGUAGE EmptyDataDecls, ExistentialQuantification,
              ScopedTypeVariables, NoMonomorphismRestriction, Rank2Types #-}
@@ -23,6 +22,3 @@ d16 = coe C6 C4
 name18 = "Sharing.four"
 d18 = coe d8 (coe d8 d16 d16) (coe d8 d16 d16)
 \end{code}
-\caption{Generated Haskell showing ``lost'' sharing.}
-\label{code:sharing_haskell}
-\end{figure}
