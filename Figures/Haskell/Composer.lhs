@@ -1,7 +1,5 @@
 \begin{figure}[h]
 \begin{code}
-{-# LANGUAGE EmptyDataDecls, ExistentialQuantification,
-             ScopedTypeVariables, NoMonomorphismRestriction, Rank2Types #-}
 module MAlonzo.Code.Composer where
 
 import MAlonzo.RTE (coe, erased, addInt, subInt, mulInt, quotInt,
