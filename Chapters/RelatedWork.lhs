@@ -42,8 +42,7 @@ an optimising compiler whose guiding principle is \textit{compilation
 by transformation}. Whenever possible, optimisations in GHC are
 implemented as correctness-preserving program transformations, a
 principle that is reflected in the Agda compiler as well.
-Most of our optimisations
-\edcomm{WK}{Why only ``most''? Precision needed.}
+The optimisations
 that we present later in this thesis are also best
 thought of as ``correctness-preserving program transformations''.
 
@@ -61,7 +60,7 @@ In this paper, three types of let-floating transformations are presented:
 \begin{enumerate}
 \item ``Floating inwards'' to move bindings as far inwards as possible,
 \item ``The full laziness transformation'' which floats some bindings outside enclosing lambda abstractions, and
-\item ``Local transformations'' which move bindings a several \edcomm{WK}{``a several''?} optimising ways \citep{jones1996}.
+\item ``Local transformations'' which move bindings in several optimising ways \citep{jones1996}.
 \end{enumerate}
 
 \subsection*{Floating inwards}
