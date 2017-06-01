@@ -4,8 +4,8 @@
 
 % Linear Notation: Standard
 \newcommand{\lnotation}[4]{
-	\def\third:{#3} 
-	\def\possiblyone:{} 
+	\def\third:{#3}
+	\def\possiblyone:{}
 	\def\possiblytwo:{~}
 	\def\possiblythree:{ }
 	\def\divide{\;#1\hspace*{-0pt}( #2\; \mid: \; #4 \, )}
@@ -17,8 +17,8 @@
 
 % Linear Notation: Standard (Big Parentheses)
 \newcommand{\biglnotation}[4]{
-	\def\third:{#3} 
-	\def\possiblyone:{} 
+	\def\third:{#3}
+	\def\possiblyone:{}
 	\def\possiblytwo:{~}
 	\def\possiblythree:{ }
 	\def\divide{\;#1\hspace*{-0pt}\big( #2\; \mid: \; #4 \, \big)}
@@ -30,8 +30,8 @@
 
 % Linear Notation: Standard (Extra Big Parentheses)
 \newcommand{\bigglnotation}[4]{
-	\def\third:{#3} 
-	\def\possiblyone:{} 
+	\def\third:{#3}
+	\def\possiblyone:{}
 	\def\possiblytwo:{~}
 	\def\possiblythree:{ }
 	\def\divide{\;#1\hspace*{-0pt}\bigg( #2\; \mid: \; #4 \, \bigg)}
@@ -40,11 +40,11 @@
 		\else\ifx\third\possiblytwo\divide
 		\else \ifx\third\possiblythree\divide
 		\else \nodivide\fi\fi\fi}
- 
+
 % Linear Notation: Standard (No Ending Parentheses)
 \newcommand{\wplnotation}[4]{
-	\def\third:{#3} 
-	\def\possiblyone:{} 
+	\def\third:{#3}
+	\def\possiblyone:{}
 	\def\possiblytwo:{~}
 	\def\possiblythree:{ }
 	\def\divide{\;#1\hspace*{-0pt}\bigg( #2\; \mid: \; #4 \, }
@@ -56,8 +56,8 @@
 
 % Linear Notation: David Gries
 \newcommand{\grieslnotation}[4]{
-	\def\third:{#3} 
-	\def\possiblyone:{} 
+	\def\third:{#3}
+	\def\possiblyone:{}
 	\def\possiblytwo:{~}
 	\def\possiblythree:{ }
 	\def\divide{(#1 #2\; \mid : \; #4 \, )}
@@ -77,8 +77,8 @@
 
 % Set Notation: David Gries
 \newcommand{\griesset}[3]{
-	\def\second:{#2} 
-	\def\possiblyone:{} 
+	\def\second:{#2}
+	\def\possiblyone:{}
 	\def\possiblytwo:{~}
 	\def\possiblythree:{ }
 	\def\divide{\{#1\; \mid : \; #3 \, \}}
@@ -182,7 +182,7 @@
 
 
 % Begin and End Itemized/Enumerated Proof Enviroment
-% Use \Beginproofitem when a proof begins the text of an \item 
+% Use \Beginproofitem when a proof begins the text of an \item
 % and when we want the proof to be indented.
 \newcommand{\Beginproofitem}{\dimen123=\linewidth \dimen124=\linewidth
 	\advance\dimen123 by -20mm \advance\dimen124 by -5mm
@@ -193,7 +193,7 @@
 	{\end{tabbing}}
 
 % Tabbing
-% Gives the same indentation as \Beginproof and \dspec, 
+% Gives the same indentation as \Beginproof and \dspec,
 % but there is no predefined tabs
 \newcommand {\Begingtabin}{
 	\begin{tabbing}
@@ -210,7 +210,7 @@
 	{\end{tabbing}}
 
 % Begin and End Itemized/Enumerated Program Specification Enviroment
-% Use \Beginproofitem when a proof begins the text of an \item 
+% Use \Beginproofitem when a proof begins the text of an \item
 % and when we do not want that the specification be indented
 \newcommand {\Beginspecitem}{
 	\begin{tabbing}
@@ -253,9 +253,9 @@
 \newcommand{\false}{\textsf{false}}
 
 % Logical Connectives: Unary
-\renewcommand{\Not}{\neg}
+%\renewcommand{\Not}{\neg}
 
-% Logical Connectives: Binary	 
+% Logical Connectives: Binary
 %\newcommand{\Or}{\mathrel{\vee}}
 \newcommand{\Ors}{\;\Or\;}
 \newcommand{\AAnd}{\mathrel{\wedge}}
@@ -263,11 +263,11 @@
 \newcommand{\Imp}{\mathrel{\rightarrow}}
 \newcommand{\Impl}{\mathrel{\leftarrow}}
 \newcommand{\Iff}{\mathrel{\leftrightarrow}}
-\newcommand{\mOr}{\textrm{\ or\ }}  
-\newcommand{\mAnd}{\textrm{\ and\ }} 
-\newcommand{\mImp}{\;\Longrightarrow\;}  
-\newcommand{\mImpl}{\;\Longleftarrow\;}  
-\newcommand{\mIff}{\;\Longleftrightarrow\;} 
+\newcommand{\mOr}{\textrm{\ or\ }}
+\newcommand{\mAnd}{\textrm{\ and\ }}
+\newcommand{\mImp}{\;\Longrightarrow\;}
+\newcommand{\mImpl}{\;\Longleftarrow\;}
+\newcommand{\mIff}{\;\Longleftrightarrow\;}
 \newcommand{\dIff}{\mathrel{\stackrel{\scriptscriptstyle
 	\mbox{\tiny{\texsf{def}}}}{\Iff}}}
 
@@ -303,9 +303,9 @@
 \newcommand{\STmeet}{\; \cap \;}
 
 % Closures
-\newcommand{\rtclosure}[1]{#1^*{}}	
+\newcommand{\rtclosure}[1]{#1^*{}}
 \newcommand{\rtc}{\rtclosure}
-\newcommand{\tclosure}[1]{#1^+{}}	
+\newcommand{\tclosure}[1]{#1^+{}}
 \newcommand{\tcl}{\tclosure}
 
 %________________________________________________________________________
@@ -352,8 +352,8 @@
 
 % Types
 \newcommand{\typerel}[2]{#1 \leftrightarrow #2}
-\newenvironment{arra}[2][]{\begin{array}[#1]{@{}#2@{}}}{\end{array}} 
-\newenvironment{tabul}[2][]{\begin{tabular}[#1]{@{}#2@{}}}{\end{tabular}} 
+\newenvironment{arra}[2][]{\begin{array}[#1]{@{}#2@{}}}{\end{array}}
+\newenvironment{tabul}[2][]{\begin{tabular}[#1]{@{}#2@{}}}{\end{tabular}}
 
 %________________________________________________________________________
 %_________________     END REALTION ALGEBRA MACROS     __________________
@@ -396,9 +396,9 @@
 %________________________________________________________________________
 
 % Functions / Relations
-\newcommand{\dom}[1]{\textsf{dom\ }\!(#1)}	
-\newcommand{\ran}[1]{\textsf{ran\ }\!(#1)}	
-\newcommand{\tuple}[1]{(#1)}		
+\newcommand{\dom}[1]{\textsf{dom\ }\!(#1)}
+\newcommand{\ran}[1]{\textsf{ran\ }\!(#1)}
+\newcommand{\tuple}[1]{(#1)}
 
 % Sets
 \newcommand{\abs}[1]{|#1|}
