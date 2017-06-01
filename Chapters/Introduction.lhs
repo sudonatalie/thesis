@@ -51,11 +51,29 @@ Some of the Agda optimisations described herein would typically be performed by 
 
 \subsection{Sharing}
 
-In several of our optimisations presented herein, our ultimate goal is to introduce sharing that was previously ``lost''. Take for example the simple module in Figure~\ref{code:sharing_agda}. An Agda developer might, incorrectly, assume that in the calculation of \AgdaFunction{four}, the \AgdaFunction{+} function would only be called twice, with the evaluation of \AgdaBound{two} stored and shared among its two callers. In actuality, the \AgdaKeyword{let} binding in Agda does not guarantee any sharing. In the compiled Haskell generated from the \AgdaModule{Sharing} module, shown in Figure~\ref{code:sharing_haskell}, we can see that there are, in fact, three calls to the generated addition function |d8|, and the semantic ``sharing'' that was implied by the programmer who wrote the \AgdaKeyword{let} binding has been ``lost''. We work with examples like this as motivation for re-creating sharing through compiler optimisations.
+In several of our optimisations presented herein, our ultimate goal is
+to introduce sharing that was previously ``lost''. Take for example
+the simple module in Figure~\ref{code:sharing_agda}.
+\edcomm{WK}{Better in-place code than figures. Page breaks inside this code are tolerable.}
+An Agda developer might, incorrectly, assume that in the calculation
+of \AgdaFunction{four}, the \AgdaFunction{+} function would only be
+called twice, with the evaluation of \AgdaBound{two} stored and shared
+among its two callers. In actuality, the \AgdaKeyword{let} binding in
+Agda does not guarantee any sharing. In the compiled Haskell generated
+from the \AgdaModule{Sharing} module, shown in
+Figure~\ref{code:sharing_haskell}, we can see that there are, in fact,
+three calls to the generated addition function |d8|, and the semantic
+``sharing'' that was implied by the programmer who wrote the
+\AgdaKeyword{let} binding has been ``lost''. We work with examples
+like this as motivation for re-creating sharing through compiler
+optimisations.
 
 \input{Figures/Agda/latex/Sharing}
 
 %include ../Figures/Haskell/Sharing.lhs
+
+\edcomm{WK}{Either include here or point to the result of using our transformations.}
+
 
 \section{Problem Statement}
 \label{sec:problem_statement}
