@@ -34,9 +34,8 @@ Agda also supports a flexible mix-fix syntax, as seen in Figure~\ref{code:if_fun
 \subsection{Compiler}
 
 Agda has a number of available compilers and backends, but the one
-that is most efficient and most commonly used is \edchange{WK}{MAlonzo, the GHC
-(Glasgow Haskell Compiler) backend \citep{benke2007}}{the ``GHC backend'' \citep{benke2007}, originally introduced under the name ``MAlonzo''; this backend generates Haskell with extensions supported by GHC, the ``Glasgow Haskell Compiler'' by \citet{SPJ-etal-GHC}}.
-\edchange{WK}{The MAlonzo}{This} backend
+that is most efficient and most commonly used is the ``GHC backend'' \citep{benke2007}, originally introduced under the name ``MAlonzo''; this backend generates Haskell with extensions supported by GHC, the ``Glasgow Haskell Compiler'' by \citet{SPJ-etal-GHC}.
+This backend
 has the goal of compiling Agda code with the performance of
 the generated code matching that of GHC, and it does so by translating
 Agda into Haskell, so that it can be compiled, and optimised by
