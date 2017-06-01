@@ -6,10 +6,11 @@
 We added the options:
 
 \begin{verbatim}
+--abstract-plet                             abstract pattern lets in generated code
 --float-plet                                float pattern lets to remove duplication
 \end{verbatim}
 
-to our Agda branch which, when enabled, will float the pattern lets up through the abstract syntax tree to join with other bindings for the same expression.
+to our Agda branch which, when enabled together, will float the pattern lets up through the abstract syntax tree to join with other bindings for the same expression.
 
 \section{Logical Representation}
 

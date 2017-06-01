@@ -3,14 +3,13 @@
 
 \section{Usage}
 
-We added the options:
+We added the option:
 
 \begin{verbatim}
---abstract-plet                             abstract pattern lets in generated code
 --ghc-generate-pattern-let                  make the GHC backend generate pattern lets
 \end{verbatim}
 
-to our Agda branch which, when enabled together, will generate pattern lets in the GHC backend during compilation.
+to our Agda branch which, when enabled, will generate pattern lets in the GHC backend during compilation.
 
 \section{Logical Representation}
 
