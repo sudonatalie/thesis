@@ -188,7 +188,13 @@ Similar methods to these let-floating transformations are used in our patterned 
 \section{Alternate method of case squashing}
 \label{sub:alternate_case_squash}
 
-Following development of @--squash-cases@, an optimisation was added to the Agda compiler's Simplify stage which accomplishes the same goals as @--squash-cases@ in a slightly different way. We examine here that method of removing repeated case expressions.
+\edcomm{WK}{Probably move into Background chapter.}
+
+Following \edinsert{WK}{our own} development of @--squash-cases@ \edinsert{WK}{(see section ???)},
+an optimisation was added to the Agda compiler's Simplify stage
+which accomplishes the same goals as @--squash-cases@ in a slightly
+different way.
+We examine here that method of removing repeated case expressions.
 
 Immediately following the conversion of compiled clauses to treeless syntax in the Agda compiler, a series of optimising transformations are applied before the treeless expression is returned. One such step is the ``simplify'' group of transformations, which modify a |TTerm| in a variety of optimising ways.
 
