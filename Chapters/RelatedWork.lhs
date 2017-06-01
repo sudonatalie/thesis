@@ -183,22 +183,3 @@ This means that when |x| is met in the |<body>| and evaluated, no update to the 
 \end{enumerate}
 
 Similar methods to these let-floating transformations are used in our patterned let-floating across function calls, with the same goal of increasing sharing and decreasing re-evaluation of the same expressions.
-
-\section{Alternate method of case squashing}
-\label{sub:alternate_case_squash}
-
-\edcomm{WK}{Probably move into Background chapter.}
-
-Following \edinsert{WK}{our own} development of @--squash-cases@ \edinsert{WK}{(see section ???)},
-an optimisation was added to the Agda compiler's Simplify stage
-which accomplishes the same goals as @--squash-cases@ in a slightly
-different way.
-We examine here that method of removing repeated case expressions.
-
-Immediately following the conversion of compiled clauses to treeless syntax in the Agda compiler, a series of optimising transformations are applied before the treeless expression is returned. One such step is the ``simplify'' group of transformations, which modify a |TTerm| in a variety of optimising ways.
-
-As the expression is traversed, |simplify| is recursively called on each |TTerm| term, and |simpAlt| is called on each |TAlt| alternative. Given some expression casing on de Bruijn index $x$, for each alternative of the pattern |TACon name arity body|, the scrutinised variable index in the body, $x + arity$, is looked up in the variable environment. If the variable has already been bound, and therefore has a different de Bruijn index, $y$, a rewrite rule is added to the constructor. The rewrite rule indicates that every instance of |TApp (TCon name) (TVar i || i <- [arity-1,arity-2..0])| in the alternative's body should be replaced with a |TVar y|.
-
-The rewrite rule is encoded as part of the wrapper |Reader| environment that is carried along with the |TTerm| throughout simplification, and is evaluated later by applying substitutions. It is at this point that all necessary de Bruijn index shifting is managed.
-
-An abridged version of @Treeless/Simplify.hs@ showing the primary functions involved in this optimisation in the updated Agda compiler is available in Appendix~\ref{app:simplify}.
