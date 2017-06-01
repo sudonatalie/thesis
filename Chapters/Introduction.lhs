@@ -33,7 +33,17 @@ Agda also supports a flexible mix-fix syntax, as seen in Figure~\ref{code:if_fun
 
 \subsection{Compiler}
 
-Agda has a number of available compilers and backends, but the one that is most efficient and most commonly used is MAlonzo, the GHC (Glasgow Haskell Compiler) backend \citep{benke2007}. The MAlonzo backend has the goal of compiling Agda code with the performance of the generated code matching that of GHC, and it does so by translating Agda into Haskell, so that it can be compiled, and optimised by GHC. This is a practical and useful arrangement for real-world Agda usage because GHC has benefited from a massive development effort by a large community to create a highly performant compiler \citep{benke2007}.
+Agda has a number of available compilers and backends, but the one
+that is most efficient and most commonly used is \edchange{WK}{MAlonzo, the GHC
+(Glasgow Haskell Compiler) backend \citep{benke2007}}{the ``GHC backend'' \citep{benke2007}, originally introduced under the name ``MAlonzo''; this backend generates Haskell with extensions supported by GHC, the ``Glasgow Haskell Compiler'' by \citet{SPJ-etal-GHC}}.
+\edchange{WK}{The MAlonzo}{This} backend
+has the goal of compiling Agda code with the performance of
+the generated code matching that of GHC, and it does so by translating
+Agda into Haskell, so that it can be compiled, and optimised by
+GHC. This is a practical and useful arrangement for real-world Agda
+usage because GHC has benefited from a massive development effort by a
+large community to create a highly performant compiler
+\citep{benke2007}.
 
 As discussed in the previous section, Agda provides a more expressive type system than Haskell. Because Agda supports dependent types and Haskell does not, in order for Agda generated code to pass the Haskell type checker, it is necessary for the MAlonzo backend to wrap coercions around all function arguments and all function calls, which cast terms from one type to a different arbitrary type. Unfortunately, these potentially unsafe type coercions mean that there are many GHC optimisations which Agda's generated code is ``missing out on'' \citep{fredriksson2011}.
 
@@ -41,11 +51,29 @@ Some of the Agda optimisations described herein would typically be performed by 
 
 \subsection{Sharing}
 
-In several of our optimisations presented herein, our ultimate goal is to introduce sharing that was previously ``lost''. Take for example the simple module in Figure~\ref{code:sharing_agda}. An Agda developer might, incorrectly, assume that in the calculation of \AgdaFunction{four}, the \AgdaFunction{+} function would only be called twice, with the evaluation of \AgdaBound{two} stored and shared among its two callers. In actuality, the \AgdaKeyword{let} binding in Agda does not guarantee any sharing. In the compiled Haskell generated from the \AgdaModule{Sharing} module, shown in Figure~\ref{code:sharing_haskell}, we can see that there are, in fact, three calls to the generated addition function |d8|, and the semantic ``sharing'' that was implied by the programmer who wrote the \AgdaKeyword{let} binding has been ``lost''. We work with examples like this as motivation for re-creating sharing through compiler optimisations.
+In several of our optimisations presented herein, our ultimate goal is
+to introduce sharing that was previously ``lost''. Take for example
+the simple module in Figure~\ref{code:sharing_agda}.
+\edcomm{WK}{Better in-place code than figures. Page breaks inside this code are tolerable.}
+An Agda developer might, incorrectly, assume that in the calculation
+of \AgdaFunction{four}, the \AgdaFunction{+} function would only be
+called twice, with the evaluation of \AgdaBound{two} stored and shared
+among its two callers. In actuality, the \AgdaKeyword{let} binding in
+Agda does not guarantee any sharing. In the compiled Haskell generated
+from the \AgdaModule{Sharing} module, shown in
+Figure~\ref{code:sharing_haskell}, we can see that there are, in fact,
+three calls to the generated addition function |d8|, and the semantic
+``sharing'' that was implied by the programmer who wrote the
+\AgdaKeyword{let} binding has been ``lost''. We work with examples
+like this as motivation for re-creating sharing through compiler
+optimisations.
 
 \input{Figures/Agda/latex/Sharing}
 
 %include ../Figures/Haskell/Sharing.lhs
+
+\edcomm{WK}{Either include here or point to the result of using our transformations.}
+
 
 \section{Problem Statement}
 \label{sec:problem_statement}
