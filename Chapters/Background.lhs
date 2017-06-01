@@ -7,12 +7,16 @@ In this chapter, we introduce the necessary logical and compiler background conc
 \label{sec:lambda_calc}
 
 Lambda calculus (or $\lambda$-calculus) is a formal system for representing computational logic in terms of function abstractions and applications using variable binding and substitution. It warrants our understanding because concepts surrounding the Agda programming language and its compilation are inspired by, and can be elegantly explained by, the framework of the lambda calculi. In fact, the namesake of the default Agda GHC backend, MAlonzo, is Alonzo Church, the mathematician who first developed the lambda calculus \citep{fokkinga1987}.
+\edcomm{WK}{What is Fokkinga used as a source for here?}
 
 \subsection{Pure $\lambda$-Calculus}
+
+\edcomm{WK}{No/fewer \texttt{figure} environments, please.}
 
 \input{Figures/LambdaCalc}
 
 In a pure $\lambda$-calculus, terms are built inductively from only variables, $\lambda$-abstractions and applications, as in Figure~\ref{fig:lambda_calc} \citep{kozen1997}.
+\edcomm{WK}{Surprising source for $\lambda$-calculus\ldots}
 
 \subsection{De Bruijn Index Notation}
 
@@ -76,11 +80,31 @@ There are several stages of translation and compilation in this process, as show
 
 \input{Figures/CompilerFlowchart}
 
-Agda functions begin as a type\footnote{It is worth noting that type inference is an undecidable problem for definitions with dependent types, so type signatures must be provided in many cases, and by convention, should always be provided.} and a definition. Functions on datatypes can be defined by pattern matching on the constructors of that datatype, describing a structurally recursive function \citep{agdawiki}. % http://wiki.portal.chalmers.se/agda/agda.php?n=Docs.DatatypeAndFunctionDefinitions
-This should sound familiar to users of functional programming languages like Haskell. Unlike Haskell, however, Agda does not permit partial functions. Therefore, functions defined by pattern matching must not exclude any possible cases from the pattern matching clauses \citep{agdawiki}. % http://wiki.portal.chalmers.se/agda/pmwiki.php?n=ReferenceManual.Totality#Coveragechecking}
-Because function definitions in Agda are written as a series of one or more pattern matching clauses on possible variable inputs, we can construct an equivalent definition via case tree \citep{agdawiki}. % http://wiki.portal.chalmers.se/agda/agda.php?n=Docs.PatternMatching
-Once coverage checking and type checking is completed, pattern matching can be translated into case trees by successively splitting on each variable \citep{agdahackage}. % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-TypeChecking-CompiledClause.html
-Compiled clauses are the first stage of compilation and they are, simply put, case trees.
+Agda functions begin as a type\footnote{It is worth noting that type
+inference is an undecidable problem for definitions with dependent
+types, so type signatures must be provided in many cases, and by
+convention, should always be provided.} and a definition.
+\edcomm{WK}{``function as a type'' \emph{sounds} wrong}
+Functions on datatypes can be defined by pattern matching on the
+constructors of that datatype, describing a structurally recursive
+function \citep{agdawiki}.
+% http://wiki.portal.chalmers.se/agda/agda.php?n=Docs.DatatypeAndFunctionDefinitions
+This should sound familiar to users of functional programming
+languages like Haskell. Unlike Haskell, however, Agda does not permit
+partial functions. Therefore, functions defined by pattern matching
+must not exclude any possible cases from the pattern matching clauses
+\citep{agdawiki}.
+% http://wiki.portal.chalmers.se/agda/pmwiki.php?n=ReferenceManual.Totality#Coveragechecking}
+Because function definitions in Agda are written as a series of one or
+more pattern matching clauses on possible variable inputs, we can
+construct an equivalent definition via case tree \citep{agdawiki}.
+% http://wiki.portal.chalmers.se/agda/agda.php?n=Docs.PatternMatching
+Once coverage checking and type checking is completed, pattern
+matching can be translated into case trees by successively splitting
+on each variable \citep{agdahackage}.
+% https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-TypeChecking-CompiledClause.html
+Compiled clauses are the first stage of compilation and they are,
+simply put, case trees.
 
 Take for example the simple \AgdaFunction{not} function on booleans in Figure~\ref{code:not_agda}. The compiled clauses of \AgdaFunction{not} are shown in Figure~\ref{code:not_cc}, and the treeless syntax of \AgdaFunction{not} is shown in Figure~\ref{code:not_tterm}.
 
