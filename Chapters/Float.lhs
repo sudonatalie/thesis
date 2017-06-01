@@ -37,3 +37,5 @@ Figure~\ref{fig:Triangle_float} shows the result of applying @--float-plet@ to t
 \section{Next Steps}
 
 Our goal is to further expand the pattern let floating optimisation such that they can not only be floated up expressions, but also across function calls. By floating pattern lets across function calls, we can avoid even more duplicated computation through sharing.
+
+\edcomm{NP}{Future work: floating cases that don't have lets}
