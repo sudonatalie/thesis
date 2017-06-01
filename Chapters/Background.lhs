@@ -16,7 +16,7 @@ In a pure $\lambda$-calculus, terms are built inductively from only variables, $
 
 \subsection{De Bruijn Index Notation}
 
-In order to eliminate the need for named variables in $\lambda$-calculus notation, de Bruijn indexed ntation is used to represent bound terms (variables) with natural numbers, as presented by \citet{deBruijn-1972}. In any term, the positive integer $n$ refers to the $n$th surrounding $\lambda$ binder. In other words, the number is an index indicating the number of variable binders (or $\lambda$-abstractions) in scope between itself and the binder for the variable being referenced. The grammar of a de Bruijn indexed lambda calculus is shown below:
+In order to eliminate the need for named variables in $\lambda$-calculus notation, De Bruijn indexed ntation is used to represent bound terms (variables) with natural numbers, as presented by \citet{deBruijn-1972}. In any term, the positive integer $n$ refers to the $n$th surrounding $\lambda$ binder. In other words, the number is an index indicating the number of variable binders (or $\lambda$-abstractions) in scope between itself and the binder for the variable being referenced. The grammar of a De Bruijn indexed lambda calculus is shown below:
 
 \input{Figures/DeBruijnLambdaCalc}
 
@@ -24,13 +24,13 @@ See Figure~\ref{fig:db_example} for an illustration where the variable bindings 
 
 \input{Figures/DeBruijn}
 
-The internal representation of Agda code in the compiler is based on a de Bruijn indexed $\lambda$-calculus.
+The internal representation of Agda code in the compiler is based on a De Bruijn indexed $\lambda$-calculus.
 
 \subsection{$\lambda\sigma$-Calculus}
 
 In order to perform the desired optimisations on the abstract syntax tree, we must be able to perform substitutions on terms. Treating the abstract syntax tree structure as a specialised $\lambda$-calculus, we can implement substitution as a function on terms.
 
-Because our terms are built on de Bruijn indexed variables, we use \citet{Abadi-Cardelli-Curien-Levy-1990}'s explicit substitution of a $\lambda\sigma$-calculus as a reference for understanding correct substitution on terms in the context of local variables bound by incrementing indices. The $\lambda\sigma$-calculus is a refinement of the $\lambda$-calculus where substitutions are manipulated explicitly, and substitution application is a term constructor rather than a meta-level notation.
+Because our terms are built on De Bruijn indexed variables, we use \citet{Abadi-Cardelli-Curien-Levy-1990}'s explicit substitution of a $\lambda\sigma$-calculus as a reference for understanding correct substitution on terms in the context of local variables bound by incrementing indices. The $\lambda\sigma$-calculus is a refinement of the $\lambda$-calculus where substitutions are manipulated explicitly, and substitution application is a term constructor rather than a meta-level notation.
 
 \subsection{Substitution}
 \label{sub:lambda_calc_subst}
@@ -41,7 +41,7 @@ Take then, for instance, the classical application of the $\beta$-reduction rule
 (\lambda x.t)s \to_{\beta} t[x := s]
 \end{equation*}
 
-Beta reduction is the process of simplifying an application of a function to the resulting substituted term. However, in order to $\beta$-reduce a de Bruijn indexed expression, like $(\lambda a)b$, it isn't sufficient to only substitute $b$ into the appropriate occurrences in $a$. As the $\lambda$ binding disappears, we must also decrement all remaining free indices in $a$ \citep{Abadi-Cardelli-Curien-Levy-1990}. This adapted form of the $\beta$-rule for de Bruijn indexed $\lambda$ calculus can be represented by the following infinite substitution:
+Beta reduction is the process of simplifying an application of a function to the resulting substituted term. However, in order to $\beta$-reduce a De Bruijn indexed expression, like $(\lambda a)b$, it isn't sufficient to only substitute $b$ into the appropriate occurrences in $a$. As the $\lambda$ binding disappears, we must also decrement all remaining free indices in $a$ \citep{Abadi-Cardelli-Curien-Levy-1990}. This adapted form of the $\beta$-rule for De Bruijn indexed $\lambda$ calculus can be represented by the following infinite substitution:
 
 \begin{equation*}
 (\lambda t)s \to_{\beta} t[0 := s, 1 := 0, 2 := 1, ...]
@@ -49,7 +49,7 @@ Beta reduction is the process of simplifying an application of a function to the
 
 However, the substitution in this adapted rule must be evaluated carefully to produce a correct result. Consider if the term $t$ contains another $\lambda$ binding. As the substitution is applied to that nested $\lambda$ term, occurrences of $0$ should not be replaced with $s$, because occurrences of $0$ refer to the nested $\lambda$ term's bound variable. Instead, occurrences of $1$ should be replaced with $s$; likewise, occurrences of $2$ should be replaced by $1$, and so on. We thus ``shift'' the substitution \citep{Abadi-Cardelli-Curien-Levy-1990}.
 
-It is also important when applying substitutions to $\lambda$ terms that we avoid the unintended capture of free variables in our terms being substituted in. Imagine again the nested $\lambda$ term, with occurrences of $1$ being replaced with $s$. Occurrences of $0$ in $s$ must be replaced with $1$, else the nested $\lambda$ binder will capture the index. We this ``lift'' the indices of $s$ \citep{Abadi-Cardelli-Curien-Levy-1990}. These two caveats result in the following substitution rule  for de Bruijn indexed lambda terms:
+It is also important when applying substitutions to $\lambda$ terms that we avoid the unintended capture of free variables in our terms being substituted in. Imagine again the nested $\lambda$ term, with occurrences of $1$ being replaced with $s$. Occurrences of $0$ in $s$ must be replaced with $1$, else the nested $\lambda$ binder will capture the index. We this ``lift'' the indices of $s$ \citep{Abadi-Cardelli-Curien-Levy-1990}. These two caveats result in the following substitution rule  for De Bruijn indexed lambda terms:
 
 \begin{equation*}
 (\lambda t)[0 := s, 1 := 0, ...] = \lambda t[1 := s[0 := 1, 1 := 2, ...], 2 := 1, ...]
@@ -64,7 +64,7 @@ Recognising the required index ``shifting'' and ``lifting'' in the substitution 
 
 The Agda programming language's first and most-used backend is MAlonzo, or more generically, the GHC backend \citep{benke2007}. Given an Adga module containing a \AgdaFunction{main} function\footnote{An Agda module without a main file can be compiled with @--no-main@.}, the Agda @--compile@ option will compile the program using the GHC backend by default, which translates an Agda program into Haskell source. The generated Haskell source can then be automatically (default) or manually (with @--ghc-dont-call-ghc@) compiled to an executable program via GHC \citep{agdadocs}. % http://agda.readthedocs.io/en/latest/tools/compilers.html
 
-There are several stages of translation and compilation in this process, as shown in Figure~\ref{fig:agda_compile}. The transition of primary interest for our optimisations is the conversion of compiled clauses to a ``treeless'' syntax. This translations occurs after Agda type-checking but before Haskell source is generated. Most Agda optimisations occur as alterations to the treeless terms.
+There are several stages of translation and compilation in this process, as shown in Figure~\ref{fig:agda_compile}. The transition of primary interest for our optimisations is the conversion of compiled clauses to a ``treeless'' syntax. This translation occurs after Agda type-checking but before Haskell source is generated. Most Agda optimisations occur as alterations to the treeless terms.
 
 \input{Figures/CompilerFlowchart}
 
@@ -106,12 +106,19 @@ and if the @--compile@ flag is enabled, it will then be transformed into treeles
 
 \input{Figures/TreelessNot}
 
-The treeless syntax is the input to the compiler backend of Agda. It's a high-level internal syntax, the name for which is derived from its use of case expressions instead of case trees. The other notable difference between compiled clauses and treeless syntax is the absence of datatypes and constructors \citep{agdahackage}. % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-Syntax-Treeless.html
-Note that internally, variables are represented only by their de Bruijn index, however for ease of illustration, we use named variables in our pretty-printed samples of treeless terms.
+The treeless syntax is the input to the compiler backend of Agda. It's
+a high-level internal syntax, the name for which is derived from its
+use of case expressions instead of case trees.
+The other notable difference between compiled clauses and treeless
+syntax is the absence of datatypes \edcomm{WK}{? mentioned in |CaseType|}
+and constructors \edcomm{WK}{? First argument of |TACon|!}
+\citep{agdahackage}.
+% https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-Syntax-Treeless.html
+Note that internally, variables are represented only by their De Bruijn index, however for ease of illustration, we use named variables in our pretty-printed samples of treeless terms.
 
 \subsubsection{Treeless Syntax}
 
-This treeless syntax is constructed from the |TTerm|s (\textbf{T}reless \textbf{Terms}) data type and is the representation of the abstract syntax tree that we will refer to most frequently. It can be reasoned about as a lambda calculus with all local variable represented as de Bruijn indices. A listing of |TTerm| constructors is shown below:
+This treeless syntax is constructed from the |TTerm|s (\textbf{T}reeless \textbf{Terms}) data type and is the representation of the abstract syntax tree that we will refer to most frequently. It can be reasoned about as a lambda calculus with all local variables represented as De Bruijn indices. A listing of |TTerm| constructors is shown below:
 
 \begin{code}
 type Args = [TTerm]
@@ -135,44 +142,48 @@ data TAlt = TACon QName Nat TTerm
           | TALit Literal TTerm
 \end{code}
 
-In this section we examine the constructors of |TTerm|s one-by-one \citep{agdahackage}.
+\edchange{WK}{In this section we examine the constructors of |TTerm|s one-by-one}{In more detail, the constructor alternatives for |TTerm|s are as follows:} \citep{agdahackage}.
 
-A \textbf{|TVar|} is a de Bruijn indexed variable term.
-
-A \textbf{|TPrim|} is a compiler-related primitive, such as addition, subtraction and equality on some primitive types.
-
-A \textbf{|TDef|} is a qualified name identifying a function or datatype definition.
-
-A \textbf{|TApp|} is a |TTerm| applied to a list of arguments, where each argument is itself a |TTerm|.
-
-A \textbf{|TLam|} is a $\lambda$-abstraction with a body.
-
-A \textbf{|TLit|} is a literal value, such as an integer or string.
-
-A \textbf{|TCon|} is a qualified name identifying a constructor.
-
-A \textbf{|TLet|} is a let expression, introducing a new local term binding in a term body.
-
-A \textbf{|TCase|} is a case expression on a case scrutinee (always a de Bruijn indexed variable), a case type, a default value and a list of alternatives.
-
-The case alternatives, \textbf{|TAlt|}s, may be constructed from:
 \begin{itemize}
-\item a |TACon|, which matches on a constructor of a given qualified name, binding the appropriate number of pattern variables to the body term if a match is made. Note that a |TCase|'s list of |Args| must have unique qualified names for each |TACon|.
-\item a |TAGuard|, which matches on a boolean guard and binds no variables if matched against.
-\item a |TALit|, which matches on a literal term.
+
+\item \edchange{WK}{A \textbf{|TVar|} is}{|TVar| constructs} a De Bruijn-indexed variable term.
+
+\item A \textbf{|TPrim|} is a compiler-related primitive, such as addition, subtraction and equality on some primitive types.
+
+\item A \textbf{|TDef|} is a qualified name identifying a function or datatype definition.
+
+\item A \textbf{|TApp|} is a |TTerm| applied to a list of arguments, where each argument is itself a |TTerm|.
+
+\item A \textbf{|TLam|} is a $\lambda$-abstraction with a body.
+
+\item A \textbf{|TLit|} is a literal value, such as an integer or string.
+
+\item A \textbf{|TCon|} is a qualified name identifying a constructor.
+
+\item A \textbf{|TLet|} is a let expression, introducing a new local term binding in a term body.
+
+\item A \textbf{|TCase|} is a case expression on a case scrutinee (always a De Bruijn indexed variable), a case type, a default value and a list of alternatives.
+
+  The case alternatives, \textbf{|TAlt|}s, may be constructed from:
+  \begin{itemize}
+  \item a |TACon|, which matches on a constructor of a given qualified name, binding the appropriate number of pattern variables to the body term if a match is made. Note that a |TCase|'s list of |Args| must have unique qualified names for each |TACon|.
+  \item a |TAGuard|, which matches on a boolean guard and binds no variables if matched against.
+  \item a |TALit|, which matches on a literal term.
+  \end{itemize}
+
+\item A \textbf{|TUnit|} is used for levels.
+
+\item A \textbf{|TSort|} is a sort, as in the type of types.
+
+\item A \textbf{|TErased|} is used to replace some irrelevant term that isn't needed.
+
+\item A \textbf{|TError|} is used to indicate a runtime error.
+
 \end{itemize}
-
-A \textbf{|TUnit|} is used for levels.
-
-A \textbf{|TSort|} is a sort, as in the type of types.
-
-A \textbf{|TErased|} is used to replace some irrelevant term that isn't needed.
-
-A \textbf{|TError|} is used to indicate a runtime error.
 
 %In the following chapters, we discuss the design and implementation of our optimisations to the Agda compiler. In each Chapter, we give a logical representation of the optimisation, present our implementation and give usage instructions for the feature in our compiler branch. We also give references to the source code in the Appendix.
 
-We also present below a simplified logical representation of the Agda treeless syntax as a grammar:
+We also present below a simplified logical representation of the Agda treeless syntax as a grammar \edinsert{WK}{named using variables $x$ instead instead of De Bruijn indices} :
 
 %include ../Figures/TreelessGrammar.lhs
 
@@ -211,8 +222,8 @@ We examine here that method of removing repeated case expressions.
 
 Immediately following the conversion of compiled clauses to treeless syntax in the Agda compiler, a series of optimising transformations are applied before the treeless expression is returned. One such step is the ``simplify'' group of transformations, which modify a |TTerm| in a variety of optimising ways.
 
-As the expression is traversed, |simplify| is recursively called on each |TTerm| term, and |simpAlt| is called on each |TAlt| alternative. Given some expression casing on de Bruijn index $x$, for each alternative of the pattern |TACon name arity body|, the scrutinised variable index in the body, $x + arity$, is looked up in the variable environment. If the variable has already been bound, and therefore has a different de Bruijn index, $y$, a rewrite rule is added to the constructor. The rewrite rule indicates that every instance of |TApp (TCon name) (TVar i || i <- [arity-1,arity-2..0])| in the alternative's body should be replaced with a |TVar y|.
+As the expression is traversed, |simplify| is recursively called on each |TTerm| term, and |simpAlt| is called on each |TAlt| alternative. Given some expression casing on De Bruijn index $x$, for each alternative of the pattern |TACon name arity body|, the scrutinised variable index in the body, $x + arity$, is looked up in the variable environment. If the variable has already been bound, and therefore has a different De Bruijn index, $y$, a rewrite rule is added to the constructor. The rewrite rule indicates that every instance of |TApp (TCon name) (TVar i || i <- [arity-1,arity-2..0])| in the alternative's body should be replaced with a |TVar y|.
 
-The rewrite rule is encoded as part of the wrapper |Reader| environment that is carried along with the |TTerm| throughout simplification, and is evaluated later by applying substitutions. It is at this point that all necessary de Bruijn index shifting is managed.
+The rewrite rule is encoded as part of the wrapper |Reader| environment that is carried along with the |TTerm| throughout simplification, and is evaluated later by applying substitutions. It is at this point that all necessary De Bruijn index shifting is managed.
 
 An abridged version of @Treeless/Simplify.hs@ showing the primary functions involved in this optimisation in the updated Agda compiler is available in Appendix~\ref{app:simplify}.
