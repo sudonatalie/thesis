@@ -59,8 +59,11 @@ the simple module below:
 An Agda developer might, incorrectly, assume that in the calculation
 of \AgdaFunction{four}, the \AgdaFunction{+} function would only be
 called twice, with the evaluation of \AgdaBound{two} stored and shared
-among its two callers. In actuality, the \AgdaKeyword{let} binding in
-Agda does not guarantee any sharing. In the compiled Haskell generated
+among its two callers. In actuality, the \AgdaKeyword{let} binding is not
+necessarily preserved in the translation to Haskell, where sharing
+of the locally bound expression would be guaranteed.
+Unlike Haskell, Agda does not have any resource-aware semantics.
+In the compiled Haskell generated
 from the \AgdaModule{Sharing} module, we can see that there are, in fact,
 three calls to the generated addition function |d8|, and the semantic
 ``sharing'' that was implied by the programmer who wrote the
@@ -68,7 +71,7 @@ three calls to the generated addition function |d8|, and the semantic
 
 %include ../Figures/Haskell/Sharing.lhs
 
-Though this particular illustrative example is not targetted by our
+Though this particular illustrative example is not targeted by our
 optimizations, because it would require common subexpression elimination
 (CSE) to transform, we use examples
 like this as motivation for re-creating sharing through compiler
