@@ -155,7 +155,6 @@
 \bibliographystyle{plainnat}
 \addcontentsline{toc}{chapter}{Bibliography}
 \bibliography{Bibliography/RATH/strings,Bibliography/RATH/ref,Bibliography/RATH/crossrefs,Bibliography/ref}
-\edcomm{NP}{Chitil-1997 still has a ???}
 
 % Index
 \newpage
