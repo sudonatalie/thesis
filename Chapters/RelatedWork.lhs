@@ -122,7 +122,7 @@ In order to maximise the number of opportunities for this type of let-floating, 
 The local transformations consist of a series of three small rewrite rules as follows:
 
 \begin{enumerate}
-\item |(let v = e in b) a| $\quad \to \quad$ |let v = e in b a|
+\item |(let v = e in b) a| $\quad \longrightarrow \quad$ |let v = e in b a|
 
 Moving the let outside the application cannot have a negative effect, but it can have a positive effect by creating opportunities for other optimisations \citep{jones1996}.
 
@@ -143,7 +143,7 @@ However, after floating the let outside, it is clear that a beta-reduction rule 
   let v = VRHS in (\ x -> ...x...) a
 \end{code}
 
-\item |case (let v = e in b) of alts| $\quad \to \quad$ |let v = e in case b of alts|
+\item |case (let v = e in b) of alts| $\quad \longrightarrow \quad$ |let v = e in case b of alts|
 
 Likewise for moving the let outside a case expression, it won't have a negative effect, but could have a positive effect \citep{jones1996}.
 
@@ -159,7 +159,7 @@ However, after floating the let outside, it is clear that the case expression ca
   let v = VRHS in case con v1 v2 v3 of ALTS
 \end{code}
 
-\item |let x = let  v = e in b in c| $\quad \to \quad$ |let v = e in let x = b in c|
+\item |let x = let  v = e in b in c| $\quad \longrightarrow \quad$ |let v = e in let x = b in c|
 
 Moving a let binding from the right-hand side of another let binding to outside it can have several advantages including potentially reducing the need for some heap allocation when the final form of the second binding becomes more clear \citep{jones1996}.
 
