@@ -226,4 +226,4 @@ As the expression is traversed, |simplify| is recursively called on each |TTerm|
 
 The rewrite rule is encoded as part of the wrapper |Reader| environment that is carried along with the |TTerm| throughout simplification, and is evaluated later by applying substitutions. It is at this point that all necessary De Bruijn index shifting is managed.
 
-An abridged version of @Treeless/Simplify.hs@ showing the primary functions involved in this optimisation in the updated Agda compiler is available in Appendix~\ref{app:simplify}.
+%An abridged version of @Treeless/Simplify.hs@ showing the primary functions involved in this optimisation in the updated Agda compiler is available in Appendix~\ref{app:simplify}.

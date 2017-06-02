@@ -147,7 +147,6 @@
 % Appendices
 \input{Auxiliary/ResetCounters}
 \appendix
-%include Appendix/Simplify.lhs
 %include Appendix/ToTreeless.lhs
 %include Appendix/CaseSquash.lhs
 %include Appendix/Compiler.lhs
