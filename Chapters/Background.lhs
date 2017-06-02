@@ -16,7 +16,7 @@ In a pure $\lambda$-calculus, terms are built inductively from only variables, $
 
 \subsection{De Bruijn Index Notation}
 
-In order to eliminate the need for named variables in $\lambda$-calculus notation, De Bruijn indexed ntation is used to represent bound terms (variables) with natural numbers, as presented by \citet{deBruijn-1972}. In any term, the positive integer $n$ refers to the $n$th surrounding $\lambda$ binder. In other words, the number is an index indicating the number of variable binders (or $\lambda$-abstractions) in scope between itself and the binder for the variable being referenced. The grammar of a De Bruijn indexed lambda calculus is shown below:
+In order to eliminate the need for named variables in $\lambda$-calculus notation, De Bruijn indexed notation is used to represent bound terms (variables) with natural numbers, as presented by \citet{deBruijn-1972}. In any term, the positive integer $n$ refers to the $n$th surrounding $\lambda$ binder. In other words, the number is an index indicating the number of variable binders (or $\lambda$-abstractions) in scope between itself and the binder for the variable being referenced. The grammar of a De Bruijn indexed lambda calculus is shown below:
 
 \input{Figures/DeBruijnLambdaCalc}
 
@@ -142,27 +142,27 @@ data TAlt = TACon QName Nat TTerm
           | TALit Literal TTerm
 \end{code}
 
-\edchange{WK}{In this section we examine the constructors of |TTerm|s one-by-one}{In more detail, the constructor alternatives for |TTerm|s are as follows:} \citep{agdahackage}.
+In more detail, the constructor alternatives for |TTerm|s are as follows \citep{agdahackage}:
 
 \begin{itemize}
 
-\item \edchange{WK}{A \textbf{|TVar|} is}{|TVar| constructs} a De Bruijn-indexed variable term.
+\item |TVar| constructs a De Bruijn-indexed variable term.
 
-\item A \textbf{|TPrim|} is a compiler-related primitive, such as addition, subtraction and equality on some primitive types.
+\item |TPrim| constructs a compiler-related primitive, such as addition, subtraction and equality on some primitive types.
 
-\item A \textbf{|TDef|} is a qualified name identifying a function or datatype definition.
+\item |TDef| constructs a qualified name identifying a function or datatype definition.
 
-\item A \textbf{|TApp|} is a |TTerm| applied to a list of arguments, where each argument is itself a |TTerm|.
+\item |TApp| constructs a |TTerm| applied to a list of arguments, where each argument is itself a |TTerm|.
 
-\item A \textbf{|TLam|} is a $\lambda$-abstraction with a body.
+\item |TLam| constructs a $\lambda$-abstraction with a body.
 
-\item A \textbf{|TLit|} is a literal value, such as an integer or string.
+\item |TLit| constructs a literal value, such as an integer or string.
 
-\item A \textbf{|TCon|} is a qualified name identifying a constructor.
+\item |TCon| constructs a qualified name identifying a constructor.
 
-\item A \textbf{|TLet|} is a let expression, introducing a new local term binding in a term body.
+\item |TLet| constructs a let expression, introducing a new local term binding in a term body.
 
-\item A \textbf{|TCase|} is a case expression on a case scrutinee (always a De Bruijn indexed variable), a case type, a default value and a list of alternatives.
+\item |TCase| constructs a case expression on a case scrutinee (always a De Bruijn indexed variable), a case type, a default value and a list of alternatives.
 
   The case alternatives, \textbf{|TAlt|}s, may be constructed from:
   \begin{itemize}
@@ -171,19 +171,19 @@ data TAlt = TACon QName Nat TTerm
   \item a |TALit|, which matches on a literal term.
   \end{itemize}
 
-\item A \textbf{|TUnit|} is used for levels.
+\item |TUnit|s are used for levels.
 
-\item A \textbf{|TSort|} is a sort, as in the type of types.
+\item |TSort| constructs a sort, as in the type of types.
 
-\item A \textbf{|TErased|} is used to replace some irrelevant term that isn't needed.
+\item |TErased|s are used to replace irrelevant terms that are no longer needed.
 
-\item A \textbf{|TError|} is used to indicate a runtime error.
+\item |TError|s are used to indicate a runtime error.
 
 \end{itemize}
 
 %In the following chapters, we discuss the design and implementation of our optimisations to the Agda compiler. In each Chapter, we give a logical representation of the optimisation, present our implementation and give usage instructions for the feature in our compiler branch. We also give references to the source code in the Appendix.
 
-We also present below a simplified logical representation of the Agda treeless syntax as a grammar \edinsert{WK}{named using variables $x$ instead instead of De Bruijn indices} :
+We also present below a simplified logical representation of the Agda treeless syntax as a grammar named using variables $x$ instead instead of De Bruijn indices:
 
 %include ../Figures/TreelessGrammar.lhs
 
