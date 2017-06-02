@@ -53,13 +53,33 @@ This feature is implemented by splitting the pattern lets at the root of functio
 \section{Application}
 \label{sec:float_app}
 
+\subsection*{Triangle}
+
 As readers may have noticed inspecting Figure~\ref{fig:Triangle_genplet} in the preceding chapter, there are 4 pattern let bindings for the same \texttt{v2} variable within the \texttt{d4788} function. This is a perfect opportunity for floating pattern lets, to create sharing where there formerly was none.
 
 \begin{figure}[h]
-    \centering
-    \lstinputlisting[style=diff]{Figures/Triangle_float.diff}
-    \caption{Unified difference of the \AgdaModule{Triangle3sPB}~module compiled without and then with @--float-plet@.}
-    \label{fig:Triangle_float}
+\centering
+\lstinputlisting[style=diff]{Figures/Triangle_float.diff}
+\caption{Unified difference of the \AgdaModule{Triangle3sPB}~module compiled without and then with @--float-plet@.}
+\label{fig:Triangle_float}
 \end{figure}
 
 Figure~\ref{fig:Triangle_float} shows the result of applying @--float-plet@ to this compilation, resulting in the \texttt{v2} bindings floating above the shared function call.
+
+\subsection*{Pullback}
+
+\edcomm{NP}{Write words here}
+
+\begin{figure}[h]
+\centering
+\lstinputlisting[style=diff]{Figures/Pullback_float.diff}
+\caption{Unified difference of the \AgdaModule{Pullback}~module compiled without and then with @--float-plet@.}
+\label{fig:Triangle_float}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\lstinputlisting[style=diff]{Figures/Pullback_crosscall.diff}
+\caption{Unified difference of the \AgdaModule{Pullback}~module compiled without and then with @--cross-call-float@.}
+\label{fig:Triangle_crosscall}
+\end{figure}
