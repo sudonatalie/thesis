@@ -17,7 +17,7 @@ to our Agda branch which, when enabled, will float the pattern lets up through t
 
 In combination with our option:
 \begin{verbatim}
---cross-call-float                          float pattern bindings across function calls
+--cross-call-float          float pattern bindings across function calls
 \end{verbatim}
 
 bindings can also be shared across function calls.

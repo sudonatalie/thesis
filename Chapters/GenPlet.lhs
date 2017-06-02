@@ -9,7 +9,7 @@ In this chapter we present our optimisation to generate pattern lets. In Section
 We added the option:
 
 \begin{verbatim}
---ghc-generate-pattern-let                  make the GHC backend generate pattern lets
+--ghc-generate-pattern-let          make the GHC backend generate pattern lets
 \end{verbatim}
 
 to our Agda branch which, when enabled, will generate pattern lets in the GHC backend during compilation.
