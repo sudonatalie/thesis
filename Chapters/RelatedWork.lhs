@@ -99,7 +99,7 @@ The benefit from this increased sharing outweighs the detriment of increasing th
 \item the lambda abstraction it is used in is called more than once \citep{jones1996}.
 \end{itemize}
 
-Consider as an example, the Haskell code\citep{jones1996}:
+Consider as an example, the Haskell code \citep{jones1996}:
 \begin{code}
   f = \ xs ->
     let g = \ y -> let n = length xs
