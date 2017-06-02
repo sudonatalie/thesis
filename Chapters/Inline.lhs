@@ -43,16 +43,18 @@ RATH-Agda is a basic category and allegory theory library developed by \citet{Ka
 
 \subsection{Before}
 
-In profiling the runtime of this \AgdaModule{Main} module, we found that an inordinate amount of time was spent on evaluating simple record projections. The first few lines of the profiling report in Figure~\ref{fig:main_prof} indicate that the greatest cost centres in terms of time are the two simple record projections for the $\Sigma$ data type, with a combined 17.6\% of execution time spent evaluating them.
-
-Because enabling profiling does have an affect on execution, we also re-compiled the module without profiling and ran it six times, measuring execution time with the Unix @time@ command, to determine its average runtime as 1.60 seconds.
+In profiling the runtime of this \AgdaModule{Main} module, we found that an inordinate amount of time was spent on evaluating simple record projections. The first few lines of the profiling report below indicate that the greatest cost centres in terms of time are the two simple record projections for the $\Sigma$ data type, with a combined 17.6\% of execution time spent evaluating them.
 
 \input{Figures/Output/MainProf}
 
+Because enabling profiling does have an affect on execution, we also re-compiled the module without profiling and ran it six times, measuring execution time with the Unix @time@ command, to determine its average runtime as 1.60 seconds.
+
 \subsection{After}
 
-By compiling \AgdaModule{Main} with our new option, @--inline-proj@, enabled, we reduced total runtime and memory allocation, as can be seen by comparing Figure~\ref{fig:main_inline_prof} and Figure~\ref{fig:main_prof}.
-
-We again re-compiled the module without profiling and ran it six times, measuring execution time with the Unix @time@ command, to determine its average runtime with projections inlined as 1.44 seconds. We therefore produced a speedup of 1.11$\times$.
+By compiling \AgdaModule{Main} with our new option, @--inline-proj@, enabled, we reduced total runtime and memory allocation, as can be seen in the second profiling report of the inlined code:
 
 \input{Figures/Output/MainInlineProf}
+
+We again re-compiled the module without profiling and ran it six times, measuring execution time with the Unix @time@ command, to determine its average runtime with projections inlined as 1.44 seconds.
+
+We therefore produced a speedup of 1.11$\times$ in the RATH-Agda \AgdaModule{Main} module.
