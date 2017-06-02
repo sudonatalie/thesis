@@ -6,8 +6,8 @@ In this chapter, we discuss various aspects of our optimisations in summary. In 
 \section{Assessment of the Contributions}
 \label{sec:assessment_of_the_contributions}
 
-\subsection{Strengths of the Contributions}
-\label{sub:strengths_of_the_contributions}
+%\subsection{Strengths of the Contributions}
+%\label{sub:strengths_of_the_contributions}
 
 The contributions described herein have a number of strengths that will serve the Agda development community.
 
@@ -15,8 +15,8 @@ Primarily, as shown by the results of the applications of our optimisations, our
 
 Secondarily, this thesis may also serve as a detailed documentation of the portions of the Agda compiler and GHC backend that are necessary to understand for incorporating future optimising transformations. We hope that future contributors to Agda will find this presentation of our study of the Agda compiler useful in implementing their own desired optimisations.
 
-\subsection{Weaknesses of the Contributions}
-\label{sub:weaknesses_of_the_contributions}
+%\subsection{Weaknesses of the Contributions}
+%\label{sub:weaknesses_of_the_contributions}
 
 Although the net effect of our optimisations is a positive one, there are still a number of weaknesses that warrant consideration.
 
