@@ -4,14 +4,10 @@ Due to its incredibly flexible concrete syntax and support for Unicode
 identifiers, Agda can be used to construct elegant and expressive
 proofs in a format that is understandable even to those unfamiliar
 with the tool.
-\edchange{WK}{As a result, many users of Agda, including our group, are quick to
-sacrifice speed and efficiency in our code in favour of proof
-clarity.
-}{%
-\par
-However, the semantics of Agda is lacking ressource guarantees
+
+However, the semantics of Agda is lacking resource guarantees
 of the kind that Haskell programers are used to with lazy evaluation,
-where multiple uses of function arguments and |let|-bound variables
+where multiple uses of function arguments and let-bound variables
 still result in the corresponding expressions to be evaluated at most
 once.
 With the current compiler backends of Agda,
@@ -19,8 +15,7 @@ a mathematically-natural way to structure programs
 therefore frequently results in inefficient compiled programs,
 where the run-time complexity can be exponentional in cases where
 corresponding Haskell code executes in linear time.
-\par
-}%edchange
+
 This makes a highly-optimised compiler backend a particularly
 essential tool for practical development with Agda.
 The main contributions of this thesis are a series of compiler
@@ -28,7 +23,16 @@ optimisations that inlines simple projections, removes some
 expressions with trivial evaluations that can be statically inferred,
 and reduces the need for repeated evaluations of the same expressions
 by increasing sharing.
-\edcomm{WK}{Write a bit more here.}
+
+We developed transformations that focus on the inherent ``loss'' of sharing
+that is frequently the result of compiling Agda programs. Where an Agda
+developer may imagine that value sharing should exist in the generated Haskell
+code, it often does not.
+We present several optimising transformations that re-introduce some of this
+``lost'' sharing without affecting the type-theoretic semantics, then apply
+these optimisations to several typical Agda applications to examine the
+memory allocation and execution time effects.
+
 In measuring the effects of these optimisations
 on Agda code we show that overall improvements in runtime on the order
 of 10-20\% are possible.
