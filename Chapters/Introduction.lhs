@@ -23,7 +23,7 @@ By the Curry–Howard correspondence (or the proofs-as-programs interpretation),
 
 The ability for types to contain arbitrary values is significant because it expands the domain of theorems we can encode as types to the space of predicate logic. This allows us to encode almost any proposition or formula as a type.
 
- In order to ensure this logic holds true for all Agda programs, the Agda type-checker requires that all programs be both total and terminating \citep{norell2009}. Therefore, when an Agda program passes type-checking\footnote{(assuming a correct compiler)}, all of the propositions (types) therein are proven true (inhabited).
+ In order to ensure this logic holds true for all Agda programs, the Agda type-checker requires that all programs be both total and terminating \citep{norell2009}. Therefore, when an Agda program passes type-checking\footnote{(assuming a correct compiler)}, all of the propositions (types) therein are proven true (inhabited). \edcomm{WK}{Define ``type therein''! $\bot$ can occur in type expressions\ldots}
 
 Agda also supports a flexible mix-fix syntax, as seen in Figure~\ref{code:if_function}, and Unicode characters, such as the \AgdaDatatype{ℕ} to represent natural numbers in Figure~\ref{code:replicate}. These features along with Agda's constructive functional style make Agda both an interesting programming language, but also a powerful proof assistant for generating elegant, expressive proofs.
 
@@ -34,7 +34,7 @@ Agda also supports a flexible mix-fix syntax, as seen in Figure~\ref{code:if_fun
 \subsection{Compiler}
 
 Agda has a number of available compilers and backends, but the one
-that is most efficient and most commonly used is the ``GHC backend'' \citep{benke2007}, originally introduced under the name ``MAlonzo''; this backend generates Haskell with extensions supported by GHC, the ``Glasgow Haskell Compiler'' by \citet{SPJ-etal-GHC}.
+that is most efficient and most commonly used is the ``GHC backend'' \citep{benke2007}, originally introduced under the name ``MAlonzo''; this backend generates Haskell with extensions supported by GHC, the ``Glasgow Haskell Compiler'' by \citet{SPJ-etal-GHC} \unfinished.
 This backend
 has the goal of compiling Agda code with the performance of
 the generated code matching that of GHC, and it does so by translating
