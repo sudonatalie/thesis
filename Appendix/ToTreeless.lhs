@@ -49,7 +49,8 @@ maybeInlineDef inlinedAncestors q vs =
         | fun ^. funInline -> doinline []
         | isProperProjection fun && doInlineProj
         -> do
-            lift $ reportSDoc "treeless.inline" 20 $ text "-- inlining projection" $$ prettyPure (defName def)
+            lift $ reportSDoc "treeless.inline" 20 $
+              text "-- inlining projection" $$ prettyPure (defName def)
             doinline inlinedAncestors
         | otherwise -> defaultCase
       _ -> C.mkTApp (C.TDef C.TDefDefault q) <$> substArgs inlinedAncestors vs
@@ -69,7 +70,8 @@ maybeInlineDef inlinedAncestors q vs =
             used <- lift $ getCompiledArgUse q
             let substUsed False _   = pure C.TErased
                 substUsed True  arg = substArg inlinedAncestors arg
-            C.mkTApp (C.TDef C.TDefDefault q) <$> sequence [ substUsed u arg | (arg, u) <- zip vs $ used ++ repeat True ]
+            C.mkTApp (C.TDef C.TDefDefault q) <$>
+              sequence [ substUsed u arg | (arg, u) <- zip vs $ used ++ repeat True ]
 
 substArgs :: ProjInfo -> [Arg I.Term] -> CC [C.TTerm]
 substArgs = traverse . substArg

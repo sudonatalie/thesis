@@ -34,13 +34,13 @@ and a list of its arguments (also as de Bruijn indices)
 type CaseMatch = (Int, (QName, [Int]))
 \end{code}
 
-Environment containing 'CaseMatch'es in scope.
+Environment containing |CaseMatch|es in scope.
 
 \begin{code}
 type Env = [CaseMatch]
 \end{code}
 
-Recurse through 'TTerm's, accumulting environment of case alternatives
+Recurse through |TTerm|s, accumulting environment of case alternatives
 matched and replacing repeated cases.
 De Bruijn indices in environment should be appropriatedly shifted as
 terms are traversed.
@@ -49,7 +49,8 @@ terms are traversed.
 dedupTerm :: Env -> TTerm -> TTerm
 -- Increment indices in scope to account for newly bound variable
 dedupTerm env (TLam tt) = TLam (dedupTerm (shiftIndices (+1) <$> env) tt)
-dedupTerm env (TLet tt1 tt2) = TLet (dedupTerm env tt1) (dedupTerm (shiftIndices (+1) <$> env) tt2)
+dedupTerm env (TLet tt1 tt2) = TLet (dedupTerm env tt1)
+  (dedupTerm (shiftIndices (+1) <$> env) tt2)
 -- Check if scrutinee is already in scope
 dedupTerm env body@(TCase sc t def alts) = case lookup sc env of
   -- If in scope with match then substitute body
@@ -74,7 +75,7 @@ caseReplacement (name, args) tt@(TCase _ _ _ alts)
 caseReplacement _ tt = tt
 \end{code}
 
-Lookup 'TACon' in list of 'TAlt's by qualified name
+Lookup |TACon| in list of |TAlt|s by qualified name
 
 \begin{code}
 lookupTACon :: QName -> [TAlt] -> Maybe TAlt

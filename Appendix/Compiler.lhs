@@ -44,7 +44,8 @@ addAsPats xs numBound
       hConNm <- lift $ conhqn c
       let oldPat = HS.PVar scName
       let vars = take cArity $ drop numBound xs
-      let newPat = HS.PAsPat scName $ HS.PApp hConNm $ map HS.PVar [ x | (x, False) <- zip vars erased ]
+      let newPat = HS.PAsPat scName $ HS.PApp hConNm $
+        map HS.PVar [ x | (x, False) <- zip vars erased ]
       let pat' = replacePats oldPat newPat pat
       addAsPats xs (numBound + cArity) tp' pat'
     Nothing -> __IMPOSSIBLE__
