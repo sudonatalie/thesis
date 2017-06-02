@@ -7,6 +7,9 @@ Note that following our own development of the case squashing optimisation, a
 similar transformation was introduced to the Agda compiler as part of the
 |Simplify| pass on the treeless syntax. This alternate method of case squashing
 is discussed in Subsection~\ref{sub:alternate_case_squash}.
+We discuss our case squashing transformation below as it affects code compiled
+by our branch that precedes this newly implemented alternate method of
+case squashing.
 
 \section{Usage}
 \label{sec:squashing_usage}
