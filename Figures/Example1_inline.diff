@@ -1,8 +1,6 @@
 --- compile/Example1.hs
 +++ compile-inline/Example1.hs
 @@ -24,4 +24,12 @@
-       C26 v1 v2 -> coe v2
-       _ -> coe MAlonzo.RTE.mazUnreachableError
  name28 = "Example1.f"
 -d28 v0 = coe d22 v0 (coe d24 v0)
 +d28 v0

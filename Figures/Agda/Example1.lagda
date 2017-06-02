@@ -1,4 +1,3 @@
-\begin{figure}[h]
 \begin{code}
 module Example1 where
 
@@ -17,7 +16,3 @@ open Pair
 f : Pair (ℕ → ℕ) ℕ → ℕ
 f z = fst z (snd z)
 \end{code}
-
-\caption{A simple record projection in Agda.}
-\label{code:example1_agda}
-\end{figure}

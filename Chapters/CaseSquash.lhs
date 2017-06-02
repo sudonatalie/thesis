@@ -100,37 +100,35 @@ For a complete listing of our implementation of the case squashing optimisation,
 \section{Application}
 \label{sec:squashing_app}
 
+Take for example the simple usage of record projections in the \AgdaModule{Example1} module below.
+
 \input{Figures/Agda/latex/Example1}
 
-Take for example the simple usage of record projections in Figure~\ref{code:example1_agda}. When we compile this module once without @--inline-proj@ on, and once again with @--inline-proj@ enabled, a unified diff of the two generated Haskell files gives us what is shown in Figure~\ref{fig:Example1_inline}.
-
-\begin{figure}[h!]
-    \centering
-    \lstinputlisting[style=diff]{Figures/Example1_inline.diff}
-    \caption{Unified difference of the \AgdaModule{Example1}~module compiled without and then with @--inline-proj@.}
-    \label{fig:Example1_inline}
-\end{figure}
+When we compile this module once without @--inline-proj@ on, and once again with @--inline-proj@ enabled, a unified diff of the two generated Haskell files gives us what is shown in Figure~\ref{fig:Example1_inline}.
 
 The compiled projection function \AgdaField{Pair.snd}, that is |d18| in the Haskell code, is replaced with a Haskell expression that cases on the pair (\AgdaFunction{p} in Agda, |d22| in Haskell) and returns the second field.
 
-\begin{figure}[h!]
-    \centering
-    \lstinputlisting[style=diff]{Figures/Example1_squash.diff}
-    \caption{Unified difference of the \AgdaModule{Example1}~module compiled  with @--inline-proj@ and then also with @--squash-cases@.}
-    \label{fig:Example1_squash}
-\end{figure}
-
 We then compile the same file with both @--inline-proj@ and @--squash-cases@, and the difference between only inlining and both inlining and squashing can be seen in Figure~\ref{fig:Example1_squash}.
 
-\begin{figure}[h!]
-    \centering
-    \lstinputlisting[style=diff]{Figures/Example1_inline_squash.diff}
-    \caption{Unified difference of the \AgdaModule{Example1}~module compiled without either optimisation, then with both @--inline-proj@ and @--squash-cases@.}
-    \label{fig:Example1_inline_squash}
-\end{figure}
+Figure~\ref{fig:Example1_inline_squash} shows the overall unified diff from neither optimisation to both. In particular, note that after both inlining and squashing optimizations, there is only one case expression scrutinising |v0|.
 
-Figure~\ref{fig:Example1_inline_squash} shows the overall unified diff from neither optimisation to both.
-\edcomm{WK}{It would be really good if the three figures could be on the same page, or interleaved with explanation.}
-\edcomm{WK}{In particular, explanation is needed what to look at in the final result: Only one ``|case coe v0 of C26 x y ->|''.
-(While the starting point has two, since inlining does not change anything in this respect.)
-}%edcomm
+\begin{figure}[h!]
+\begin{subfigure}{\linewidth}
+\lstinputlisting[style=diff]{Figures/Example1_inline.diff}
+\caption{Unified difference of the \AgdaModule{Example1}~module compiled without and then with @--inline-proj@.}
+\label{fig:Example1_inline}
+\end{subfigure}
+
+\begin{subfigure}{\linewidth}
+\lstinputlisting[style=diff]{Figures/Example1_squash.diff}
+\caption{Unified difference of the \AgdaModule{Example1}~module compiled  with @--inline-proj@ and then also with @--squash-cases@.}
+\label{fig:Example1_squash}
+\end{subfigure}
+
+\begin{subfigure}{\linewidth}
+\lstinputlisting[style=diff]{Figures/Example1_inline_squash.diff}
+\caption{Unified difference of the \AgdaModule{Example1}~module compiled without either optimisation, then with both @--inline-proj@ and @--squash-cases@.}
+\label{fig:Example1_inline_squash}
+\end{subfigure}
+\caption{Comparison of \AgdaModule{Example1}~module compilations.}
+\end{figure}
