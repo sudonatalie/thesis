@@ -23,7 +23,7 @@ By the Curry–Howard correspondence (or the proofs-as-programs interpretation),
 
 The ability for types to contain arbitrary values is significant because it expands the domain of theorems we can encode as types to the space of predicate logic. This allows us to encode almost any proposition or formula as a type.
 
- In order to ensure this logic holds true for all Agda programs, the Agda type-checker requires that all programs be both total and terminating \citep{norell2009}. Therefore, when an Agda program passes type-checking\footnote{(assuming a correct compiler)}, all of the propositions (types) therein are proven true (inhabited). \edcomm{WK}{Define ``type therein''! $\bot$ can occur in type expressions\ldots}
+ In order to ensure this logic holds true for all Agda programs, the Agda type-checker requires that all programs be both total and terminating \citep{norell2009}. Therefore, when an Agda program passes type-checking\footnote{(assuming a correct compiler)}, all of the specifications encoded as propositions in the types of functions are satisfied.
 
 Agda also supports a flexible mix-fix syntax, as seen in Figure~\ref{code:if_function}, and Unicode characters, such as the \AgdaDatatype{ℕ} to represent natural numbers in Figure~\ref{code:replicate}. These features along with Agda's constructive functional style make Agda both an interesting programming language, but also a powerful proof assistant for generating elegant, expressive proofs.
 
