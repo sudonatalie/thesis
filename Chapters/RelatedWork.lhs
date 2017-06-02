@@ -130,9 +130,9 @@ Consider the case where |b| is a lambda function. Before floating the let outsid
 
 % WK: Local formatting directive --- only proof-of-concept, no good rendering yet:
 %{
-%format VRHS = "\hbox{$\langle\langle$\textit{v-rhs}$\rangle\rangle$}"
-%format ALTS = "\hbox{$\langle\langle$\textit{alts}$\rangle\rangle$}"
-%format BODY = "\hbox{$\langle\langle$\textit{body}$\rangle\rangle$}"
+%format VRHS = "\hbox{$\langle\kern-0.4ex\langle$\textit{v-rhs}$\rangle\kern-0.4ex\rangle$}"
+%format ALTS = "\hbox{$\langle\kern-0.4ex\langle$\textit{alts}$\rangle\kern-0.4ex\rangle$}"
+%format BODY = "\hbox{$\langle\kern-0.4ex\langle$\textit{body}$\rangle\kern-0.4ex\rangle$}"
 \begin{code}
   (let v = VRHS in (\ x -> ...x...)) a
 \end{code}

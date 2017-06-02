@@ -78,7 +78,7 @@ function. Patterns must have right-hand sides that are equivalent (up to
 $\alpha$-conversion) in order to be considered matching.
 
 %{
-%format RHS = "\hbox{$\langle\langle$\textit{rhs}$\rangle\rangle$}"
+%format RHS = "\hbox{$\langle\kern-0.4ex\langle$\textit{rhs}$\rangle\kern-0.4ex\rangle$}"
 For example, if the following two let bindings are found in separate branches
 of the expression tree:
 
