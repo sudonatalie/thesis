@@ -1,7 +1,10 @@
 \chapter{Case Squashing}
 \label{cha:case_squashing}
 
+In this chapter we present our case squashing optimisation. In Section~\ref{sec:squashing_usage} we give usage instructions. In Section~\ref{sec:squashing_logical} we show a logical representation of the transformation. In Section~\ref{sec:squashing_implement} we provide some implementation details pertaining to the optimisation. Lastly, in Section~\ref{sec:squashing_app} we apply case squashing to a sample program and examine the results.
+
 \section{Usage}
+\label{sec:squashing_usage}
 
 We added the option:
 
@@ -12,6 +15,7 @@ We added the option:
 to our Agda branch which, when enabled, will perform the case squashing optimisation described above.
 
 \section{Logical Representation}
+\label{sec:squashing_logical}
 
 The goal of case squashing is to eliminate case expressions where the scrutinee has already been matched on by an enclosing ancestor case expression. Figure~\ref{fig:case_squash_rule} shows the transformation from a case expression with repeated scrutinisations on the same variable, to the optimised ``case squashed'' version.
 
@@ -85,6 +89,7 @@ case $2$ of {
 We perform this ``case squashing'' by accumulating an environment of all previously scrutinised variables as we traverse the tree structure (appropriately shifting de Bruijn indices in the environment as new variables are bound), and replacing case expressions that match on the same variable as an ancestor case expressions, with the corresponding case branch's body. Any variables in the body that refer to bindings in the removed branch should be replaced with references to the bindings in the matching ancestor case expression branch.
 
 \section{Implementation}
+\label{sec:squashing_implement}
 
 The case squashing implementation is practically very similar to it's logical representation described above. While recursing through the treeless structure we accumulate an environment containing the relevant attributes of the case expressions in scope. As new variables are bound recursing down the structure, the indices stored in this environment are incremented accordingly.
 
@@ -93,6 +98,7 @@ For more details about how variable indices are replaced in the resulting term, 
 For a complete listing of our implementation of the case squashing optimisation, refer to Appendix~\ref{app:case_squash}.
 
 \section{Application}
+\label{sec:squashing_app}
 
 \input{Figures/Agda/latex/Example1}
 

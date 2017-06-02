@@ -1,10 +1,10 @@
 \chapter{Inlining Projections}
 \label{cha:inline_proj}
 
-\edcomm{WK}{You never write two headings immediately after each other.
-An overview of this chapter is missing here. This could even incorporate 4.1.}
+In this chapter we present our projection inlining optimisation. In Section~\ref{sec:inline_proj_usage} we give usage instructions. In Section~\ref{sec:inline_proj_logical} we show a logical representation of the transformation. In Section~\ref{sec:inline_proj_implement} we provide some implementation details pertaining to the optimisation. Lastly, in Section~\ref{sec:inline_proj_app} we apply projection inlining to a sample program and examine the results.
 
 \section{Usage}
+\label{sec:inline_proj_usage}
 
 We added the option:
 
@@ -15,11 +15,12 @@ We added the option:
 to our Agda branch which, when enabled, will replace every call to a function that is a proper projection with its function body.
 
 \section{Logical Representation}
+\label{sec:inline_proj_logical}
 
 The logical representation of inlining is fairly straightforward.
 We recurse through the treeless representation of an Agda module.
 For every application of a function or datatype to a list of arguments,
-that is $d~t^*$ \ecomm{WK}{Change $t*$ to $t_1\ \ldots\ t_n$?},
+that is $d~t^*$ \edcomm{WK}{Change $t*$ to $t_1\ \ldots\ t_n$?},
 where $d$ is the name of a function or datatype,
 and $t$s are treeless terms,
 we replace $d~t^*$
@@ -27,6 +28,7 @@ with the function or datatype definition corresponding to $d$
 and substitute in the $t^*$ arguments.
 
 \section{Implementation}
+\label{sec:inline_proj_implement}
 
 It is worth noting that the only projections which we identify and inline are ``proper projections'', that is, we do not include projection-like functions, or record field values, i.e. projections applied to an argument.
 
@@ -35,6 +37,7 @@ The only major complication in implementing the projection inlining optimisation
 For a complete listing of our implementation of the projection inlining optimisation, refer to Appendix~\ref{app:to_treeless}. The |Agda.Compiler.ToTreeless| module is responsible for converting Agda's internal syntax to the treeless syntax. It is during this translation that other manual forms of definition inlining are performed, so we introduce our optimisation as an additional guard on translating internal |Def|s, which checks whether the definition is a projection, and performs inlining if it  is.
 
 \section{Application}
+\label{sec:inline_proj_app}
 
 RATH-Agda is a basic category and allegory theory library developed by \citet{Kahl-2017_RATH-Agda-2.2}. It includes theories relating to semigroupoids, division allegories, typed Kleene algebras and monoidal categories, among other topics. The RATH-Agda repository also provides a set of test cases in a \AgdaModule{Main} module, which can be used to test a variety of typical uses of the library's functions.
 

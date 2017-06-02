@@ -1,7 +1,10 @@
 \chapter{Generating Pattern Lets}
 \label{cha:logical_plet}
 
+In this chapter we present our optimisation to generate pattern lets. In Section~\ref{sec:plet_usage} we give usage instructions. In Section~\ref{sec:plet_logical} we show a logical representation of the transformation. In Section~\ref{sec:plet_implement} we provide some implementation details pertaining to the optimisation. Lastly, in Section~\ref{sec:plet_app} we apply pattern let generation to a sample program and examine the results.
+
 \section{Usage}
+\label{sec:plet_usage}
 
 We added the option:
 
@@ -12,6 +15,7 @@ We added the option:
 to our Agda branch which, when enabled, will generate pattern lets in the GHC backend during compilation.
 
 \section{Logical Representation}
+\label{sec:plet_logical}
 
 We can avoid generating certain trivial case expressions by identifying let expressions with the following attributes:
 \begin{itemize}
@@ -54,12 +58,14 @@ Our treeless syntax does not support pattern matching, but when these cases are 
 These generated pattern lets have two-fold benefits. Firstly, their use reduces the amount of case analysis required in execution, which saves both the time and space needed to run. Secondly, it creates significant opportunities for increasing sharing of expression evaluations which could not have been found when they were |case| expressions. This leads us to our next optimisation, pattern let floating, discussed in Section~\ref{cha:plet-floating}.
 
 \section{Implementation}
+\label{sec:plet_implement}
 
 The |Agda.Compiler.MAlonzo.Compiler| module is responsible for transforming Agda treeless terms into Haskell expressions. In the primary function for this compilation, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets. In order to be a suitable candidate for this optimisation, a |let| expression must exhibit the properties described in section~\ref{cha:logical_plet}. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinising the 0 (most recently bound) variable, and the requirements can thus be represented with a pattern matching expression |TLet _ (TCase 0 _ _ [TACon _ _ _])|, followed by a check that the default branch is unreachable.
 
 For a complete listing of our implementation of the pattern let generating optimisation, refer to Appendix~\ref{app:compiler}.
 
 \section{Application}
+\label{sec:plet_app}
 
 Triangle3sPB gives us an sample usage of mathematical pullbacks, by constructing triangle-shaped graphs and products of those graphs, as an example. These types of computations are relevant and important in many graph-rewriting calculations and can benefit from our optimisations.
 
