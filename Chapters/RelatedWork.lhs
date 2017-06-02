@@ -128,19 +128,19 @@ Moving the let outside the application cannot have a negative effect, but it can
 
 Consider the case where |b| is a lambda function. Before floating the let outside the application, the function cannot be applied to |a|:
 
-\edcomm{NP}{Change notation of <expr>s.}
-
 % WK: Local formatting directive --- only proof-of-concept, no good rendering yet:
 %{
 %format VRHS = "\hbox{$\langle\langle$\textit{v-rhs}$\rangle\rangle$}"
+%format ALTS = "\hbox{$\langle\langle$\textit{alts}$\rangle\rangle$}"
+%format BODY = "\hbox{$\langle\langle$\textit{body}$\rangle\rangle$}"
 \begin{code}
   (let v = VRHS in (\ x -> ...x...)) a
 \end{code}
-%}
+
 However, after floating the let outside, it is clear that a beta-reduction rule can be applied, substituting an |a| for ever |x| at compile-time:
 
 \begin{code}
-  let v = <v-rhs> in (\ x -> ...x...) a
+  let v = VRHS in (\ x -> ...x...) a
 \end{code}
 
 \item |case (let v = e in b) of alts| $\quad \to \quad$ |let v = e in case b of alts|
@@ -150,35 +150,36 @@ Likewise for moving the let outside a case expression, it won't have a negative 
 Consider the case where |b| is a constructor application. Before floating the let outside the case expression, there isn't a clear correspondence between the constructor and the alternatives:
 
 \begin{code}
-  case (let v = <v-rhs> in con v1 v2 v3) of <alts>
+  case (let v = VRHS in con v1 v2 v3) of ALTS
 \end{code}
 
 However, after floating the let outside, it is clear that the case expression can be simplified to the body of the alternative with the same constructor, without any evaluation being performed:
 
 \begin{code}
-  let v = <v-rhs> in case con v1 v2 v3 of <alts>
+  let v = VRHS in case con v1 v2 v3 of ALTS
 \end{code}
 
 \item |let x = let  v = e in b in c| $\quad \to \quad$ |let v = e in let x = b in c|
 
 Moving a let binding from the right-hand side of another let binding to outside it can have several advantages including potentially reducing the need for some heap allocation when the final form of the second binding becomes more clear \citep{jones1996}.
 
-In the following example, floating the let binding out reveals a head normal form. Without floating, when |x| was met in the |<body>|, we would evaluate |x| by computing the pair |(v,v)| and overwriting the heap-allocated thunk for |x| with the result:
+In the following example, floating the let binding out reveals a head normal form. Without floating, when |x| was met in the |BODY|, we would evaluate |x| by computing the pair |(v,v)| and overwriting the heap-allocated thunk for |x| with the result:
 
 \begin{code}
-  let x = let v = <v-rhs> in (v,v)
-  in <body>
+  let x = let v = VRHS in (v,v)
+  in BODY
 \end{code}
 
 With floating, we would instead allocate a thunk for |v| and a pair for |x|, so that |x| is allocated in its final form:
 
 \begin{code}
-  let v = <v-rhs>
+  let v = VRHS
   in let x = (v,v)
-     in <body>
+     in BODY
 \end{code}
 
-This means that when |x| is met in the |<body>| and evaluated, no update to the thunk would be needed, saving a significant amount of memory traffic \citep{jones1996}.
+This means that when |x| is met in the |BODY| and evaluated, no update to the thunk would be needed, saving a significant amount of memory traffic \citep{jones1996}.
+%}
 
 \end{enumerate}
 
