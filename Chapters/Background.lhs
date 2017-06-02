@@ -110,8 +110,8 @@ The treeless syntax is the input to the compiler backend of Agda. It's
 a high-level internal syntax, the name for which is derived from its
 use of case expressions instead of case trees.
 The other notable difference between compiled clauses and treeless
-syntax is the absence of datatypes \edcomm{WK}{? mentioned in |CaseType|}
-and constructors \edcomm{WK}{? First argument of |TACon|!}
+syntax is the absence of instantiated datatypes
+and constructors
 \citep{agdahackage}.
 % https://hackage.haskell.org/package/Agda-2.5.2/docs/Agda-Syntax-Treeless.html
 Note that internally, variables are represented only by their De Bruijn index, however for ease of illustration, we use named variables in our pretty-printed samples of treeless terms.
