@@ -44,7 +44,7 @@ There are a couple of implementation-specific details of interest when implement
 
 The |floatPatterns| function will only float pattern lets which occur in multiple branches, and they are floated to the least join point of those branches.
 
-Further, it is worth noting that pattern let occurrences are duplicated at join points, indicating that identical pattern lets have ``met'' there, and are then later simplified away with the |squashFloatings| function.
+Further, it is worth noting that pattern let occurrences are duplicated at join points, indicating that identical \edcomm{WK}{only the RHS needs to be ``identical'' (up to $\alpha$-conversion); the patterns are unified. E.g., |let a@(b@(c,d),e) = RHS| and |let a@(b, c@(d,e)) = RHS| are unified into |let f@(g@(h,i),j@(k,l)) = RHS|. (Note that these |let| bindings are non-recursive!)} pattern lets have ``met'' there, and are then later simplified away with the |squashFloatings| function.
 
 We are further expanding the pattern let floating optimisation such that they can not only be floated up expressions, but also across function calls. By floating pattern lets across function calls, we can avoid even more duplicated computation through sharing.
 
