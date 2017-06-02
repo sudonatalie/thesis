@@ -8,7 +8,7 @@ all:	figs lhs
 	bibtex ${filename}||true
 	pdflatex ${filename}
 
-quick:
+quick:  lhs
 	pdflatex ${filename}
 
 figs:
