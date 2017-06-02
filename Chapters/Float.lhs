@@ -68,7 +68,9 @@ Figure~\ref{fig:Triangle_float} shows the result of applying @--float-plet@ to t
 
 \subsection*{Pullback}
 
-\edcomm{NP}{Write words here}
+One of the modules depended on by \AgdaModule{Triangle3sPB} is \AgdaModule{Pullback}, the compilation of which exhibits good opportunities for cross-call floating.
+
+Figure~\ref{fig:Triangle_float} shows the result of @--float-plet@ on \AgdaModule{Pullback}, and Figure~\ref{fig:Triangle_crosscall} shows the result of @--cross-call-float@.\edcomm{NP}{Highlight what's interesting about this.}
 
 \begin{figure}[h]
 \centering
