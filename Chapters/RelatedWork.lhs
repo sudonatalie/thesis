@@ -11,7 +11,7 @@ Common subexpression elimination (CSE) is a compiler optimisation that reduces e
 
 The GHC compilation process consists of translating Haskell code into a second-order $\lambda$-calculus language called Core, at which point a series of optimising transformation are performed, and the backend code generator transforms Core code into the final output \citep{Chitil-1998}. This process is very similar to the Agda compilation process, which translates Agda code into Treeless code, applies a series of optimising transformations, and finally generates Haskell code through the backend, as discussed in Section~\ref{sec:background_agda}.
 
-The syntax of the Core intermediate language of Haskell is very similar to Treeless, with expressions consisting mainly of $\lambda$ abstractions, |let| bindings, |case| expressions, constructors, literals and function applications, much like Agda's Treeless syntax outlined in Figure~\ref{code:TTerm}.
+The syntax of the Core intermediate language of Haskell is very similar to Treeless, with expressions consisting mainly of $\lambda$ abstractions, |let| bindings, |case| expressions, constructors, literals and function applications, much like Agda's Treeless syntax.% outlined in Figure~\ref{code:TTerm}.
 
 CSE is implemented in GHC with a single recursive traversal of the Core program. For each expression, its subexpressions are first transformed, then it is determined whether the whole transformed expression has occurred already \citep{Chitil-1998}. An example of this is shown in Figure~\ref{code:cse_haskell}.
 
