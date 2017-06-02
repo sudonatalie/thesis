@@ -1,7 +1,7 @@
 --- compile-float/MAlonzo/Code/Data/Fin/VecCat/PullbackB.hs
 +++ compile-crosscall/MAlonzo/Code/Data/Fin/VecCat/PullbackB.hs
 @@ -88,9 +88,10 @@
- name46 = "Data.Fin.VecCat.PullbackB.FinPB₀.mkPair"
+ name46 = "Data.Fin.VecCat.PullbackB.FinPB\8320.mkPair"
  d46 v0 v1 v2 v3 v4 v5 v6 v7 = du46 v1 v2 v3 v4 v5 v6
  du46 v0 v1 v2 v3 v4 v5
 -  = coe
@@ -11,11 +11,11 @@
 +    let v7 = coe du78 v0 v1 v2 v3 v4 v5 in dv46 v0 v1 v2 v3 v4 v5 v6 v7
 +dv46 v0 v1 v2 v3 v4 v5 v6 v7
 +  = coe MAlonzo.Code.Data.Nat.DivMod.du76 v7 v6
- name58 = "Data.Fin.VecCat.PullbackB.FinPB₀._.lk"
+ name58 = "Data.Fin.VecCat.PullbackB.FinPB\8320._.lk"
  d58 v0 v1 v2 v3 v4 v5 v6 v7 = du58 v1 v2 v3 v4 v5
  du58 v0 v1 v2 v3 v4
 @@ -128,13 +129,21 @@
- name78 = "Data.Fin.VecCat.PullbackB.FinPB₀._.r₀"
+ name78 = "Data.Fin.VecCat.PullbackB.FinPB\8320._.r\8320"
  d78 v0 v1 v2 v3 v4 v5 v6 v7 = du78 v1 v2 v3 v4 v5 v6
  du78 v0 v1 v2 v3 v4 v5
 -  = coe
