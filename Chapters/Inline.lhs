@@ -20,12 +20,12 @@ to our Agda branch which, when enabled, will replace every call to a function th
 The logical representation of inlining is fairly straightforward.
 We recurse through the treeless representation of an Agda module.
 For every application of a function or datatype to a list of arguments,
-that is $d~t^*$ \edcomm{WK}{Change $t*$ to $t_1\ \ldots\ t_n$?},
+that is $d~t_1 \ldots t_n$,
 where $d$ is the name of a function or datatype,
-and $t$s are treeless terms,
-we replace $d~t^*$
+and each $t_i$ is a treeless term,
+we replace $d~t_1 \ldots t_n$
 with the function or datatype definition corresponding to $d$
-and substitute in the $t^*$ arguments.
+and substitute in the $t_1 \ldots t_n$ arguments.
 
 \section{Implementation}
 \label{sec:inline_proj_implement}
