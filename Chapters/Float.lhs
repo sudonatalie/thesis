@@ -53,6 +53,15 @@ This feature is implemented by splitting the pattern lets at the root of functio
 \section{Application}
 \label{sec:float_app}
 
+The @--abstract-plet@ feature is necessary to split functions into two, with the let-bound variables abstracted out into function arguments of the second function. An example of this is shown in Figure~\ref{fig:pullback_abstract}. This abstraction is what allows cross-call floating to occur.
+
+\begin{figure}[h]
+\centering
+\lstinputlisting[style=diff]{Figures/Pullback_abstract.diff}
+\caption{Unified difference of the \AgdaModule{Pullback}~module compiled without and then with @--abstract-plet@.}
+\label{fig:pullback_abstract}
+\end{figure}
+
 As readers may have noticed inspecting Figure~\ref{fig:Triangle_genplet} in the preceding chapter, there are 4 pattern let bindings for the same \texttt{v2} variable within the \texttt{d4788} function. This is a perfect opportunity for floating pattern lets, to create sharing where there formerly was none.
 
 \begin{figure}[h]

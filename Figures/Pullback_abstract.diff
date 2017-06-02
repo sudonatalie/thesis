@@ -1,0 +1,11 @@
+--- compile/MAlonzo/Code/Data/Fin/VecCat/Pullback.hs
++++ compile-abstract/MAlonzo/Code/Data/Fin/VecCat/Pullback.hs
+@@ -90,19 +98,30 @@
+ name60 = "Data.Fin.VecCat.Pullback.FinPB\8320._.s"
+ d60 v0 v1 v2 v3 v4 v5 v6 v7 = du60 v1 v2 v3 v4 v5
+ du60 v0 v1 v2 v3 v4                                   -- occurs in du68
+   = let v5@(MAlonzo.Code.Data.Product.C30 v6 v7)
+           = coe du58 v0 v1 v2 v3 v4 in
+-    coe v6
++    dv60 v0 v1 v2 v3 v4 v5 v6 v7
++dv60 v0 v1 v2 v3 v4 v5 v6 v7 = coe v6
