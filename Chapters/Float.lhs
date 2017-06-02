@@ -1,7 +1,8 @@
 \chapter{Pattern Let Floating}
 \label{cha:plet-floating}
 
-In this chapter we present our projection inlining \edcomm{WK}{???} optimisation. In Section~\ref{sec:float_usage} we give usage instructions. In Section~\ref{sec:float_logical} we show a logical representation of the transformation. In Section~\ref{sec:float_implement} we provide some implementation details pertaining to the optimisation. Section~\ref{sec:float_next} discusses some future work the extend this feature. Lastly, in Section~\ref{sec:float_app} we apply pattern let floating to a sample program and examine the results.
+In this chapter we present our pattern let floating optimisation. In Section~\ref{sec:float_usage} we give usage instructions. In Section~\ref{sec:float_logical} we show a logical representation of the transformation. In Section~\ref{sec:float_implement} we provide some implementation details pertaining to the optimisation.
+Lastly, in Section~\ref{sec:float_app} we apply pattern let floating to a sample program and examine the results.
 
 \section{Usage}
 \label{sec:float_usage}
@@ -12,7 +13,16 @@ We added the option:
 --float-plet          float pattern lets to remove duplication
 \end{verbatim}
 
-to our Agda branch which, when enabled, will float the pattern lets up through the abstract syntax tree to join with other bindings for the same expression. We also added:
+to our Agda branch which, when enabled, will float the pattern lets up through the abstract syntax tree to join with other bindings for the same expression.
+
+In combination with our option:
+\begin{verbatim}
+--cross-call-float                          float pattern bindings across function calls
+\end{verbatim}
+
+bindings can also be shared across function calls.
+
+We also added:
 
 \begin{verbatim}
 --abstract-plet       abstract pattern lets in generated code
@@ -36,12 +46,9 @@ The |floatPatterns| function will only float pattern lets which occur in multipl
 
 Further, it is worth noting that pattern let occurrences are duplicated at join points, indicating that identical pattern lets have ``met'' there, and are then later simplified away with the |squashFloatings| function.
 
-\section{Next Steps}
-\label{sec:float_next}
+We are further expanding the pattern let floating optimisation such that they can not only be floated up expressions, but also across function calls. By floating pattern lets across function calls, we can avoid even more duplicated computation through sharing.
 
-Our goal is to further expand the pattern let floating optimisation such that they can not only be floated up expressions, but also across function calls. By floating pattern lets across function calls, we can avoid even more duplicated computation through sharing.
-
-This feature can be implemented by splitting the pattern lets at the root of functions into separate pattern lets and a body. By creating secondary functions that take the variables bound by pattern lets and make them explicit arguments to a separate function, we can abstract the patterns across function calls.
+This feature is implemented by splitting the pattern lets at the root of functions into separate pattern lets and a body. By creating secondary functions that take the variables bound by pattern lets and make them explicit arguments to a separate function, we can abstract the patterns across function calls.
 
 \section{Application}
 \label{sec:float_app}
