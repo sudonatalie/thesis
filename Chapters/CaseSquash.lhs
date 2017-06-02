@@ -130,3 +130,7 @@ We then compile the same file with both @--inline-proj@ and @--squash-cases@, an
 \end{figure}
 
 Figure~\ref{fig:Example1_inline_squash} shows the overall unified diff from neither optimisation to both.
+\edcomm{WK}{It would be really good if the three figures could be on the same page, or interleaved with explanation.}
+\edcomm{WK}{In particular, explanation is needed what to look at in the final result: Only one ``|case coe v0 of C26 x y ->|''.
+(While the starting point has two, since inlining does not change anything in this respect.)
+}%edcomm
