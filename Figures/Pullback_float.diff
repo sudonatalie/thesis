@@ -1,0 +1,88 @@
+--- compile-abstract/MAlonzo/Code/Data/Fin/VecCat/PullbackB.hs
++++ compile-float/MAlonzo/Code/Data/Fin/VecCat/PullbackB.hs
+@@ -98,15 +98,17 @@
+ name60 = "Data.Fin.VecCat.PullbackB.FinPB\8320._.s"
+ d60 v0 v1 v2 v3 v4 v5 v6 v7 = du60 v1 v2 v3 v4 v5
+ du60 v0 v1 v2 v3 v4
+-  = let v5 = coe du58 v0 v1 v2 v3 v4 in
+-    case coe v5 of
++  = let v5 = coe du58 v0 v1 v2 v3 v4 in dv60 v0 v1 v2 v3 v4 v5
++dv60 v0 v1 v2 v3 v4 v5
++  = case coe v5 of
+       MAlonzo.Code.Data.Product.C30 v6 v7 -> coe v6
+       _ -> coe MAlonzo.RTE.mazUnreachableError
+ name62 = "Data.Fin.VecCat.PullbackB.FinPB\8320._.n\8320"
+ d62 v0 v1 v2 v3 v4 v5 v6 v7 = du62 v1 v2 v3 v4 v5
+ du62 v0 v1 v2 v3 v4
+-  = let v5 = coe du58 v0 v1 v2 v3 v4 in
+-    case coe v5 of
++  = let v5 = coe du58 v0 v1 v2 v3 v4 in dv62 v0 v1 v2 v3 v4 v5
++dv62 v0 v1 v2 v3 v4 v5
++  = case coe v5 of
+       MAlonzo.Code.Data.Product.C30 v6 v7
+         -> case coe v7 of
+              MAlonzo.Code.Data.Product.C30 v8 v9 -> coe v8
+@@ -115,8 +117,9 @@
+ name70 = "Data.Fin.VecCat.PullbackB.FinPB\8320._.v"
+ d70 v0 v1 v2 v3 v4 v5 v6 v7 = du70 v1 v2 v3 v4 v5
+ du70 v0 v1 v2 v3 v4
+-  = let v5 = coe du58 v0 v1 v2 v3 v4 in
+-    case coe v5 of
++  = let v5 = coe du58 v0 v1 v2 v3 v4 in dv70 v0 v1 v2 v3 v4 v5
++dv70 v0 v1 v2 v3 v4 v5
++  = case coe v5 of
+       MAlonzo.Code.Data.Product.C30 v6 v7
+         -> case coe v7 of
+              MAlonzo.Code.Data.Product.C30 v8 v9 -> coe v9
+@@ -180,9 +183,9 @@
+ d784 a0 a1 a2 a3 a4 = ()
+ name856
+   = "Data.Fin.VecCat.PullbackB._.\9417-HasPullbacks-HasProducts"
+-d856
+-  = let v0 = coe MAlonzo.Code.Data.Fin.VecCat.d32 in
+-    coe
++d856 = let v0 = coe MAlonzo.Code.Data.Fin.VecCat.d32 in dv856 v0
++dv856 v0
++  = coe
+       MAlonzo.Code.Categoric.FinLimits.du3924
+       (case coe v0 of
+          MAlonzo.Code.Categoric.Category.C1 v1 v2
+@@ -198,9 +201,9 @@
+          _ -> MAlonzo.RTE.mazUnreachableError)
+ name858
+   = "Data.Fin.VecCat.PullbackB._.\9417-HasPullbacks-mkProduct"
+-d858
+-  = let v0 = coe MAlonzo.Code.Data.Fin.VecCat.d32 in
+-    coe
++d858 = let v0 = coe MAlonzo.Code.Data.Fin.VecCat.d32 in dv858 v0
++dv858 v0
++  = coe
+       MAlonzo.Code.Categoric.FinLimits.du3872
+       (case coe v0 of
+          MAlonzo.Code.Categoric.Category.C1 v1 v2
+@@ -274,9 +277,9 @@
+ name2992 = "Data.Fin.VecCat.PullbackB.hasPullbacks\8242"
+ d2992 v0 v1 v2 = coe d2990 v1 v2 v0
+ name3004 = "Data.Fin.VecCat.PullbackB.mkProduct\8242"
+-d3004
+-  = let v0 = coe MAlonzo.Code.Data.Fin.VecCat.d32 in
+-    coe
++d3004 = let v0 = coe MAlonzo.Code.Data.Fin.VecCat.d32 in dv3004 v0
++dv3004 v0
++  = coe
+       MAlonzo.Code.Categoric.FinLimits.du3872
+       (case coe v0 of
+          MAlonzo.Code.Categoric.Category.C1 v1 v2
+@@ -292,9 +295,9 @@
+          _ -> MAlonzo.RTE.mazUnreachableError)
+       (1 :: Integer) MAlonzo.Code.Data.Fin.VecCat.d3916 d2992
+ name3006 = "Data.Fin.VecCat.PullbackB.hasProducts\8242"
+-d3006
+-  = let v0 = coe MAlonzo.Code.Data.Fin.VecCat.d32 in
+-    coe
++d3006 = let v0 = coe MAlonzo.Code.Data.Fin.VecCat.d32 in dv3006 v0
++dv3006 v0
++  = coe
+       MAlonzo.Code.Categoric.FinLimits.du3924
+       (case coe v0 of
+          MAlonzo.Code.Categoric.Category.C1 v1 v2
