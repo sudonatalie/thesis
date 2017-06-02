@@ -3,6 +3,11 @@
 
 In this chapter we present our case squashing optimisation. In Section~\ref{sec:squashing_usage} we give usage instructions. In Section~\ref{sec:squashing_logical} we show a logical representation of the transformation. In Section~\ref{sec:squashing_implement} we provide some implementation details pertaining to the optimisation. Lastly, in Section~\ref{sec:squashing_app} we apply case squashing to a sample program and examine the results.
 
+Note that following our own development of the case squashing optimisation, a
+similar transformation was introduced to the Agda compiler as part of the
+|Simplify| pass on the treeless syntax. This alternate method of case squashing
+is discussed in Subsection~\ref{sub:alternate_case_squash}.
+
 \section{Usage}
 \label{sec:squashing_usage}
 
