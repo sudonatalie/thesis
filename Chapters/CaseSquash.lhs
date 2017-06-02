@@ -112,9 +112,9 @@ We then compile the same file with both @--inline-proj@ and @--squash-cases@, an
 
 Figure~\ref{fig:Example1_inline_squash} shows the overall unified diff from neither optimisation to both. In particular, note that after both inlining and squashing optimizations, there is only one case expression scrutinising |v0|.
 
-\edcomm{WK}{If you have .hs word count data with and without case squash,
-and possibly even .o size data,
-those may be worth including.}
+% \edcomm{WK}{If you have .hs word count data with and without case squash,
+% and possibly even .o size data,
+% those may be worth including.}
 
 \begin{figure}[h!]
 \begin{subfigure}{\linewidth}
