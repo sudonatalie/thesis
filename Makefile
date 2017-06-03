@@ -1,4 +1,5 @@
 filename=MScThesis
+presentation=Presentation
 lagda_dir=Figures/Agda
 
 all:	figs lhs
@@ -8,8 +9,19 @@ all:	figs lhs
 	bibtex ${filename}||true
 	pdflatex ${filename}
 
+p: plhs
+	pdflatex ${presentation}
+	pdflatex ${presentation}
+	bibtex ${presentation}||true
+	pdflatex ${presentation}
+	bibtex ${presentation}||true
+	pdflatex ${presentation}
+
 quick:  lhs
 	pdflatex ${filename}
+
+pquick:  plhs
+	pdflatex ${presentation}
 
 figs:
 	cd ${lagda_dir}; \
@@ -17,6 +29,9 @@ figs:
 
 lhs:
 	lhs2TeX ${filename}.lhs -o ${filename}.tex
+
+plhs:
+	lhs2TeX ${presentation}.lhs -o ${presentation}.tex
 
 read:
 	evince ${filename}.pdf &
