@@ -1,6 +1,15 @@
 \chapter{Compiler.hs (abridged)}
 \label{app:compiler}
 
+The following is an abridged subsection of |Agda.Compiler.MAlonzo.Compiler|
+module. This is the primary module of Agda's GHC backend, or MAlonzo, where we
+have implemented our generate pattern let optimisation.
+
+The section of interest to us in this file is the |term| function, which
+translates |Treeless| terms to Haskell expressions. We have augmented this
+translation to perform pattern let generation, which avoids generating certain
+trivial case expressions in the Haskell output.
+
 \begin{code}
 {-# LANGUAGE CPP, PatternGuards #-}
 

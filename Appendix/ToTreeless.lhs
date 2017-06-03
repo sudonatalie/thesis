@@ -1,6 +1,11 @@
 \chapter{ToTreeless.hs (abridged)}
 \label{app:to_treeless}
 
+The abridged code listing below for the the |Agda.Compiler.ToTreeless| module
+documents our projection inlining optimisation. This optimisation replaces every
+call to a function that is a proper projection with its function body. The
+transformation occurs during the translation to |Treeless| syntax.
+
 \begin{code}
 {-# LANGUAGE CPP #-}
 

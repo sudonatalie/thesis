@@ -1,6 +1,14 @@
 \chapter{Case Squash.hs}
 \label{app:case_squash}
 
+The following is a listing for our case squashing optimisation, which we
+developed as a separate module, |Agda.Compiler.Treeless.CaseSquash|. The
+|squashCases| function in this module removes repeated case expressions that are
+nested and match on the same variable. It is called as part of the pipeline of
+|ToTreeless| optimisations in the separate Agda compiler branch we maintain for
+this project, which does not include the later implemented case squashing
+simplification now present in the Agda stable branches.
+
 \begin{code}
 {-# LANGUAGE CPP, PatternGuards #-}
 
