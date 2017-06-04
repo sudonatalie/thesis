@@ -214,6 +214,8 @@ In Chapter~\ref{cha:plet-floating} we discuss our attempts to re-introduce some 
 \subsection{Alternate method of case squashing}
 \label{sub:alternate_case_squash}
 
+%https://github.com/agda/agda/commit/56132a6046473ae1f62a5e12e705de0e79c74188
+
 Following our own development of @--squash-cases@ (see Chapter~\ref{cha:case_squashing}),
 an optimisation was added to the Agda compiler's Simplify stage
 which accomplishes the same goals as @--squash-cases@ in a slightly
