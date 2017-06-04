@@ -39,7 +39,7 @@ case x of
         d v0'...vn' -> r
 \end{spec}
 \end{subfigure}
-{\large$\to$}
+{$\longrightarrow$}
 \begin{subfigure}{.47\textwidth}
 \centering
 \begin{spec}
@@ -74,7 +74,7 @@ case $\textcolor{red}{2}$ of
   ...
 \end{lstlisting}
 \end{subfigure}
-{\large$\qquad\to\qquad$}
+{$\longrightarrow$}
 \begin{subfigure}{.3\textwidth}
 \centering
 \begin{lstlisting}[style=math]

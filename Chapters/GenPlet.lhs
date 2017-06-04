@@ -38,7 +38,7 @@ in case x of
 \end{spec}
 where |unreachable(u) == true|.
 \end{subfigure}
-{\large$\to$}
+{$\longrightarrow$}
 \begin{subfigure}{.47\textwidth}
 \begin{spec}
 let x@(d v0...vn) = e

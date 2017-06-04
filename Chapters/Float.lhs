@@ -43,7 +43,7 @@ f  (let x@(d v0...vn) =  e in t1)
    (let x@(d v0...vn) =  e in t2)
 \end{spec}
 \end{subfigure}
-{\large$\to$}
+{$\longrightarrow$}
 \begin{subfigure}{.47\textwidth}
 \begin{spec}
 let x@(d v0...vn) = e
