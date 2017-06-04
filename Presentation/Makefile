@@ -1,5 +1,5 @@
-filename=MScThesis
-lagda_dir=Figures/Agda
+filename=Presentation
+lagda_dir=Agda
 
 all:	figs lhs
 	pdflatex ${filename}

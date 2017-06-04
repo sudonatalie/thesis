@@ -57,7 +57,7 @@
 
 \begin{frame}{Bibliography}
 \bibliographystyle{plainnat}
-\bibliography{Bibliography/RATH/strings,Bibliography/RATH/ref,Bibliography/RATH/crossrefs,Bibliography/ref}
+\bibliography{../Bibliography/RATH/strings,../Bibliography/RATH/ref,../Bibliography/RATH/crossrefs,../Bibliography/ref}
 \end{frame}
 
 \end{document}
