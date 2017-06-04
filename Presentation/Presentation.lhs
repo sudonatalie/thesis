@@ -38,6 +38,7 @@
 \usepackage{../Styles/AgdaChars}
 \usepackage{tikz}
 \usetikzlibrary{shapes,positioning,arrows.meta}
+\usepackage{subcaption}
 
 \title{(Re-)Creating sharing in Agda's GHC backend}
 \author{Natalie Perna}
@@ -93,6 +94,128 @@ Good performance, but additional passes over generated code necessary to harness
 
 \begin{frame}{Stages of compilation}
 \input{Figures/CompilerFlowchart}
+\end{frame}
+
+\section{Optimisations}
+
+\subsection{Projection Inlining}
+
+\begin{frame}{Projection Inlining}
+
+Inline all proper projections.
+
+\begin{itemize}
+  \item Recurse through expression tree
+  \item Identify proper projections by qualified name
+  \item Replace function with body
+  \item Substitute in function arguments
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Projection Inlining: Application}
+TODO
+\end{frame}
+
+\subsection{Case Squashing}
+
+\begin{frame}{Case Squashing}
+
+Eliminate case expressions where the scrutinee has already been matched on by an enclosing ancestor case expression.
+
+\begin{figure}[h]
+\footnotesize
+\centering
+\begin{subfigure}{.47\textwidth}
+\centering
+\begin{spec}
+case x of
+  d v0..vn ->
+    ...
+      case x of
+        d v0'...vn' -> r
+\end{spec}
+\end{subfigure}
+{$\longrightarrow$}
+\begin{subfigure}{.47\textwidth}
+\centering
+\begin{spec}
+case x of
+  d v0...vn ->
+    ...
+      r[v0' := v0, ..., vn' := vn]
+\end{spec}
+\end{subfigure}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Case Squashing: Application}
+TODO
+\end{frame}
+
+\subsection{Pattern Let Generating}
+
+\begin{frame}{Pattern Let Generating}
+We can avoid generating certain trivial case expressions by identifying qualifying let expressions.
+
+\begin{figure}[h]
+\footnotesize
+\centering
+\begin{subfigure}{.47\textwidth}
+\begin{spec}
+let x = e
+in case x of
+  d v0...vn -> t
+  otherwise -> u
+\end{spec}
+where |unreachable(u) == true|.
+\end{subfigure}
+{$\longrightarrow$}
+\begin{subfigure}{.47\textwidth}
+\begin{spec}
+let x@(d v0...vn) = e
+in t
+\end{spec}
+\end{subfigure}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Pattern Let Generating: Application}
+TODO
+\end{frame}
+
+\subsection{Pattern Let Floating}
+
+\begin{frame}{Pattern Let Floating}
+Float pattern lets up through the abstract syntax tree to join with other bindings for the same expression.
+
+\begin{figure}[h]
+\footnotesize
+\centering
+\begin{subfigure}{.47\textwidth}
+\begin{spec}
+f  (let x@(d v0...vn) =  e in t1)
+   (let x@(d v0...vn) =  e in t2)
+\end{spec}
+\end{subfigure}
+{$\longrightarrow$}
+\begin{subfigure}{.47\textwidth}
+\begin{spec}
+let x@(d v0...vn) = e
+in f t1 t2
+\end{spec}
+\end{subfigure}
+\end{figure}
+TODO
+\end{frame}
+
+\begin{frame}{Pattern Let Floating: Application}
+TODO
+\end{frame}
+
+\section{Conclusion}
+
+\begin{frame}{Conclusion}
+TODO
 \end{frame}
 
 \section{References}
