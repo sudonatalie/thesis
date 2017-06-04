@@ -21,7 +21,7 @@ The logical representation of inlining is fairly straightforward.
 We recurse through the treeless representation of an Agda module.
 For every application of a function or datatype to a list of arguments,
 that is $d~t_1 \ldots t_n$,
-where $d$ is the name of a function or datatype,
+where $d$ is the name of a proper projection,
 and each $t_i$ is a treeless term,
 we replace $d~t_1 \ldots t_n$
 with the function or datatype definition corresponding to $d$
