@@ -60,7 +60,7 @@
 \section{Agda}
 
 \begin{frame}{Agda}
-Agda \citep{Norell-2007} is a dependently-typed programming language and theorem prover, supporting proof construction in a functional programming style. %Due to its incredibly flexible concrete syntax and support for Unicode identifiers \citep{bove2009}, Agda can be used to construct elegant and expressive proofs in a format that is understandable even to those unfamiliar with the tool. As a result, many users of Agda, including our group, are quick to sacrifice speed and efficiency in our code in favour of proof clarity. This makes a highly-optimised compiler backend a particularly essential tool for practical development with Agda.
+Agda \citep{Norell-2007} is a dependently-typed programming language and theorem prover, supporting proof construction in a functional programming style.
 \end{frame}
 
 \begin{frame}{Example}
@@ -70,6 +70,11 @@ Agda \citep{Norell-2007} is a dependently-typed programming language and theorem
 \begin{frame}{Syntax}
 Agda supports flexible mixfix syntax and Unicode \citep{bove2009}.
 \input{Agda/latex/If}
+\end{frame}
+
+\begin{frame}{Readability}
+Fine-grain control over proof syntax allows for readable formats.
+\input{Agda/latex/Proof}
 \end{frame}
 
 \section{References}
