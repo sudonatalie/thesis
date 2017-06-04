@@ -31,7 +31,11 @@
 \makeatletter
 \setbeamertemplate{navigation symbols}{}
 
+%include polycode.fmt
 \usepackage[round]{natbib}
+\usepackage{comment}
+\usepackage{../Styles/agda}
+\usepackage{../Styles/AgdaChars}
 
 \title{(Re-)Creating sharing in Agda's GHC backend}
 \author{Natalie Perna}
@@ -51,6 +55,21 @@
 
 \begin{frame}{Outline}
 \tableofcontents
+\end{frame}
+
+\section{Agda}
+
+\begin{frame}{Agda}
+Agda \citep{Norell-2007} is a dependently-typed programming language and theorem prover, supporting proof construction in a functional programming style. %Due to its incredibly flexible concrete syntax and support for Unicode identifiers \citep{bove2009}, Agda can be used to construct elegant and expressive proofs in a format that is understandable even to those unfamiliar with the tool. As a result, many users of Agda, including our group, are quick to sacrifice speed and efficiency in our code in favour of proof clarity. This makes a highly-optimised compiler backend a particularly essential tool for practical development with Agda.
+\end{frame}
+
+\begin{frame}{Example}
+\input{Agda/latex/Replicate}
+\end{frame}
+
+\begin{frame}{Syntax}
+Agda supports flexible mixfix syntax and Unicode \citep{bove2009}.
+\input{Agda/latex/If}
 \end{frame}
 
 \section{References}
