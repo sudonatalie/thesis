@@ -66,11 +66,16 @@ environments would be better refactored into reader monad transformers, which
 would allow an inherited environment to be bound to the function results and
 passed through to subcomputations via the given monad.
 
+Additionally, our floating optimisations would benefit from recognizing single-
+alternative case expressions which are not immediately nested within an
+enclosing let expression, as described in Chapter~\ref{cha:plet-floating}.  In
+the future, we also seek to expand this optimisation's transformation to
+generate ``dummy'' pattern let expressions around said case expressions before
+executing the floating transformations.
+
 Further testing of all optimisations on a greater variety of
 Agda codebases is also a necessary next step before they can be safely
 integrated with a stable release branch of the compiler.
-
-% \edcomm{NP}{Floating cases that don't have lets}
 
 \section{Closing Remarks} \label{sec:closing_remarks}
 
