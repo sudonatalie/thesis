@@ -79,4 +79,6 @@ Agda supports flexible mixfix syntax and Unicode \citep{bove2009}.
 \bibliography{../Bibliography/RATH/strings,../Bibliography/RATH/ref,../Bibliography/RATH/crossrefs,../Bibliography/ref}
 \end{frame}
 
+\section{Questions}
+
 \end{document}
