@@ -36,6 +36,8 @@
 \usepackage{comment}
 \usepackage{../Styles/agda}
 \usepackage{../Styles/AgdaChars}
+\usepackage{tikz}
+\usetikzlibrary{shapes,positioning,arrows.meta}
 
 \title{(Re-)Creating sharing in Agda's GHC backend}
 \author{Natalie Perna}
@@ -75,6 +77,22 @@ Agda supports flexible mixfix syntax and Unicode \citep{bove2009}.
 \begin{frame}{Readability}
 Fine-grain control over proof syntax allows for readable formats.
 \input{Agda/latex/Proof}
+\end{frame}
+
+\section{Compiler}
+
+\begin{frame}{GHC Backend}
+\textit{Goal}: Achieve performance matching GHC.\\
+\textit{Solution}: Translate Agda into Haskell, compile with GHC.\\
+\citep{benke2007}
+\end{frame}
+
+\begin{frame}{Performance}
+Good performance, but additional passes over generated code necessary to harness GHC's strengths and avoid its pitfalls, namely due to the lack of GHC optimisations that occur around unsafe coercions \citep{fredriksson2011}.
+\end{frame}
+
+\begin{frame}{Stages of compilation}
+\input{Figures/CompilerFlowchart}
 \end{frame}
 
 \section{References}
