@@ -102,6 +102,6 @@ Good performance, but additional passes over generated code necessary to harness
 \bibliography{../Bibliography/RATH/strings,../Bibliography/RATH/ref,../Bibliography/RATH/crossrefs,../Bibliography/ref}
 \end{frame}
 
-\section{Questions}
+\section*{Questions}
 
 \end{document}
