@@ -85,7 +85,7 @@ Fine-grain control over proof syntax allows for readable formats.
 Good performance, but additional passes over generated code necessary to harness GHC's strengths and avoid its pitfalls, namely due to the lack of GHC optimisations that occur around unsafe coercions \citep{fredriksson2011}.
 \end{frame}
 
-\begin{frame}{Stages of compilation}
+\begin{frame}[c]{Stages of compilation}
 \input{Figures/CompilerFlowchart}
 \end{frame}
 
