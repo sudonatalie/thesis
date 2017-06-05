@@ -10,6 +10,14 @@ Lastly, in Section~\ref{sec:float_app} we apply pattern let floating to a sample
 We added the option:
 
 \begin{verbatim}
+--abstract-plet       abstract pattern lets in generated code
+\end{verbatim}
+which splits generated function definitions into two functions,
+the first containing only the top-level pattern bindings and a call to the second, and the second containing only the original body inside those pattern bindings, dependent on the additional variables bound in those patterns.
+
+We also added:
+
+\begin{verbatim}
 --float-plet          float pattern lets to remove duplication
 \end{verbatim}
 
@@ -21,14 +29,6 @@ In combination with our option:
 \end{verbatim}
 
 bindings can also be shared across function calls.
-
-We also added: \edcomm{WK}{Move this up/first?}
-
-\begin{verbatim}
---abstract-plet       abstract pattern lets in generated code
-\end{verbatim}
-which splits generated function definitions into two functions,
-the first containing only the top-level pattern bindings and a call to the second, and the second containing only the original body inside those pattern bindings, dependent on the additional variables bound in those patterns.
 
 \section{Logical Representation}
 \label{sec:float_logical}
