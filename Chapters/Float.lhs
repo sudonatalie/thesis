@@ -107,6 +107,8 @@ The @--abstract-plet@ feature is necessary to split functions into two, with the
 \label{fig:pullback_abstract}
 \end{figure}
 
+\newpage
+
 In Figure~\ref{fig:pullback_cross} we can see the result of cross-call floating on the \AgdaModule{Pullback} module. Notice that without cross-call floating, a single call to \texttt{du78} would result in two unshared calls to \texttt{du58}, one via \texttt{du60} and one via \texttt{du70}. With cross-call floating, \texttt{du78} calls \texttt{du58} only once, then passes the results via the additional parameters to \texttt{dv78}, which in turn shares the values with both \texttt{dv60} and \texttt{dv70}.
 
 \begin{figure}[h]
@@ -115,6 +117,8 @@ In Figure~\ref{fig:pullback_cross} we can see the result of cross-call floating 
 \caption{Unified difference of the \AgdaModule{Pullback}~module compiled without and then with @--cross-call@.}
 \label{fig:pullback_cross}
 \end{figure}
+
+\newpage
 
 As readers may have noticed inspecting Figure~\ref{fig:Triangle_genplet} in the preceding chapter, there are 4 pattern let bindings for the same \texttt{v2} variable within the \texttt{d4788} function. This is a perfect opportunity for floating pattern lets, to create sharing where there formerly was none.
 Figure~\ref{fig:Triangle_float} shows the result of applying @--float-plet@ to this compilation, resulting in the \texttt{v2} bindings floating above the shared function call.
