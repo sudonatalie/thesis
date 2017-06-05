@@ -120,6 +120,7 @@ Inline all proper projections.
 Eliminate case expressions where the scrutinee has already been matched on by an enclosing ancestor case expression.
 
 \begin{figure}[h]
+\hspace{-2cm}
 \footnotesize
 \centering
 \begin{subfigure}{.47\textwidth}
@@ -155,6 +156,7 @@ case x of
 We can avoid generating certain trivial case expressions by identifying qualifying let expressions.
 
 \begin{figure}[h]
+\hspace{-1cm}
 \footnotesize
 \centering
 \begin{subfigure}{.47\textwidth}
@@ -164,7 +166,6 @@ in case x of
   d v0...vn -> t
   otherwise -> u
 \end{spec}
-where |unreachable(u)|.
 \end{subfigure}
 {$\longrightarrow$}
 \begin{subfigure}{.47\textwidth}
@@ -174,6 +175,7 @@ in t
 \end{spec}
 \end{subfigure}
 \end{figure}
+where |unreachable(u)|.
 \end{frame}
 
 \begin{frame}{Pattern Let Generating: Application}
@@ -186,16 +188,17 @@ in t
 Float pattern lets up through the abstract syntax tree to join with other bindings for the same expression.
 
 \begin{figure}[h]
+\hspace{-1cm}
 \footnotesize
 \centering
-\begin{subfigure}{.47\textwidth}
+\begin{subfigure}{.57\textwidth}
 \begin{spec}
 f  (let x@(d v0...vn) =  e in t1)
    (let x@(d v0...vn) =  e in t2)
 \end{spec}
 \end{subfigure}
 {$\longrightarrow$}
-\begin{subfigure}{.47\textwidth}
+\begin{subfigure}{.37\textwidth}
 \begin{spec}
 let x@(d v0...vn) = e
 in f t1 t2
