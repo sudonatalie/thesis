@@ -231,7 +231,12 @@ in f t1 t2
 \section{Conclusion}
 
 \begin{frame}{Conclusion}
-TODO
+\begin{itemize}
+  \item Profiled existing Agda programs for highest cost centres
+  \item Developed transformations to focus on the inherent ``loss'' of sharing
+  \item Tested optimising transformations on various typical Agda programs
+  \item High-level documentation of Agda compiler pipeline
+\end{itemize}
 \end{frame}
 
 \section{References}
