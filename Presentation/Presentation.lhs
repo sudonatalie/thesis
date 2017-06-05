@@ -208,7 +208,15 @@ in f t1 t2
 \end{frame}
 
 \begin{frame}{Pattern Let Floating: Application}
-\lstinputlisting[style=diff]{Figures/Triangle_float.diff}
+\lstinputlisting[language=Haskell,basicstyle=\footnotesize\ttfamily]{Figures/Triangle_before.hs}
+\end{frame}
+
+\begin{frame}{Pattern Let Floating: Application}
+\lstinputlisting[language=Haskell,basicstyle=\footnotesize\ttfamily]{Figures/Triangle_after.hs}
+\end{frame}
+
+\begin{frame}{Pattern Let Floating: Application}
+\lstinputlisting[style=diff,basicstyle=\footnotesize\ttfamily]{Figures/Triangle_float.diff}
 \end{frame}
 
 \section{Challenges}
