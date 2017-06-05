@@ -208,6 +208,14 @@ in f t1 t2
 \lstinputlisting[style=diff]{Figures/Triangle_float.diff}
 \end{frame}
 
+\section{Challenges}
+
+\begin{frame}{Challenges}
+\begin{itemize}
+  \item TODO
+\end{itemize}
+\end{frame}
+
 \section{Conclusion}
 
 \begin{frame}{Conclusion}
