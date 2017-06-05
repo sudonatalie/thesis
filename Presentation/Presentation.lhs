@@ -126,11 +126,17 @@ Inline all proper projections.
 \end{frame}
 
 \begin{frame}{Projection Inlining: Application}
+\begin{figure}[h]
+\hspace{-1.5cm}
+\begin{subfigure}{.45\textwidth}
+\small
 \input{Agda/latex/Example1}
-\end{frame}
-
-\begin{frame}{Projection Inlining: Application}
+\end{subfigure}
+\hspace{1cm}
+\begin{subfigure}{.55\textwidth}
 \lstinputlisting[style=diff]{Figures/Example1_inline.diff}
+\end{subfigure}
+\end{figure}
 \end{frame}
 
 \subsection{Case Squashing}

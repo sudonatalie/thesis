@@ -5,7 +5,8 @@ data ℕ : Set where
   zero : ℕ
   suc : ℕ → ℕ
 
-record Pair (A : Set) (B : Set) : Set where
+record Pair (A : Set) (B : Set)
+  : Set where
   constructor _,_
   field
     fst : A

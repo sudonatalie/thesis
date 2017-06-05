@@ -3,12 +3,9 @@
 @@ -24,4 +24,12 @@
  name28 = "Example1.f"
 -d28 v0 = coe d22 v0 (coe d24 v0)
-+d28 v0
-+  = case coe v0 of
-+      C26 v1 v2
-+        -> coe
-+             v1
-+             (case coe v0 of
-+                C26 v3 v4 -> coe v4
-+                _ -> ⊥)
-+      _ -> coe ⊥
++d28 v0 = case coe v0 of
++  C26 v1 v2 -> coe v1
++    (case coe v0 of
++       C26 v3 v4 -> coe v4
++       _ -> ⊥)
++  _ -> coe ⊥
