@@ -222,7 +222,6 @@ in f t1 t2
 \end{spec}
 \end{subfigure}
 \end{figure}
-TODO
 \end{frame}
 
 \begin{frame}{Pattern Let Floating: Application}
