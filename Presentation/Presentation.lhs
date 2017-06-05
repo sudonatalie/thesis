@@ -197,7 +197,7 @@ in t
 \end{frame}
 
 \begin{frame}{Pattern Let Generating: Application}
-TODO
+\lstinputlisting[style=diff]{Figures/Triangle_genplet.diff}
 \end{frame}
 
 \subsection{Pattern Let Floating}
@@ -226,7 +226,7 @@ TODO
 \end{frame}
 
 \begin{frame}{Pattern Let Floating: Application}
-TODO
+\lstinputlisting[style=diff]{Figures/Triangle_float.diff}
 \end{frame}
 
 \section{Conclusion}
