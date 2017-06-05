@@ -66,7 +66,7 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Example}
+\begin{frame}{Examples}
 Dependent types:\\
 \input{Agda/latex/Replicate}
 
