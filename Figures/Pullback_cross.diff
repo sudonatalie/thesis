@@ -1,0 +1,51 @@
+--- compile-abstract/MAlonzo/Code/Data/Fin/VecCat/PullbackB.hs
++++ compile-cross/MAlonzo/Code/Data/Fin/VecCat/PullbackB.hs
+@@ -88,9 +88,10 @@
+ name46 = "Data.Fin.VecCat.PullbackB.FinPB\8320.mkPair"
+ d46 v0 v1 v2 v3 v4 v5 v6 v7 = du46 v1 v2 v3 v4 v5 v6
+ du46 v0 v1 v2 v3 v4 v5
+-  = coe
+-      MAlonzo.Code.Data.Nat.DivMod.du76 (coe du78 v0 v1 v2 v3 v4 v5)
+-      (coe du28 v0 v1 v2 v3)
++  = let v6 = coe du28 v0 v1 v2 v3 in
++    let v7 = coe du78 v0 v1 v2 v3 v4 v5 in dv46 v0 v1 v2 v3 v4 v5 v6 v7
++dv46 v0 v1 v2 v3 v4 v5 v6 v7
++  = coe MAlonzo.Code.Data.Nat.DivMod.du76 v7 v6
+@@ -101,28 +102,35 @@
+ name60 = "Data.Fin.VecCat.Pullback.FinPB\8320._.s"
+ d60 v0 v1 v2 v3 v4 v5 v6 v7 = du60 v1 v2 v3 v4 v5
+ du60 v0 v1 v2 v3 v4
+   = let v5@(MAlonzo.Code.Data.Product.C30 v6 v7)
+           = coe du58 v0 v1 v2 v3 v4 in
+     coe v6
++dv60 v0 v1 v2 v3 v4 v5 v6 v7 = coe v6
+ name62 = "Data.Fin.VecCat.PullbackB.FinPB\8320._.n\8320"
+ d62 v0 v1 v2 v3 v4 v5 v6 v7 = du62 v1 v2 v3 v4 v5
+ du62 v0 v1 v2 v3 v4
+   = let v5@(MAlonzo.Code.Data.Product.C30 v6 v7@(MAlonzo.Code.Data.Product.C30 v8 v9))
+           = coe du58 v0 v1 v2 v3 v4 in
+     coe v8
++dv62 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 = coe v8
+ name70 = "Data.Fin.VecCat.PullbackB.FinPB\8320._.v"
+ d70 v0 v1 v2 v3 v4 v5 v6 v7 = du70 v1 v2 v3 v4 v5
+ du70 v0 v1 v2 v3 v4
+   = let v5@(MAlonzo.Code.Data.Product.C30 v6 v7@(MAlonzo.Code.Data.Product.C30 v8 v9))
+           = coe du58 v0 v1 v2 v3 v4 in
+     coe v9
++dv70 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 = coe v9
+ name78 = "Data.Fin.VecCat.PullbackB.FinPB\8320._.r\8320"
+ d78 v0 v1 v2 v3 v4 v5 v6 v7 = du78 v1 v2 v3 v4 v5 v6
+ du78 v0 v1 v2 v3 v4 v5
++  = let v6@(MAlonzo.Code.Data.Product.C30 v7 v8@(MAlonzo.Code.Data.Product.C30 v9 v10))
++          = coe du58 v0 v1 v2 v3 v4 in
++    dv78 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 v10
++dv78 v0 v1 v2 v3 v4 v5 v6 v7 v8 v9 v10
+   = coe
+-      addInt (coe du60 v0 v1 v2 v3 v4)
++      addInt (coe dv60 v0 v1 v2 v3 v4 v6 v7 v8)
+       (coe
+          MAlonzo.Code.Data.Fin.du18
+          (coe
+             MAlonzo.Code.Data.Fin.VecCat.PullbackVecUtils.du302
+-            (coe du70 v0 v1 v2 v3 v4) v5))
++            (coe dv70 v0 v1 v2 v3 v4 v6 v7 v8 v9 v10) v5))
