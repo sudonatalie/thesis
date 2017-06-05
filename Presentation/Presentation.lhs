@@ -278,15 +278,13 @@ where  t1' =  t1[a := f, b := g, c := h, d := i, e := j]
 \lstinputlisting[style=diff,basicstyle=\footnotesize\ttfamily]{Figures/Triangle_float.diff}
 \end{frame}
 
-\section{Challenges}
+\section{Conclusion}
 
 \begin{frame}{Challenges}
 \begin{itemize}
   \item TODO
 \end{itemize}
 \end{frame}
-
-\section{Conclusion}
 
 \begin{frame}{Conclusion}
 \begin{itemize}
