@@ -22,13 +22,13 @@ In combination with our option:
 
 bindings can also be shared across function calls.
 
-We also added:
+We also added: \edcomm{WK}{Move this up/first?}
 
 \begin{verbatim}
 --abstract-plet       abstract pattern lets in generated code
 \end{verbatim}
 which splits generated function definitions into two functions,
-the first containing only the top-level pattern bindings and a call to the second, and the second contining only the original body inside those pattern bindings, dependent on the additional variables bound in those patterns.
+the first containing only the top-level pattern bindings and a call to the second, and the second containing only the original body inside those pattern bindings, dependent on the additional variables bound in those patterns.
 
 \section{Logical Representation}
 \label{sec:float_logical}
