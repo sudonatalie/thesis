@@ -39,6 +39,19 @@
 \usepackage{tikz}
 \usetikzlibrary{shapes,positioning,arrows.meta}
 \usepackage{subcaption}
+\usepackage{listings}
+
+\newcommand{\lstbg}[3][0pt]{{\fboxsep#1\colorbox{#2}{\strut #3}}}
+\lstdefinelanguage{diff}{
+  morecomment=[f][\lstbg{red!20}]-,         % deleted lines
+  morecomment=[f][\lstbg{green!20}]+,       % added lines
+  morecomment=[f][\textit]{---}, % header lines
+  morecomment=[f][\textit]{+++}
+}
+\lstdefinestyle{diff}{
+	language=diff,
+	basicstyle=\ttfamily\footnotesize
+}
 
 \title{(Re-)Creating sharing in Agda's GHC backend}
 \author{Natalie Perna}
@@ -113,7 +126,11 @@ Inline all proper projections.
 \end{frame}
 
 \begin{frame}{Projection Inlining: Application}
-TODO
+\input{Agda/latex/Example1}
+\end{frame}
+
+\begin{frame}{Projection Inlining: Application}
+\lstinputlisting[style=diff]{Figures/Example1_inline.diff}
 \end{frame}
 
 \subsection{Case Squashing}
@@ -149,7 +166,7 @@ case x of
 \end{frame}
 
 \begin{frame}{Case Squashing: Application}
-TODO
+\lstinputlisting[style=diff]{Figures/Example1_squash.diff}
 \end{frame}
 
 \subsection{Pattern Let Generating}
