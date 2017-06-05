@@ -30,7 +30,9 @@
 }
 \lstdefinestyle{diff}{
 	language=diff,
-	basicstyle=\ttfamily\footnotesize
+	basicstyle=\ttfamily\footnotesize,
+	extendedchars=true,
+	literate={⊥}{{$\bot$}}1
 }
 
 \title{(Re-)Creating sharing in Agda's GHC backend}

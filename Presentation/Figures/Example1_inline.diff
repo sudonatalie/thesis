@@ -10,5 +10,5 @@
 +             v1
 +             (case coe v0 of
 +                C26 v3 v4 -> coe v4
-+                _ -> MAlonzo.RTE.mazUnreachableError)
-+      _ -> coe MAlonzo.RTE.mazUnreachableError
++                _ -> ⊥)
++      _ -> coe ⊥
