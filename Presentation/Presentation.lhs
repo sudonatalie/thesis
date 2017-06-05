@@ -263,6 +263,7 @@ in f t1 t2
 \bibliography{../Bibliography/RATH/strings,../Bibliography/RATH/ref,../Bibliography/RATH/crossrefs,../Bibliography/ref}
 \end{frame}
 
-\section*{Questions}
+\begin{frame}{Questions}
+\end{frame}
 
 \end{document}
