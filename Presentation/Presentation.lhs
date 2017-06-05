@@ -56,33 +56,51 @@
 \section{Agda}
 
 \begin{frame}{Agda}
-Agda \citep{Norell-2007} is a dependently-typed programming language and theorem prover, supporting proof construction in a functional programming style.
+\begin{itemize}
+  \item Agda \citep{Norell-2007} programming language
+  \item \ldots and theorem prover
+  \item Dependently-typed
+  \item Proof construction in a functional programming style
+  \item Flexible mixfix syntax
+  \item Unicode identifiers \citep{bove2009}
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Example}
+Dependent types:\\
 \input{Agda/latex/Replicate}
-\end{frame}
 
-\begin{frame}{Syntax}
-Agda supports flexible mixfix syntax and Unicode \citep{bove2009}.
+\pause
+
+Syntax:\\
 \input{Agda/latex/If}
-\end{frame}
 
-\begin{frame}{Readability}
-Fine-grain control over proof syntax allows for readable formats.
+\pause
+
+Proof:\\
 \input{Agda/latex/Proof}
 \end{frame}
 
 \section{Compiler}
 
-\begin{frame}{GHC Backend}
-\textit{Goal}: Achieve performance matching GHC.\\
-\textit{Solution}: Translate Agda into Haskell, compile with GHC.\\
-\citep{benke2007}
-\end{frame}
+\begin{frame}{Compiler}
+\textit{Goal}:\\
+Achieve performance matching GHC
 
-\begin{frame}{Performance}
-Good performance, but additional passes over generated code necessary to harness GHC's strengths and avoid its pitfalls, namely due to the lack of GHC optimisations that occur around unsafe coercions \citep{fredriksson2011}.
+\pause\vspace{.5cm}
+
+\textit{Solution}:\\
+GHC Backend translates Agda into Haskell \citep{benke2007}
+
+\pause\vspace{1cm}
+
+\textit{Performance}:
+
+\begin{itemize}
+  \item Pretty good performance compiling with GHC
+  \item Lack of GHC optimisations that occur around unsafe coercions \citep{fredriksson2011}
+  \item Additional passes over generated code necessary to improve
+\end{itemize}
 \end{frame}
 
 \begin{frame}[c]{Stages of compilation}
