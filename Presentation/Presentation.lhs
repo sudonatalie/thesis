@@ -164,7 +164,7 @@ in case x of
   d v0...vn -> t
   otherwise -> u
 \end{spec}
-where |unreachable(u) == true|.
+where |unreachable(u)|.
 \end{subfigure}
 {$\longrightarrow$}
 \begin{subfigure}{.47\textwidth}
