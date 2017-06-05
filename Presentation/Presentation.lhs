@@ -34,6 +34,10 @@
 	extendedchars=true,
 	literate={⊥}{{$\bot$}}1
 }
+\lstdefinestyle{haskell}{
+	language=Haskell,
+	basicstyle=\ttfamily\scriptsize
+}
 
 \title{(Re-)Creating sharing in Agda's GHC backend}
 \author{Natalie Perna}
@@ -267,15 +271,15 @@ where  t1' =  t1[a := f, b := g, c := h, d := i, e := j]
 \end{frame}
 
 \begin{frame}{Pattern Let Floating: Application}
-\lstinputlisting[language=Haskell,basicstyle=\footnotesize\ttfamily]{Figures/Triangle_before.hs}
+\lstinputlisting[style=haskell]{Figures/Triangle_before.hs}
+\rule{\textwidth}{0.4pt}
+\lstinputlisting[style=haskell]{Figures/Triangle_float.hs}
 \end{frame}
 
 \begin{frame}{Pattern Let Floating: Application}
-\lstinputlisting[language=Haskell,basicstyle=\footnotesize\ttfamily]{Figures/Triangle_after.hs}
-\end{frame}
-
-\begin{frame}{Pattern Let Floating: Application}
-\lstinputlisting[style=diff,basicstyle=\footnotesize\ttfamily]{Figures/Triangle_float.diff}
+\lstinputlisting[style=haskell]{Figures/Triangle_float.hs}
+\rule{\textwidth}{0.4pt}
+\lstinputlisting[style=haskell]{Figures/Triangle_split.hs}
 \end{frame}
 
 \section{Conclusion}
