@@ -241,6 +241,29 @@ in f t1 t2
 \end{spec}
 \end{subfigure}
 \end{figure}
+
+\begin{figure}[h]
+\hspace{-1cm}
+\footnotesize
+\centering
+\begin{subfigure}{.57\textwidth}
+\begin{spec}
+f  (let a@(b@(c,d),e)   = e in t1)
+   (let a@(b, c@(d,e))  = e in t2)
+\end{spec}
+\end{subfigure}
+{$\longrightarrow$}
+\begin{subfigure}{.37\textwidth}
+\begin{spec}
+let f@(g@(h,i),j@(k,l)) = e
+in f t1' t2'
+\end{spec}
+\end{subfigure}
+\begin{spec}
+where  t1' =  t1[a := f, b := g, c := h, d := i, e := j]
+       t2' =  t2[a := f, b := g, c := j, d := k, e := l]
+\end{spec}
+\end{figure}
 \end{frame}
 
 \begin{frame}{Pattern Let Floating: Application}
