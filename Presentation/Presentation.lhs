@@ -109,6 +109,7 @@ Proof:\\
 \input{Agda/latex/Sharing}
 \end{subfigure}
 \hspace{1cm}
+\pause
 \begin{subfigure}{.55\textwidth}
 \lstinputlisting[style=haskell]{Figures/Sharing.hs}
 \end{subfigure}
@@ -165,6 +166,7 @@ Inline all proper projections.
 \input{Agda/latex/Example1}
 \end{subfigure}
 \hspace{1cm}
+\pause
 \begin{subfigure}{.55\textwidth}
 \lstinputlisting[style=diff]{Figures/Example1_inline.diff}
 \end{subfigure}
