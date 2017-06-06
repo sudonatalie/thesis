@@ -67,7 +67,7 @@ For a complete listing of our implementation of the pattern let generating optim
 \section{Application}
 \label{sec:plet_app}
 
-Triangle3sPB gives us an sample usage of mathematical pullbacks, by constructing triangle-shaped graphs and products of those graphs, as an example. These types of computations are relevant and important in many graph-rewriting calculations and can benefit from our optimisations.
+The Agda module \AgdaModule{Triangle3sPB} gives us an sample usage of mathematical pullbacks, by constructing triangle-shaped graphs and products of those graphs, as an example. These types of computations are relevant and important in many graph-rewriting calculations and can benefit from our optimisations.
 
 When we compile this module once without @--ghc-generate-pattern-let@ on, and once again with @--ghc-generate-pattern-let@ enabled, a unified diff of the two generated Haskell files gives us what is shown in Figure~\ref{fig:Triangle_genplet}. Both times, the module was compiled with @--inline-proj@.
 
