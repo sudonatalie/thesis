@@ -48,7 +48,9 @@
 }
 \lstdefinestyle{haskell}{
 	language=Haskell,
-	basicstyle=\ttfamily\scriptsize
+	basicstyle=\ttfamily\scriptsize,
+	extendedchars=true,
+	literate={⊥}{{$\bot$}}1 {ℕ}{{$\mathbb{N}$}}1
 }
 
 \title{(Re-)Creating sharing in Agda's GHC backend}
@@ -97,6 +99,20 @@ Syntax:\\
 
 Proof:\\
 \input{Agda/latex/Proof}
+\end{frame}
+
+\begin{frame}{Sharing}
+\begin{figure}[h]
+\hspace{-1.5cm}
+\begin{subfigure}{.45\textwidth}
+\small
+\input{Agda/latex/Sharing}
+\end{subfigure}
+\hspace{1cm}
+\begin{subfigure}{.55\textwidth}
+\lstinputlisting[style=haskell]{Figures/Sharing.hs}
+\end{subfigure}
+\end{figure}
 \end{frame}
 
 \section{Compiler}
