@@ -289,7 +289,11 @@ where  t1' =  t1[a := f, b := g, c := h, d := i, e := j]
 
 \begin{frame}{Challenges}
 \begin{itemize}
-  \item TODO
+  \item Understanding of compilation pipeline
+  \item Familiarisation with internal syntax
+  \item Non-termination of recursive inlining
+  \item Identifying squashable cases via De Bruijn index
+  \item Substituting case bodies with appropriate variable indices
 \end{itemize}
 \end{frame}
 
