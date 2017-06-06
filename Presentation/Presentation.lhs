@@ -162,13 +162,16 @@ Inline all proper projections.
 \begin{figure}[h]
 \hspace{-1.5cm}
 \begin{subfigure}{.45\textwidth}
+\invisible<3>{
 \small
 \input{Agda/latex/Example1}
+}
 \end{subfigure}
 \hspace{1cm}
-\pause
 \begin{subfigure}{.55\textwidth}
+\invisible<1>{
 \lstinputlisting[style=diff]{Figures/Example1_inline.diff}
+}
 \end{subfigure}
 \end{figure}
 \end{frame}
