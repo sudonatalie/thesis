@@ -11,6 +11,9 @@
 \par
 }
 
+% Remove symbols
+\usenavigationsymbolstemplate{}
+
 %include polycode.fmt
 \usepackage[round]{natbib}
 \usepackage{comment}
