@@ -23,6 +23,15 @@
 \usetikzlibrary{shapes,positioning,arrows.meta}
 \usepackage{subcaption}
 \usepackage{listings}
+\usepackage{lstlinebgrd}
+\usepackage{expl3,xparse}
+
+\ExplSyntaxOn
+\NewDocumentCommand \lstcolorlines { O{orange!20} m }
+{
+ \clist_if_in:nVT { #2 } { \the\value{lstnumber} }{ \color{#1} }
+}
+\ExplSyntaxOff
 
 \newcommand{\lstbg}[3][0pt]{{\fboxsep#1\colorbox{#2}{\strut #3}}}
 \lstdefinelanguage{diff}{
@@ -274,15 +283,15 @@ where  t1' =  t1[a := f, b := g, c := h, d := i, e := j]
 \end{frame}
 
 \begin{frame}{Pattern Let Floating: Application}
-\lstinputlisting[style=haskell]{Figures/Triangle_before.hs}
+\lstinputlisting[style=haskell,linebackgroundcolor={\lstcolorlines{2,4,6,8}}]{Figures/Triangle_before.hs}
 \rule{\textwidth}{0.4pt}
-\lstinputlisting[style=haskell]{Figures/Triangle_float.hs}
+\lstinputlisting[style=haskell,linebackgroundcolor={\lstcolorlines{2}}]{Figures/Triangle_float.hs}
 \end{frame}
 
 \begin{frame}{Pattern Let Floating: Application}
-\lstinputlisting[style=haskell]{Figures/Triangle_float.hs}
+\lstinputlisting[style=haskell,linebackgroundcolor={\lstcolorlines{}}]{Figures/Triangle_float.hs}
 \rule{\textwidth}{0.4pt}
-\lstinputlisting[style=haskell]{Figures/Triangle_split.hs}
+\lstinputlisting[style=haskell,linebackgroundcolor={\lstcolorlines{3,4}}]{Figures/Triangle_split.hs}
 \end{frame}
 
 \section{Conclusion}
