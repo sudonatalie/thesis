@@ -101,21 +101,6 @@ Proof:\\
 \input{Agda/latex/Proof}
 \end{frame}
 
-\begin{frame}{Sharing}
-\begin{figure}[h]
-\hspace{-1.5cm}
-\begin{subfigure}{.45\textwidth}
-\small
-\input{Agda/latex/Sharing}
-\end{subfigure}
-\hspace{1cm}
-\pause
-\begin{subfigure}{.55\textwidth}
-\lstinputlisting[style=haskell]{Figures/Sharing.hs}
-\end{subfigure}
-\end{figure}
-\end{frame}
-
 \section{Compiler}
 
 \begin{frame}{Compiler}
@@ -140,6 +125,21 @@ GHC Backend translates Agda into Haskell \citep{benke2007}
 
 \begin{frame}[c]{Stages of compilation}
 \input{Figures/CompilerFlowchart}
+\end{frame}
+
+\begin{frame}{Sharing}
+\begin{figure}[h]
+\hspace{-1.5cm}
+\begin{subfigure}{.45\textwidth}
+\small
+\input{Agda/latex/Sharing}
+\end{subfigure}
+\hspace{1cm}
+\pause
+\begin{subfigure}{.55\textwidth}
+\lstinputlisting[style=haskell]{Figures/Sharing.hs}
+\end{subfigure}
+\end{figure}
 \end{frame}
 
 \section{Optimisations}
