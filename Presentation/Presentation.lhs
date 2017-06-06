@@ -121,7 +121,7 @@ GHC Backend translates Agda into Haskell \citep{benke2007}
 \begin{itemize}
   \item Pretty good performance compiling with GHC
   \item Lack of GHC optimisations that occur around unsafe coercions \citep{fredriksson2011}
-  \item Additional passes over generated code necessary to improve
+  \item Additional passes over intermediate code necessary to improve
 \end{itemize}
 \end{frame}
 
