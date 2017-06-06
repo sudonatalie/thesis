@@ -1,5 +1,5 @@
 \chapter{Generating Pattern Lets}
-\label{cha:logical_plet}
+\label{cha:gen_plet}
 
 In this chapter we present our optimisation to generate pattern lets. In Section~\ref{sec:plet_usage} we give usage instructions. In Section~\ref{sec:plet_logical} we show a logical representation of the transformation. In Section~\ref{sec:plet_implement} we provide some implementation details pertaining to the optimisation. Lastly, in Section~\ref{sec:plet_app} we apply pattern let generation to a sample program and examine the results.
 
@@ -55,12 +55,12 @@ It is worth noting that this optimisation changes the evaluation sequence of sub
 
 Our treeless syntax does not support pattern matching, but when these cases are identified before transforming into Haskell expressions, we can replace them with ``pattern lets'', removing an unnecessary case expression, and immediately binding the appropriate constructor parameters in the enclosing |let| expression.
 
-These generated pattern lets have two-fold benefits. Firstly, their use reduces the amount of case analysis required in execution, which saves both the time and space needed to run. Secondly, it creates significant opportunities for increasing sharing of expression evaluations which could not have been found when they were |case| expressions. This leads us to our next optimisation, pattern let floating, discussed in Section~\ref{cha:plet-floating}.
+These generated pattern lets have two-fold benefits. Firstly, their use reduces the amount of case analysis required in execution, which saves both the time and space needed to run. Secondly, it creates significant opportunities for increasing sharing of expression evaluations which could not have been found when they were |case| expressions. This leads us to our next optimisation, pattern let floating, discussed in Chapter~\ref{cha:plet-floating}.
 
 \section{Implementation}
 \label{sec:plet_implement}
 
-The |Agda.Compiler.MAlonzo.Compiler| module is responsible for transforming Agda treeless terms into Haskell expressions. In the primary function for this compilation, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets. In order to be a suitable candidate for this optimisation, a |let| expression must exhibit the properties described in section~\ref{cha:logical_plet}. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinising the 0 (most recently bound) variable, and the requirements can thus be represented with a pattern matching expression |TLet _ (TCase 0 _ _ [TACon _ _ _])|, followed by a check that the default branch is unreachable.
+The |Agda.Compiler.MAlonzo.Compiler| module is responsible for transforming Agda treeless terms into Haskell expressions. In the primary function for this compilation, we introduced a new alternative that matches on terms with potential to be transformed into pattern lets. In order to be a suitable candidate for this optimisation, a |let| expression must exhibit the properties described in Section~\ref{sec:plet_logical}. Because these Agda terms used de Bruijn indexed variables, that means the case expression should be scrutinising the 0 (most recently bound) variable, and the requirements can thus be represented with a pattern matching expression |TLet _ (TCase 0 _ _ [TACon _ _ _])|, followed by a check that the default branch is unreachable.
 
 For a complete listing of our implementation of the pattern let generating optimisation, refer to Appendix~\ref{app:compiler}.
 
