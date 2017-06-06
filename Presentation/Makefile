@@ -23,4 +23,5 @@ read:
 
 clean:
 	rm -rf ${lagda_dir}/latex/
-	rm -f ${filename}.{pdf,log,aux,out,bbl,blg,idx,lof,lot,ptb,toc}
+	rm -f ${filename}.{tex,pdf,log,aux,out,bbl,blg,idx,lof,lot,ptb,toc,nav,snm}
+	find . -name "*.agdai" -delete
