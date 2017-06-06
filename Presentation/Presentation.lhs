@@ -25,6 +25,7 @@
 \usepackage{listings}
 \usepackage{lstlinebgrd}
 \usepackage{expl3,xparse}
+\usepackage{textgreek}
 
 \ExplSyntaxOn
 \NewDocumentCommand \lstcolorlines { O{orange!20} m }
@@ -315,6 +316,37 @@ where  t1' =  t1[a := f, b := g, c := h, d := i, e := j]
 \lstinputlisting[style=haskell,linebackgroundcolor={\lstcolorlines{}}]{Figures/Triangle_float.hs}
 \rule{\textwidth}{0.4pt}
 \lstinputlisting[style=haskell,linebackgroundcolor={\lstcolorlines{3,4}}]{Figures/Triangle_split.hs}
+\end{frame}
+
+\section{Performance}
+
+\begin{frame}{Performance}
+
+\textbf{Before inlining}\\
+\textit{Profiling}:
+\begin{table}[]
+\centering
+\small
+\begin{tabular}{||l||l||l||}
+\hline
+\textbf{Cost centre} & \textbf{\%time} & \textbf{\%alloc} \\ \hline
+Data.Product.\textSigma.proj₂ & 10.4 & 0.0 \\ \hline
+Data.Product.\textSigma.proj₁ & 7.2 & 0.0 \\ \hline
+Categoric.KleeneCategory... & 4.9 & 7.0 \\ \hline
+Data.SUList.ListSetMap... & 4.1 & 10.4 \\ \hline
+Data.SUList.ListSetMap... & 3.9 & 3.7 \\ \hline
+\end{tabular}
+\end{table}
+
+\textit{Average runtime}: 1.60 s
+
+\vspace{2em}
+
+\textbf{After inlining}\\
+\textit{Average runtime}: 1.44 s
+
+\textit{Speedup}: 1.11$\times$
+
 \end{frame}
 
 \section{Conclusion}
