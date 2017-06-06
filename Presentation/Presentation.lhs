@@ -251,10 +251,11 @@ in t
 \end{spec}
 \end{subfigure}
 \end{figure}
-where |unreachable(u)|.
-\end{frame}
+\vspace{-1em}
+\footnotesize{\quad where |unreachable(u)|.}
 
-\begin{frame}{Pattern Let Generating: Application}
+\rule{\textwidth}{0.4pt}
+
 \lstinputlisting[style=diff]{Figures/Triangle_genplet.diff}
 \end{frame}
 
