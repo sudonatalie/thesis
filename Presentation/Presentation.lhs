@@ -92,10 +92,10 @@ Dependent types:\\
 
 \pause
 
-Syntax:\\
-\input{Agda/latex/If}
-
-\pause
+% Syntax:\\
+% \input{Agda/latex/If}
+%
+% \pause
 
 Proof:\\
 \input{Agda/latex/Proof}
