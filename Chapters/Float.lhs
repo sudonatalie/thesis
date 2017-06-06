@@ -82,13 +82,17 @@ $\alpha$-conversion) in order to be considered matching.
 For example, if the following two let bindings are found in separate branches
 of the expression tree:
 
-|let a@(b@(c,d),e) = RHS|\\
-|let a@(b, c@(d,e)) = RHS|
+|let a@(b@(c,d),e) = RHS in t1|\\
+|let a@(b, c@(d,e)) = RHS in t2|
 
 they will meet at the least join point of their two branches, and be unified
 into
 
-|let f@(g@(h,i),j@(k,l)) = RHS|.
+\begin{spec}
+let f@(g@(h,i),j@(k,l)) = RHS in
+   ...t1[a := f, b := g, c := h, d := i, e := j]...
+   ...t2[a := f, b := g, c := j, d := k, e := l]...
+\end{spec}
 %}
 
 We are further expanding the pattern let floating optimisation such that they can not only be floated up expressions, but also across function calls. By floating pattern lets across function calls, we can avoid even more duplicated computation through sharing.
