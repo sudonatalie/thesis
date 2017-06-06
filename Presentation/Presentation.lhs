@@ -77,6 +77,7 @@
 
 \begin{frame}{Agda}
 \begin{itemize}
+  \setlength\itemsep{1em}
   \item Agda \citep{Norell-2007} programming language
   \item \ldots and theorem prover
   \item Dependently-typed
@@ -151,6 +152,7 @@ GHC Backend translates Agda into Haskell \citep{benke2007}
 Inline all proper projections.
 
 \begin{itemize}
+  \setlength\itemsep{1em}
   \item Recurse through expression tree
   \item Identify proper projections by qualified name
   \item Replace function with body
@@ -319,6 +321,7 @@ where  t1' =  t1[a := f, b := g, c := h, d := i, e := j]
 
 \begin{frame}{Challenges}
 \begin{itemize}
+  \setlength\itemsep{1.5em}
   \item Understanding of compilation pipeline
   \item Familiarisation with internal syntax
   \item Non-termination of recursive inlining
@@ -329,6 +332,7 @@ where  t1' =  t1[a := f, b := g, c := h, d := i, e := j]
 
 \begin{frame}{Conclusion}
 \begin{itemize}
+  \setlength\itemsep{1.5em}
   \item Profiled existing Agda programs for highest cost centres
   \item Developed transformations to focus on the inherent ``loss'' of sharing
   \item Tested optimising transformations on various typical Agda programs
