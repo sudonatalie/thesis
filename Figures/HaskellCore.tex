@@ -1,25 +1,25 @@
-\begin{figure}[h]
+\textit{NoDefault}\begin{figure}[h]
 \begin{align*}
-Expr \to~& Expr~Atom & \text{application}\\
-|~& Expr~ty & \text{type application}\\
-|~& \lambda~var_1 ... var_n \mathtt{{-}{>}} Expr & \text{lambda abstraction}\\
-|~& \Lambda~ty \mathtt{{-}{>}} Expr & \text{type abstraction}\\
-|~& \mathtt{case}~Expr~\mathtt{of}~Alts & \text{case expression}\\
-|~& \mathtt{let}~var\mathtt{=}Expr~\mathtt{in}~Expr & \text{local definition}\\
-|~& con~var_1 ... var_n & \text{constructor, $n \geq 0$}\\
-|~& prim~var_1 ... var_n & \text{primitive, $n \geq 0$}\\
-|~& Atom & \text{literal}\\
+\textit{Expr} \to~& \textit{Expr}~\textit{Atom} & \text{application}\\
+|~& \textit{Expr}~\textit{ty} & \text{type application}\\
+|~& \lambda~\textit{var}_1 ... \textit{var}_n~\texttt{{-}{>}}~\textit{Expr} & \text{lambda abstraction}\\
+|~& \Lambda~\textit{ty}~\texttt{{-}{>}}~\textit{Expr} & \text{type abstraction}\\
+|~& \texttt{case}~\textit{Expr}~\texttt{of}~\textit{Alts} & \text{case expression}\\
+|~& \texttt{let}~\textit{var}~\texttt{=}~\textit{Expr}~\texttt{in}~\textit{Expr} & \text{local definition}\\
+|~& \textit{con}~\textit{var}_1 ... \textit{var}_n & \text{constructor, $n \geq 0$}\\
+|~& \textit{prim}~\textit{var}_1 ... \textit{var}_n & \text{primitive, $n \geq 0$}\\
+|~& \textit{Atom} & \text{literal}\\
 \\
-Atom \to~& var & \text{variable}\\
-|~& Literal & \text{unboxed object}\\
+\textit{Atom} \to~& \textit{var} & \text{variable}\\
+|~& \textit{Literal} & \text{unboxed object}\\
 \\
-Alts \to~& Calt_1; ...; Calt_n; Default & \text{$n \geq 0$}\\
-|~& Lalt_1; ...; Lalt_n; Default & \text{$n \geq 0$}\\
+\textit{Alts} \to~& \textit{Calt}_1; ...; \textit{Calt}_n; \textit{Default} & \text{$n \geq 0$}\\
+|~& \textit{Lalt}_1; ...; \textit{Lalt}_n; \textit{Default} & \text{$n \geq 0$}\\
 \\
-Calt \to~& con~var_1 ... var_n \mathtt{{-}{>}} Expr & \text{constructor alt, $n \geq 0$}\\
-Lalt \to~& Literal \mathtt{{-}{>}} Expr & \text{literal alt}\\
-Default \to~& \mathtt{NoDefault} & \text{}\\
-|~& var \mathtt{{-}{>}} Expr & \text{}
+\textit{Calt} \to~& \textit{con}~\textit{var}_1 ... \textit{var}_n~\texttt{{-}{>}}~\textit{Expr} & \text{constructor alt, $n \geq 0$}\\
+\textit{Lalt} \to~& \textit{Literal}~\texttt{{-}{>}}~\textit{Expr} & \text{literal alt}\\
+\textit{Default} \to~& \texttt{NoDefault} & \text{}\\
+|~& \textit{var}~\texttt{{-}{>}}~\textit{Expr} & \text{}
 \end{align*}
 \caption{Syntax of the Haskell Core language.}
 \label{fig:haskell_core}
