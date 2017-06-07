@@ -28,7 +28,7 @@ In combination with our option:
 --cross-call-float          float pattern bindings across function calls
 \end{verbatim}
 
-\edinsert{WK}{that is currently under development,}
+that is currently under development,
 bindings can also be shared across function calls.
 
 \section{Logical Representation}
@@ -96,7 +96,7 @@ let f@(g@(h,i),j@(k,l)) = RHS in
 \end{spec}
 %}
 
-We are \edinsert{WK}{currently working on} further expanding the pattern let floating optimisation such that they can not only be floated up expressions, but also across function calls. By floating pattern lets across function calls, we can avoid even more duplicated computation through sharing.
+We are currently working on further expanding the pattern let floating optimisation such that they can not only be floated up expressions, but also across function calls. By floating pattern lets across function calls, we can avoid even more duplicated computation through sharing.
 
 This feature is implemented by splitting the pattern lets at the root of functions into separate pattern lets and a body. By creating secondary functions that take the variables bound by pattern lets and make them explicit arguments to a separate function, we can abstract the patterns across function calls.
 
@@ -114,19 +114,6 @@ The @--abstract-plet@ feature is necessary to split functions into two, with the
 
 \newpage
 
-In Figure~\ref{fig:pullback_cross} we can see the result of cross-call floating on the \AgdaModule{Pullback} module.
-\edcomm{WK}{Consider moving this down, to make the sequence here the same as in ``Usage''.}
-Notice that without cross-call floating, a single call to \texttt{du78} would result in two unshared calls to \texttt{du58}, one via \texttt{du60} and one via \texttt{du70}. With cross-call floating, \texttt{du78} calls \texttt{du58} only once, then passes the results via the additional parameters to \texttt{dv78}, which in turn shares the values with both \texttt{dv60} and \texttt{dv70}.
-
-\begin{figure}[h]
-\centering
-\lstinputlisting[style=diff]{Figures/Pullback_cross.diff}
-\caption{Unified difference of the \AgdaModule{Pullback}~module compiled without and then with @--cross-call@.}
-\label{fig:pullback_cross}
-\end{figure}
-
-\newpage
-
 As readers may have noticed inspecting Figure~\ref{fig:Triangle_genplet} in the preceding chapter, there are 4 pattern let bindings for the same \texttt{v2} variable within the \texttt{d4788} function. This is a perfect opportunity for floating pattern lets, to create sharing where there formerly was none.
 Figure~\ref{fig:Triangle_float} shows the result of applying @--float-plet@ to this compilation, resulting in the \texttt{v2} bindings floating above the shared function call.
 
@@ -135,4 +122,16 @@ Figure~\ref{fig:Triangle_float} shows the result of applying @--float-plet@ to t
 \lstinputlisting[style=diff]{Figures/Triangle_float.diff}
 \caption{Unified difference of the \AgdaModule{Triangle3sPB}~module compiled without and then with @--float-plet@.}
 \label{fig:Triangle_float}
+\end{figure}
+
+\newpage
+
+In Figure~\ref{fig:pullback_cross} we can see the result of cross-call floating on the \AgdaModule{Pullback} module.
+Notice that without cross-call floating, a single call to \texttt{du78} would result in two unshared calls to \texttt{du58}, one via \texttt{du60} and one via \texttt{du70}. With cross-call floating, \texttt{du78} calls \texttt{du58} only once, then passes the results via the additional parameters to \texttt{dv78}, which in turn shares the values with both \texttt{dv60} and \texttt{dv70}.
+
+\begin{figure}[h]
+\centering
+\lstinputlisting[style=diff]{Figures/Pullback_cross.diff}
+\caption{Unified difference of the \AgdaModule{Pullback}~module compiled without and then with @--cross-call@.}
+\label{fig:pullback_cross}
 \end{figure}
