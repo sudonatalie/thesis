@@ -13,9 +13,8 @@ The GHC compilation process consists of translating Haskell code into a second-o
 
 The syntax of the Core intermediate language of Haskell is very similar to Treeless, with expressions consisting mainly of $\lambda$ abstractions, |let| bindings, |case| expressions, constructors, literals and function applications, much like Agda's Treeless syntax.% outlined in Figure~\ref{code:TTerm}.
 
-CSE is implemented in GHC with a single recursive traversal of the Core program. For each expression, its subexpressions are first transformed, then it is determined whether the whole transformed expression has occurred already \citep{Chitil-1998}. An example of this is shown in Figure~\ref{code:cse_haskell}.
+CSE is implemented in GHC with a single recursive traversal of the Core program. For each expression, its subexpressions are first transformed, then it is determined whether the whole transformed expression has occurred already \citep{Chitil-1998}.
 
-\begin{figure}[h]
 Given the expression:
 
 |let x = 3 in let y = 2+3 in 2+3+4|
@@ -27,10 +26,6 @@ the first CSE on the subexpressions yields:
 and then the recursive transformation produces:
 
 |let x = 3 in let y = 2+x in 2+x+4|
-
-\caption{Common subexpression elimination transformation in Haskell \citep{Chitil-1998}.}
-\label{code:cse_haskell}
-\end{figure}
 
 \section{Let-floating}
 \label{sec:let_floating}
