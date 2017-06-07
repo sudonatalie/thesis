@@ -53,7 +53,7 @@ case x of
 \label{fig:case_squash_rule}
 \end{figure}
 
-For example, given the treeless expression with de Bruijn indexed variables in Figure~\ref{fig:db_case_squash}, we can follow the de Bruijn indices to their matching variable bindings, to see that the first and third case expressions are scrutinising the same variable, the one bound by the outermost $\lambda$ abstraction. Therefore, with only static analysis of the expression tree, we know that the third case expression must follow the $da~2~1~0$ branch, and we can thus safely transform the expression on the left into the substituted expression on the right.
+For example, given the treeless expression with De Bruijn indexed variables in Figure~\ref{fig:db_case_squash}, we can follow the De Bruijn indices to their matching variable bindings, to see that the first and third case expressions are scrutinising the same variable, the one bound by the outermost $\lambda$ abstraction. Therefore, with only static analysis of the expression tree, we know that the third case expression must follow the $da~2~1~0$ branch, and we can thus safely transform the expression on the left into the substituted expression on the right.
 
 \begin{figure}[h]
 \centering
@@ -94,7 +94,7 @@ case $2$ of {
 \label{fig:db_case_squash}
 \end{figure}
 
-We perform this ``case squashing'' by accumulating an environment of all previously scrutinised variables as we traverse the tree structure (appropriately shifting de Bruijn indices in the environment as new variables are bound), and replacing case expressions that match on the same variable as an ancestor case expressions, with the corresponding case branch's body. Any variables in the body that refer to bindings in the removed branch should be replaced with references to the bindings in the matching ancestor case expression branch.
+We perform this ``case squashing'' by accumulating an environment of all previously scrutinised variables as we traverse the tree structure (appropriately shifting De Bruijn indices in the environment as new variables are bound), and replacing case expressions that match on the same variable as an ancestor case expressions, with the corresponding case branch's body. Any variables in the body that refer to bindings in the removed branch should be replaced with references to the bindings in the matching ancestor case expression branch.
 
 \section{Implementation}
 \label{sec:squashing_implement}

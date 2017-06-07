@@ -34,9 +34,9 @@ squashCases :: QName -> TTerm -> TCM TTerm
 squashCases q body = return $ dedupTerm [] body
 \end{code}
 
-Case scrutinee (de Bruijn index) with alternative match
+Case scrutinee (De Bruijn index) with alternative match
 for that expression, made up of qualified name of constructor
-and a list of its arguments (also as de Bruijn indices)
+and a list of its arguments (also as De Bruijn indices)
 
 \begin{code}
 type CaseMatch = (Int, (QName, [Int]))
@@ -103,7 +103,7 @@ dedupAlt sc env (TAGuard guard body) = TAGuard guard (dedupTerm env body)
 dedupAlt sc env (TALit lit body) = TALit lit (dedupTerm env body)
 \end{code}
 
-Shift all de Bruijn indices in a case match according to provided
+Shift all De Bruijn indices in a case match according to provided
 function on integers
 
 \begin{code}
@@ -111,7 +111,7 @@ shiftIndices :: (Int -> Int) -> CaseMatch -> CaseMatch
 shiftIndices f (sc, (name, vars)) = (f sc, (name, map f vars))
 \end{code}
 
-Substitute list of current de Bruijn indices for list of new indices
+Substitute list of current De Bruijn indices for list of new indices
 in a term
 
 \begin{code}

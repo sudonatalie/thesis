@@ -40,7 +40,7 @@ a number of weaknesses that warrant consideration.
 A clear weakness of our case squashing optimisation is its isolated
 implementation. Because it was developed as an independent transformation, it
 requires an additional traversal of the treeless terms to execute. Further, some
-of the logic built to deal with the handling of de Bruijn indices would have
+of the logic built to deal with the handling of De Bruijn indices would have
 been avoidable had it been built as part of an existing set of optimisations
 that had similar optimisation helper functions already developed. As presented
 in Subsection~\ref{sub:alternate_case_squash}, an independent version of case
