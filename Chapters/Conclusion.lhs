@@ -66,10 +66,11 @@ environments would be better refactored into reader monad transformers, which
 would allow an inherited environment to be bound to the function results and
 passed through to subcomputations via the given monad.
 
+Work will also continue on the cross-call floating optimisation described in Chapter~\ref{cha:plet-floating}, which we expect to yield the most significant sharing benefits when it is fully functional.
+
 Additionally, our floating optimisations would benefit
 from recognizing single-alternative case expressions
-which are not immediately nested within an enclosing let expression,
-as described in Chapter~\ref{cha:plet-floating}.
+which are not immediately nested within an enclosing let expression.
 In the future, we also seek to expand this optimisation's transformation to
 generate ``dummy'' pattern let expressions around said case expressions before
 executing the floating transformations.
