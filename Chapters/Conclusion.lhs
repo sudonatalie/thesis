@@ -19,7 +19,7 @@ the Agda development community.
 
 Primarily, as shown by the results of the applications of our optimisations, our
 optimisations will reduce the runtime execution and heap allocation requirements
-of many Agda programs
+of many Agda programs%
 % with a negligible impact on compile time
 %\edcomm{WK}{I don't recall where you showed measurements\ldots}
 , and do not show adverse
@@ -66,10 +66,11 @@ environments would be better refactored into reader monad transformers, which
 would allow an inherited environment to be bound to the function results and
 passed through to subcomputations via the given monad.
 
-Additionally, our floating optimisations would benefit from recognizing single-
-alternative case expressions which are not immediately nested within an
-enclosing let expression, as described in Chapter~\ref{cha:plet-floating}.  In
-the future, we also seek to expand this optimisation's transformation to
+Additionally, our floating optimisations would benefit
+from recognizing single-alternative case expressions
+which are not immediately nested within an enclosing let expression,
+as described in Chapter~\ref{cha:plet-floating}.
+In the future, we also seek to expand this optimisation's transformation to
 generate ``dummy'' pattern let expressions around said case expressions before
 executing the floating transformations.
 
