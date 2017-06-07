@@ -19,13 +19,9 @@ Given the expression:
 
 |let x = 3 in let y = 2+3 in 2+3+4|
 
-the first CSE on the subexpressions yields:
+the result of the recursive trransformation is:
 
-|let x = 3 in let y = 2+x in y+4|
-
-and then the recursive transformation produces:
-
-|let x = 3 in let y = 2+x in 2+x+4|
+|let x = 3 in let y = 2+x in y+4|.
 
 \section{Let-floating}
 \label{sec:let_floating}
